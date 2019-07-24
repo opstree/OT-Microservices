@@ -4,6 +4,7 @@ import (
     "database/sql"
 	"log"
 	"os"
+	"fmt"
     "net/http"
     "text/template"
 	_ "github.com/go-sql-driver/mysql"
@@ -30,7 +31,7 @@ func dbConn() (db *sql.DB) {
 }
 
 func createDatabaseTable() {
-	db = dbConn()
+	db := dbConn()
 	_,err = db.Exec("CREATE DATABASE employeedb")
 	if err != nil {
 		fmt.Println(err.Error())
