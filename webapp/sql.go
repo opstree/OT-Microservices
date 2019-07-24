@@ -26,10 +26,10 @@ func dbConn() (db *sql.DB) {
 
     if fileExists(propertyfile) {
         vaules := properties.MustLoadFiles([]string{propertyfile}, properties.UTF8, true)
-        dbUser := vaules.GetString(DB_USER, DB_USER)
-        dbPass := vaules.GetString(DB_PASSWORD, DB_PASSWORD)
-        dbUrl  := vaules.GetString(DB_URL, DB_URL)
-        dbPort := vaules.GetString(DB_PORT, DB_PORT)
+        dbUser := vaules.GetString("DB_USER", "DB_USER")
+        dbPass := vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
+        dbUrl  := vaules.GetString("DB_URL", "DB_URL")
+        dbPort := vaules.GetString("DB_PORT", "DB_PORT")
     } else {
         dbUser := os.Getenv("DB_USER")
         dbPass := os.Getenv("DB_PASSWORD")
