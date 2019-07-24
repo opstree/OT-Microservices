@@ -22,8 +22,10 @@ func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbUser := os.Getenv("DB_USER")
     dbPass := os.Getenv("DB_PASSWORD")
+    dbUrl := os.Getenv("DB_URL")
+    dbPort := os.Getenv("DB_PORT")
     dbName := "employeedb"
-    db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
+    db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"dbPort+")"+dbName)
     if err != nil {
         panic(err.Error())
     }
