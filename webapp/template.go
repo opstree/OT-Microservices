@@ -35,11 +35,11 @@ const htmltemplate=`{{ define "Index" }}
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>Golang Mysql Curd Example</title>
+        <title>OpsTree Golang Curd Example</title>
         <meta charset="UTF-8" />
     </head>
     <body>
-        <h1>Golang Mysql Curd Example</h1>   
+        <h1>OpsTree Golang Mysql Curd Example</h1>   
 {{ end }}
 
 {{ define "Footer" }}
