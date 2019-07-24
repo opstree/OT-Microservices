@@ -39,7 +39,7 @@ func createDatabaseTable() {
 		log.Println("Successfully created the database employeedb")
 	}
 
-	_,err := db.Exec("USE employeedb")
+	_,err = db.Exec("USE employeedb")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -51,7 +51,7 @@ func createDatabaseTable() {
 		fmt.Println(err.Error())
 	}
 
-	_, err := stmt.Exec()
+	_, err = stmt.Exec()
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
