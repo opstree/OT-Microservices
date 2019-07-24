@@ -30,6 +30,7 @@ func dbConn() (db *sql.DB) {
         dbPass := vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
         dbUrl  := vaules.GetString("DB_URL", "DB_URL")
         dbPort := vaules.GetString("DB_PORT", "DB_PORT")
+        fmt.Println(dbUser, dbPass)
     } else {
         dbUser := os.Getenv("DB_USER")
         dbPass := os.Getenv("DB_PASSWORD")
