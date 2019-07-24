@@ -44,7 +44,7 @@ func dbConn() (db *sql.DB) {
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
     if err != nil {
-        log.Error("Unable to make the sql connection")
+        log.Error(err.Error())
     }
     return db
 }
@@ -61,26 +61,26 @@ func createDatabaseTable() {
 	db := dbConn()
 	_,err := db.Exec("CREATE DATABASE employeedb")
 	if err != nil {
-		log.Info("Database name employeedb is already created")
+		log.Error(err.Error())
 	} else {
 		log.Info("Successfully created the database employeedb")
 	}
 
 	_,err = db.Exec("USE employeedb")
 	if err != nil {
-		log.Error("Unable to use the employeedb database")
+		log.Error(err.Error())
 	} else {
 		log.Info("Using employeedb for database")
 	}
 
 	stmt, err := db.Prepare("CREATE Table Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
 	if err != nil {
-		log.Info("Table name Employee is already created")
+		log.Error(err.Error())
 	}
 
 	_, err = stmt.Exec()
 	if err != nil {
-		log.Info("Table name Employee is already created")
+		log.Error(err.Error())
 	} else {
 		log.Info("Table created with the name employee")
 	}
