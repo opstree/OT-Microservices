@@ -36,7 +36,7 @@ func createDatabaseTable() {
 	db := dbConn()
 	_,err := db.Exec("CREATE DATABASE employeedb")
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println("Database name employeedb is already created")
 	} else {
 		log.Println("Successfully created the database employeedb")
 	}
@@ -48,7 +48,7 @@ func createDatabaseTable() {
 		log.Println("Using employeedb for database")
 	}
 
-	stmt, err := db.Prepare("CREATE Table employee(id int NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY_KEY(id));")
+	stmt, err := db.Prepare("CREATE Table employee(id int NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY_KEY (id));")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
