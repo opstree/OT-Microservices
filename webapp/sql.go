@@ -2,7 +2,7 @@ package webapp
 
 import (
     "database/sql"
-    "log"
+    log "github.com/sirupsen/logrus"
     "github.com/magiconair/properties"
 	"os"
 	"fmt"
@@ -34,18 +34,18 @@ func dbConn() (db *sql.DB) {
         dbPass = vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
         dbUrl  = vaules.GetString("DB_URL", "DB_URL")
         dbPort = vaules.GetString("DB_PORT", "DB_PORT")
-        log.Println("Found the properties file under /etc/conf.d/ot-go-webapp/database.properties")
+        log.Info("Found the properties file under /etc/conf.d/ot-go-webapp/database.properties")
     } else {
         dbUser = os.Getenv("DB_USER")
         dbPass = os.Getenv("DB_PASSWORD")
         dbUrl  = os.Getenv("DB_URL")
         dbPort = os.Getenv("DB_PORT")
-        log.Println("No property file found under /etc/conf.d/ot-go-webapp/database.properties, using environment variables")
+        log.Info("No property file found under /etc/conf.d/ot-go-webapp/database.properties, using environment variables")
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
     if err != nil {
-        panic(err.Error())
+        log.Error("Unable to make the sql connection")
     }
     return db
 }
@@ -62,28 +62,28 @@ func createDatabaseTable() {
 	db := dbConn()
 	_,err := db.Exec("CREATE DATABASE employeedb")
 	if err != nil {
-		log.Println("Database name employeedb is already created")
+		log.Info("Database name employeedb is already created")
 	} else {
-		log.Println("Successfully created the database employeedb")
+		log.Info("Successfully created the database employeedb")
 	}
 
 	_,err = db.Exec("USE employeedb")
 	if err != nil {
-		log.Println("Unable to use the employeedb database")
+		log.Error("Unable to use the employeedb database")
 	} else {
-		log.Println("Using employeedb for database")
+		log.Info("Using employeedb for database")
 	}
 
 	stmt, err := db.Prepare("CREATE Table Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Info("Table name Employee is already created")
 	}
 
 	_, err = stmt.Exec()
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Info("Table name Employee is already created")
 	} else {
-		log.Println("Table created with the name employee")
+		log.Info("Table created with the name employee")
 	}
 	defer db.Close()
 }
@@ -107,6 +107,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
         emp.Name = name
         emp.City = city
         res = append(res, emp)
+        log.Info("GET request on the /index page")
     }
     tmpl.ExecuteTemplate(w, "Index", res)
     defer db.Close()
@@ -130,6 +131,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
         emp.Id = id
         emp.Name = name
         emp.City = city
+        log.Info("GET request on the /show for "+ emp.Name)
     }
     tmpl.ExecuteTemplate(w, "Show", emp)
     defer db.Close()
@@ -157,6 +159,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
         emp.Id = id
         emp.Name = name
         emp.City = city
+        log.Info("POST request on the /edit for "+ emp.Name)
     }
     tmpl.ExecuteTemplate(w, "Edit", emp)
     defer db.Close()
@@ -172,7 +175,7 @@ func Insert(w http.ResponseWriter, r *http.Request) {
             panic(err.Error())
         }
         insForm.Exec(name, city)
-        log.Println("INSERT: Name: " + name + " | City: " + city)
+        log.Info("POST request on the /insert for "+ name)
     }
     defer db.Close()
     http.Redirect(w, r, "/", 301)
@@ -189,7 +192,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
             panic(err.Error())
         }
         insForm.Exec(name, city, id)
-        log.Println("UPDATE: Name: " + name + " | City: " + city)
+        log.Info("POST request on the /update for "+ name)
     }
     defer db.Close()
     http.Redirect(w, r, "/", 301)
@@ -204,6 +207,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
     }
     delForm.Exec(emp)
     log.Println("DELETE")
+    log.Info("POST request on the /delete")
     defer db.Close()
     http.Redirect(w, r, "/", 301)
 }
