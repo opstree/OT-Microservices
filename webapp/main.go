@@ -1,7 +1,6 @@
 package webapp
 
 import (
-	"log"
     "net/http"
 )
 
