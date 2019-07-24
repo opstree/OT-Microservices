@@ -43,12 +43,12 @@ func createDatabaseTable() {
 
 	_,err = db.Exec("USE employeedb")
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println("Unable to use the employeedb database")
 	} else {
 		log.Println("Using employeedb for database")
 	}
 
-	stmt, err := db.Prepare("CREATE Table employee ( id int NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY_KEY (id) )")
+	stmt, err := db.Prepare("CREATE Table employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
