@@ -5,7 +5,6 @@ import (
     log "github.com/sirupsen/logrus"
     "github.com/magiconair/properties"
 	"os"
-	"fmt"
     "net/http"
     "text/template"
 	_ "github.com/go-sql-driver/mysql"
