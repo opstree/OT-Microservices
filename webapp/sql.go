@@ -22,20 +22,24 @@ var tmpl = template.Must(template.New("Employee Management Template").Parse(html
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbName := "employeedb"
+    var dbUser string
+    var dbPass string
+    var dbUrl string
+    var dbPort string
     propertyfile := "/etc/conf.d/ot-go-webapp/database.properties"
 
     if fileExists(propertyfile) {
         vaules := properties.MustLoadFiles([]string{propertyfile}, properties.UTF8, true)
-        dbUser := vaules.GetString("DB_USER", "DB_USER")
-        dbPass := vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
-        dbUrl  := vaules.GetString("DB_URL", "DB_URL")
-        dbPort := vaules.GetString("DB_PORT", "DB_PORT")
+        dbUser = vaules.GetString("DB_USER", "DB_USER")
+        dbPass = vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
+        dbUrl  = vaules.GetString("DB_URL", "DB_URL")
+        dbPort = vaules.GetString("DB_PORT", "DB_PORT")
         fmt.Println(dbUser, dbPass)
     } else {
-        dbUser := os.Getenv("DB_USER")
-        dbPass := os.Getenv("DB_PASSWORD")
-        dbUrl  := os.Getenv("DB_URL")
-        dbPort := os.Getenv("DB_PORT")
+        dbUser = os.Getenv("DB_USER")
+        dbPass = os.Getenv("DB_PASSWORD")
+        dbUrl  = os.Getenv("DB_URL")
+        dbPort = os.Getenv("DB_PORT")
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
