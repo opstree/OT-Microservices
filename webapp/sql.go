@@ -2,7 +2,8 @@ package webapp
 
 import (
     "database/sql"
-	"log"
+    "log"
+    "github.com/magiconair/properties"
 	"os"
 	"fmt"
     "net/http"
@@ -20,16 +21,35 @@ var tmpl = template.Must(template.New("Employee Management Template").Parse(html
 
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
-    dbUser := os.Getenv("DB_USER")
-    dbPass := os.Getenv("DB_PASSWORD")
-    dbUrl := os.Getenv("DB_URL")
-    dbPort := os.Getenv("DB_PORT")
     dbName := "employeedb"
+    propertyfile := "/etc/conf.d/ot-go-webapp/database.properties"
+
+    if fileExists(propertyfile) {
+        vaules := properties.MustLoadFiles([]string{propertyfile}, properties.UTF8, true)
+        dbUser := vaules.GetString(DB_USER, DB_USER)
+        dbPass := vaules.GetString(DB_PASSWORD, DB_PASSWORD)
+        dbUrl  := vaules.GetString(DB_URL, DB_URL)
+        dbPort := vaules.GetString(DB_PORT, DB_PORT)
+    } else {
+        dbUser := os.Getenv("DB_USER")
+        dbPass := os.Getenv("DB_PASSWORD")
+        dbUrl  := os.Getenv("DB_URL")
+        dbPort := os.Getenv("DB_PORT")
+    }
+
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
     if err != nil {
         panic(err.Error())
     }
     return db
+}
+
+func fileExists(filename string) bool {
+    info, err := os.Stat(filename)
+    if os.IsNotExist(err) {
+        return false
+    }
+    return !info.IsDir()
 }
 
 func createDatabaseTable() {
