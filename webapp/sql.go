@@ -34,11 +34,13 @@ func dbConn() (db *sql.DB) {
         dbPass = vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
         dbUrl  = vaules.GetString("DB_URL", "DB_URL")
         dbPort = vaules.GetString("DB_PORT", "DB_PORT")
+        log.Println("Found the properties file under /etc/conf.d/ot-go-webapp/database.properties")
     } else {
         dbUser = os.Getenv("DB_USER")
         dbPass = os.Getenv("DB_PASSWORD")
         dbUrl  = os.Getenv("DB_URL")
         dbPort = os.Getenv("DB_PORT")
+        log.Println("No property file found under /etc/conf.d/ot-go-webapp/database.properties, using environment variables")
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
