@@ -63,26 +63,21 @@ func createDatabaseTable() {
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Info("Successfully created the database employeedb")
+		log.Info("DATABASE is created with name employeedb")
 	}
 
 	_,err = db.Exec("USE employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Info("Using employeedb for database")
+		log.Info("USING employeedb database")
 	}
 
-	stmt, err := db.Prepare("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
-	if err != nil {
-		log.Error(err.Error())
-	}
-
-	_, err = stmt.Exec()
+	_, err := db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Info("Table created with the name employee")
+		log.Info("TABLE is created with name Employee")
 	}
 	defer db.Close()
 }
