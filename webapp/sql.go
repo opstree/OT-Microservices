@@ -59,7 +59,7 @@ func fileExists(filename string) bool {
 
 func createDatabaseTable() {
 	db := dbConn()
-	_,err := db.Exec("CREATE DATABASE employeedb")
+	_,err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
@@ -73,7 +73,7 @@ func createDatabaseTable() {
 		log.Info("Using employeedb for database")
 	}
 
-	stmt, err := db.Prepare("CREATE Table Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
+	stmt, err := db.Prepare("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
 	if err != nil {
 		log.Error(err.Error())
 	}
