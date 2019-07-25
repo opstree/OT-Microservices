@@ -1,12 +1,10 @@
 package webapp
 
 import (
-	"log"
     "net/http"
 )
 
 func Run() {
-	log.Println("Server started on: http://localhost:8080")
 	createDatabaseTable()
     http.HandleFunc("/", Index)
     http.HandleFunc("/show", Show)
