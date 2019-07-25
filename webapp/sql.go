@@ -57,7 +57,7 @@ func fileExists(filename string) bool {
     return !info.IsDir()
 }
 
-func createDatabaseTable() {
+err := try.Do(func createDatabaseTable() {
 	db := dbConn()
 	_,err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
@@ -65,6 +65,8 @@ func createDatabaseTable() {
 	} else {
 		log.Info("DATABASE is created with name employeedb")
 	}
+
+    return attempt < 5, err
 
 	_,err = db.Exec("USE employeedb")
 	if err != nil {
@@ -80,6 +82,10 @@ func createDatabaseTable() {
 		log.Info("TABLE is created with name Employee")
 	}
 	defer db.Close()
+})
+
+if err != nil {
+    log.Error("Error:", err)
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
