@@ -5,7 +5,7 @@ import (
 )
 
 func Run() {
-	createDatabaseTable()
+    createDatabaseTable()
     http.HandleFunc("/", Index)
     http.HandleFunc("/show", Show)
     http.HandleFunc("/new", New)
