@@ -4,7 +4,7 @@ import (
     "database/sql"
     log "github.com/sirupsen/logrus"
     "github.com/magiconair/properties"
-	"os"
+    "os"
     "net/http"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
@@ -57,7 +57,7 @@ func fileExists(filename string) bool {
     return !info.IsDir()
 }
 
-err := try.Do(func createDatabaseTable() {
+func createDatabaseTable() {
 	db := dbConn()
 	_,err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
@@ -82,7 +82,7 @@ err := try.Do(func createDatabaseTable() {
 		log.Info("TABLE is created with name Employee")
 	}
 	defer db.Close()
-})
+}
 
 if err != nil {
     log.Error("Error:", err)

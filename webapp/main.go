@@ -2,10 +2,14 @@ package webapp
 
 import (
     "net/http"
+    "github.com/giantswarm/retry-go"
 )
 
 func Run() {
-    createDatabaseTable()
+    op := createDatabaseTable()
+    retry.Do(op,
+        retry.RetryChecker(IsNetOpErr)
+        retry.Timeout(15 * time.Second))
     http.HandleFunc("/", Index)
     http.HandleFunc("/show", Show)
     http.HandleFunc("/new", New)
