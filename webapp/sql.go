@@ -50,24 +50,6 @@ func dbConn() (db *sql.DB) {
     return db
 }
 
-func retry(attempts int, sleep time.Duration, f func() error) (err error) {
-    for i := 0; ; i++ {
-        err = f()
-        if err == nil {
-            return
-        }
-
-        if i >= (attempts - 1) {
-            break
-        }
-
-        time.Sleep(sleep)
-
-        log.Println("retrying after error:", err)
-    }
-    return fmt.Errorf("after %d attempts, last error: %s", attempts, err)
-}
-
 func fileExists(filename string) bool {
     info, err := os.Stat(filename)
     if os.IsNotExist(err) {
@@ -84,8 +66,6 @@ func createDatabaseTable() {
 	} else {
 		log.Info("DATABASE is created with name employeedb")
 	}
-
-    return attempt < 5, err
 
 	_,err = db.Exec("USE employeedb")
 	if err != nil {
