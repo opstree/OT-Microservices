@@ -3,7 +3,6 @@ package webapp
 import (
     "net/http"
     "time"
-    "fmt"
     "github.com/magiconair/properties"
 )
 
@@ -36,17 +35,17 @@ func healthCheck() {
     mux := http.NewServeMux()
 
     if healthy == "true" {
-        mux.Handler("/healthy", returnCode200)
+        mux.HandleFunc("/healthy", returnCode200)
     } else {
-        mux.Handler("/healthy", returnCode404)
+        mux.HandleFunc("/healthy", returnCode404)
     }
 
     if livecheck == "true" {
-        mux.Handler("/livecheck", returnCode200)
+        mux.HandleFunc("/livecheck", returnCode200)
     } else {
-        mux.Handler("/livecheck", returnCode404)
+        mux.HandleFunc("/livecheck", returnCode404)
     }
-    http.ListenAndServe(":9000", nil)
+    http.ListenAndServe(":9000", mux)
 }
 
 func returnCode200(w http.ResponseWriter, r *http.Request) {
