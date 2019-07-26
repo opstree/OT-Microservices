@@ -103,10 +103,6 @@ func createDatabaseTable() {
 	defer db.Close()
 }
 
-if err != nil {
-    log.Error("Error:", err)
-}
-
 func Index(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     selDB, err := db.Query("SELECT * FROM Employee ORDER BY id DESC")
