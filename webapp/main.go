@@ -3,6 +3,7 @@ package webapp
 import (
     "net/http"
     "time"
+    "fmt"
     "github.com/magiconair/properties"
 )
 
@@ -31,6 +32,8 @@ func healthCheck() {
 
     healthy := healthVaules.GetString("healthy", "healthy")
     livecheck := healthVaules.GetString("livecheck", "livecheck")
+
+    fmt.Println(healthy)
 
     if healthy == "true" {
         http.HandleFunc("/healthy", returnCode200)
