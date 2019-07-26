@@ -33,19 +33,20 @@ func healthCheck() {
     healthy := healthVaules.GetString("healthy", "healthy")
     livecheck := healthVaules.GetString("livecheck", "livecheck")
 
-    fmt.Println(healthy)
+    mux := http.NewServeMux()
 
     if healthy == "true" {
-        http.HandleFunc("/healthy", returnCode200)
+        mux.Handler("/healthy", returnCode200)
     } else {
-        http.HandleFunc("/healthy", returnCode404)
+        mux.Handler("/healthy", returnCode404)
     }
 
     if livecheck == "true" {
-        http.HandleFunc("/livecheck", returnCode200)
+        mux.Handler("/livecheck", returnCode200)
     } else {
-        http.HandleFunc("/livecheck", returnCode404)
+        mux.Handler("/livecheck", returnCode404)
     }
+    http.ListenAndServe(":9000", nil)
 }
 
 func returnCode200(w http.ResponseWriter, r *http.Request) {
