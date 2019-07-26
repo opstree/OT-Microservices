@@ -6,10 +6,7 @@ import (
 )
 
 func Run() {
-    op := createDatabaseTable()
-    retry.Do(op,
-        retry.RetryChecker(IsNetOpErr)
-        retry.Timeout(15 * time.Second))
+    createDatabaseTable()
     http.HandleFunc("/", Index)
     http.HandleFunc("/show", Show)
     http.HandleFunc("/new", New)

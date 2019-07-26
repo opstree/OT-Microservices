@@ -5,6 +5,7 @@ import (
     log "github.com/sirupsen/logrus"
     "github.com/magiconair/properties"
     "os"
+    "time"
     "net/http"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
@@ -47,6 +48,24 @@ func dbConn() (db *sql.DB) {
         log.Error(err.Error())
     }
     return db
+}
+
+func retry(attempts int, sleep time.Duration, f func() error) (err error) {
+    for i := 0; ; i++ {
+        err = f()
+        if err == nil {
+            return
+        }
+
+        if i >= (attempts - 1) {
+            break
+        }
+
+        time.Sleep(sleep)
+
+        log.Println("retrying after error:", err)
+    }
+    return fmt.Errorf("after %d attempts, last error: %s", attempts, err)
 }
 
 func fileExists(filename string) bool {
