@@ -17,7 +17,7 @@ func Run() {
     http.ListenAndServe(":8080", nil)
 }
 
-func healthCheck() {
+func HealthCheck() {
     healthCheck := "/etc/conf.d/ot-go-webapp/healthcheck.properties"
     healthVaules := properties.MustLoadFiles([]string{healthCheck}, properties.UTF8, true)
 

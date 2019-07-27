@@ -8,6 +8,6 @@ import (
 func main() {
 	webapp.Run()
 	for t := range time.NewTicker(2 * time.Second).C {
-		webapp.healthCheck()
+		webapp.HealthCheck()
 	}
 }
