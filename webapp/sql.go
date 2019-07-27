@@ -8,6 +8,7 @@ import (
     "net/http"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
+    dbcheck "github.com/dimiro1/health/db"
 )
 
 type Employee struct {
@@ -43,6 +44,13 @@ func dbConn() (db *sql.DB) {
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
+    mysql := db.NewMySQLChecker(db)
+    timeout := 100 * time.Second
+
+    handler := health.NewHandler()
+    handler.AddChecker("MySQL", mysql)
+    http.Handle("/health/", handler)
+    http.ListenAndServe(":8080", nil)
     if err != nil {
         log.Error(err.Error())
     }
@@ -57,29 +65,54 @@ func fileExists(filename string) bool {
     return !info.IsDir()
 }
 
-func createDatabaseTable() {
+// func doEvery(d time.Duration, f func(time.Time)) {
+// 	for x := range time.Tick(d) {
+// 		f(x)
+// 	}
+// }
+
+// func checkDBConnectivity(t time.Time) {
+//     db := dbConn()
+//     err := db.Ping()
+// 	if err != nil {
+// 		log.Error(err)
+//     }
+//     log.Info("DB Connection is successful")
+//     defer db.Close()
+// }
+
+func createDatabase() {
 	db := dbConn()
 	_,err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
 		log.Info("DATABASE is created with name employeedb")
-	}
+    }
+    defer db.Close()
+}
 
-	_,err = db.Exec("USE employeedb")
+func createTable() {
+    db := dbConn()
+	_,err := db.Exec("USE employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
 		log.Info("USING employeedb database")
-	}
-
+    }
+    
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
 		log.Info("TABLE is created with name Employee")
-	}
-	defer db.Close()
+    }
+    defer db.Close()
+}
+func createDatabaseTable() {
+    createDatabase()
+    createTable()
+    createTable()
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
