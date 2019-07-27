@@ -53,7 +53,7 @@ func dbConn() (db *sql.DB) {
     handler := health.NewHandler()
     handler.AddChecker("MySQL", mysql)
     http.Handle("/health/", handler)
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(":8081", nil)
     if err != nil {
         log.Error(err.Error())
     }
