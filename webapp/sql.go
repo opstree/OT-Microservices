@@ -5,10 +5,12 @@ import (
     log "github.com/sirupsen/logrus"
     "github.com/magiconair/properties"
     "os"
+    "time"
     "net/http"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
     dbcheck "github.com/dimiro1/health/db"
+    "github.com/dimiro1/health"
 )
 
 type Employee struct {
@@ -44,7 +46,8 @@ func dbConn() (db *sql.DB) {
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
-    mysql := db.NewMySQLChecker(db)
+    application := health.NewCompositeChecker()
+    mysql := dbcheck.NewMySQLChecker(db)
     timeout := 100 * time.Second
 
     handler := health.NewHandler()
@@ -64,22 +67,6 @@ func fileExists(filename string) bool {
     }
     return !info.IsDir()
 }
-
-// func doEvery(d time.Duration, f func(time.Time)) {
-// 	for x := range time.Tick(d) {
-// 		f(x)
-// 	}
-// }
-
-// func checkDBConnectivity(t time.Time) {
-//     db := dbConn()
-//     err := db.Ping()
-// 	if err != nil {
-// 		log.Error(err)
-//     }
-//     log.Info("DB Connection is successful")
-//     defer db.Close()
-// }
 
 func createDatabase() {
 	db := dbConn()

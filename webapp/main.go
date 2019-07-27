@@ -2,7 +2,6 @@ package webapp
 
 import (
     "net/http"
-    "github.com/magiconair/properties"
 )
 
 func Run() {
