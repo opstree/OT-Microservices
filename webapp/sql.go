@@ -46,9 +46,7 @@ func dbConn() (db *sql.DB) {
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
-    application := health.NewCompositeChecker()
     mysql := dbcheck.NewMySQLChecker(db)
-    timeout := 100 * time.Second
 
     handler := health.NewHandler()
     handler.AddChecker("MySQL", mysql)
