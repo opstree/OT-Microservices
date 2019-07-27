@@ -2,34 +2,10 @@ package webapp
 
 import (
     "net/http"
-    "github.com/robfig/cron"
     "github.com/magiconair/properties"
 )
 
 func Run() {
-    c := cron.New()
-    c.AddFunc("2 * * * * *", func() { 
-        healthCheck := "/etc/conf.d/ot-go-webapp/healthcheck.properties"
-        healthVaules := properties.MustLoadFiles([]string{healthCheck}, properties.UTF8, true)
-    
-        healthy := healthVaules.GetString("healthy", "healthy")
-        livecheck := healthVaules.GetString("livecheck", "livecheck")
-    
-        mux := http.NewServeMux()
-    
-        if healthy == "true" {
-            mux.HandleFunc("/healthy", returnCode200)
-        } else {
-            mux.HandleFunc("/healthy", returnCode404)
-        }
-    
-        if livecheck == "true" {
-            mux.HandleFunc("/livecheck", returnCode200)
-        } else {
-            mux.HandleFunc("/livecheck", returnCode404)
-        }
-        http.ListenAndServe(":9000", mux)
-    })
     createDatabaseTable()
     http.HandleFunc("/", Index)
     http.HandleFunc("/show", Show)
