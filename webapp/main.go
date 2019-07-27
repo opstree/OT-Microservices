@@ -37,7 +37,7 @@ func HealthCheck() {
     } else {
         mux.HandleFunc("/livecheck", returnCode404)
     }
-    http.ListenAndServe(":9000", mux)
+    return mux
 }
 
 func returnCode200(w http.ResponseWriter, r *http.Request) {
