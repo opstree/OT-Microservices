@@ -125,6 +125,7 @@ func healthCheckShow(w http.ResponseWriter, r *http.Request) {
     handler := health.NewHandler()
     handler.AddChecker("MySQL", mysql)
     defer db.Close()
+    return handler
 }
 
 func Show(w http.ResponseWriter, r *http.Request) {
