@@ -118,7 +118,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
     defer db.Close()
 }
 
-func healthCheckShow(w http.ResponseWriter, r *http.Request) {
+func healthCheckShow() {
     db := dbConn()
     mysql := dbcheck.NewMySQLChecker(db)
 
