@@ -8,8 +8,8 @@ import (
     "net/http"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
-    dbcheck "github.com/dimiro1/health/db"
-    "github.com/dimiro1/health"
+    // dbcheck "github.com/dimiro1/health/db"
+    // "github.com/dimiro1/health"
 )
 
 type Employee struct {
@@ -45,11 +45,11 @@ func dbConn() (db *sql.DB) {
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
-    mysql := dbcheck.NewMySQLChecker(db)
+    // mysql := dbcheck.NewMySQLChecker(db)
 
-    handler := health.NewHandler()
-    handler.AddChecker("MySQL", mysql)
-    http.Handle("/health/", handler)
+    // handler := health.NewHandler()
+    // handler.AddChecker("MySQL", mysql)
+    // http.Handle("/health/", handler)
     if err != nil {
         log.Error(err.Error())
     }
