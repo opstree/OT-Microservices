@@ -45,11 +45,7 @@ func dbConn() (db *sql.DB) {
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
-    // mysql := dbcheck.NewMySQLChecker(db)
 
-    // handler := health.NewHandler()
-    // handler.AddChecker("MySQL", mysql)
-    // http.Handle("/health/", handler)
     if err != nil {
         log.Error(err.Error())
     }
@@ -95,7 +91,6 @@ func createTable() {
 func createDatabaseTable() {
     createDatabase()
     createTable()
-    createTable()
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -120,6 +115,15 @@ func Index(w http.ResponseWriter, r *http.Request) {
         log.Info("GET request on the /index page")
     }
     tmpl.ExecuteTemplate(w, "Index", res)
+    defer db.Close()
+}
+
+func healthCheckShow(w http.ResponseWriter r *http.Request) {
+    db := dbConn()
+    mysql := dbcheck.NewMySQLChecker(db)
+
+    handler := health.NewHandler()
+    handler.AddChecker("MySQL", mysql)
     defer db.Close()
 }
 
