@@ -13,6 +13,6 @@ func Run() {
     http.HandleFunc("/insert", Insert)
     http.HandleFunc("/update", Update)
     http.HandleFunc("/delete", Delete)
-    http.HandleFunc("/health", healthCheckShow)
+    http.Handle("/health", healthCheckShow)
     http.ListenAndServe(":8080", nil)
 }
