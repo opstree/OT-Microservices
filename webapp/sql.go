@@ -118,14 +118,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
     defer db.Close()
 }
 
-func healthCheckShow() {
-    db := dbConn()
-    mysql := dbcheck.NewMySQLChecker(db)
-
-    return mysql
-    defer db.Close()
-}
-
 func Show(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     nId := r.URL.Query().Get("id")

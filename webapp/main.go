@@ -5,6 +5,7 @@ import (
 )
 
 func Run() {
+    db := dbConn()
     createDatabaseTable()
     http.HandleFunc("/", Index)
     http.HandleFunc("/show", Show)
@@ -13,9 +14,9 @@ func Run() {
     http.HandleFunc("/insert", Insert)
     http.HandleFunc("/update", Update)
     http.HandleFunc("/delete", Delete)
-    mysql = healthCheckShow()
+    mysql := dbcheck.NewMySQLChecker(db)
     handler := health.NewHandler()
     handler.AddChecker("MySQL", mysql)
-    http.Handle("/health", healthCheckShow)
+    http.Handle("/health", handler)
     http.ListenAndServe(":8080", nil)
 }
