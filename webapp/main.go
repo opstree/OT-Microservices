@@ -13,6 +13,9 @@ func Run() {
     http.HandleFunc("/insert", Insert)
     http.HandleFunc("/update", Update)
     http.HandleFunc("/delete", Delete)
+    mysql = healthCheckShow()
+    handler := health.NewHandler()
+    handler.AddChecker("MySQL", mysql)
     http.Handle("/health", healthCheckShow)
     http.ListenAndServe(":8080", nil)
 }

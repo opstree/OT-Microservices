@@ -122,8 +122,7 @@ func healthCheckShow() {
     db := dbConn()
     mysql := dbcheck.NewMySQLChecker(db)
 
-    handler := health.NewHandler()
-    handler.AddChecker("MySQL", mysql)
+    return mysql
     defer db.Close()
 }
 
