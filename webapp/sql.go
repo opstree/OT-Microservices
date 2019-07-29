@@ -8,8 +8,6 @@ import (
     "net/http"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
-    dbcheck "github.com/dimiro1/health/db"
-    "github.com/dimiro1/health"
 )
 
 type Employee struct {
