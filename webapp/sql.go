@@ -8,8 +8,6 @@ import (
     "net/http"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
-    dbcheck "github.com/dimiro1/health/db"
-    "github.com/dimiro1/health"
 )
 
 type Employee struct {
@@ -97,7 +95,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     selDB, err := db.Query("SELECT * FROM Employee ORDER BY id DESC")
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     emp := Employee{}
     res := []Employee{}
@@ -106,7 +104,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
         var name, city string
         err = selDB.Scan(&id, &name, &city)
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
@@ -123,7 +121,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     emp := Employee{}
     for selDB.Next() {
@@ -131,7 +129,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
         var name, city string
         err = selDB.Scan(&id, &name, &city)
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
@@ -151,7 +149,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     emp := Employee{}
     for selDB.Next() {
@@ -159,7 +157,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
         var name, city string
         err = selDB.Scan(&id, &name, &city)
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
@@ -177,7 +175,7 @@ func Insert(w http.ResponseWriter, r *http.Request) {
         city := r.FormValue("city")
         insForm, err := db.Prepare("INSERT INTO Employee(name, city) VALUES(?,?)")
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         insForm.Exec(name, city)
         log.Info("POST request on the /insert for "+ name)
@@ -194,7 +192,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
         id := r.FormValue("uid")
         insForm, err := db.Prepare("UPDATE Employee SET name=?, city=? WHERE id=?")
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         insForm.Exec(name, city, id)
         log.Info("POST request on the /update for "+ name)
@@ -208,7 +206,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
     emp := r.URL.Query().Get("id")
     delForm, err := db.Prepare("DELETE FROM Employee WHERE id=?")
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     delForm.Exec(emp)
     log.Println("DELETE")
