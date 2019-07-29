@@ -37,12 +37,19 @@ const htmltemplate=`{{ define "Index" }}
     <head>
         <title>OpsTree Golang Curd Example</title>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <h1>OpsTree Golang Mysql Curd Example</h1>   
+        <h1>OpsTree Golang Mysql Curd Example</h1>
+    <div class="form-row">
 {{ end }}
 
 {{ define "Footer" }}
+</div>
     </body>
 </html>
 {{ end }}
@@ -64,7 +71,7 @@ const htmltemplate=`{{ define "Index" }}
 {{ define "New" }}
   {{ template "Header" }}
     {{ template "Menu" }} 
-   <h2>New Name and City</h2>  
+   <h2>Add Employee Information</h2>  
     <form method="POST" action="insert">
       <label> Name </label><input type="text" name="name" /><br />
       <label> City </label><input type="text" name="city" /><br />
