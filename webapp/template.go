@@ -35,7 +35,7 @@ const htmltemplate=`{{ define "Index" }}
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>OpsTree Golang Curd Example</title>
+        <title>OpsTree Employee Management</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -44,8 +44,8 @@ const htmltemplate=`{{ define "Index" }}
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <h1>OpsTree Golang Mysql Curd Example</h1>
     <div class="form-row">
+    <h2>OpsTree Employee Management</h2>
 {{ end }}
 
 {{ define "Footer" }}
