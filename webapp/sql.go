@@ -4,10 +4,10 @@ import (
     "database/sql"
     log "github.com/sirupsen/logrus"
     "github.com/magiconair/properties"
-	"os"
+    "os"
     "net/http"
     "text/template"
-	_ "github.com/go-sql-driver/mysql"
+    _ "github.com/go-sql-driver/mysql"
 )
 
 type Employee struct {
@@ -33,16 +33,17 @@ func dbConn() (db *sql.DB) {
         dbPass = vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
         dbUrl  = vaules.GetString("DB_URL", "DB_URL")
         dbPort = vaules.GetString("DB_PORT", "DB_PORT")
-        log.Info("Found the properties file under /etc/conf.d/ot-go-webapp/database.properties")
+        log.Info("READING properties from /etc/conf.d/ot-go-webapp/database.properties")
     } else {
         dbUser = os.Getenv("DB_USER")
         dbPass = os.Getenv("DB_PASSWORD")
         dbUrl  = os.Getenv("DB_URL")
         dbPort = os.Getenv("DB_PORT")
-        log.Info("No property file found under /etc/conf.d/ot-go-webapp/database.properties, using environment variables")
+        log.Info("NO PROPERTY found in /etc/conf.d/ot-go-webapp/database.properties, USING environment variables")
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
+
     if err != nil {
         log.Error(err.Error())
     }
@@ -57,41 +58,44 @@ func fileExists(filename string) bool {
     return !info.IsDir()
 }
 
-func createDatabaseTable() {
+func createDatabase() {
 	db := dbConn()
 	_,err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Info("Successfully created the database employeedb")
-	}
+		log.Info("DATABASE is created with name employeedb")
+    }
+    defer db.Close()
+}
 
-	_,err = db.Exec("USE employeedb")
+func createTable() {
+    db := dbConn()
+	_,err := db.Exec("USE employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Info("Using employeedb for database")
-	}
-
-	stmt, err := db.Prepare("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
-	if err != nil {
-		log.Error(err.Error())
-	}
-
-	_, err = stmt.Exec()
+		log.Info("USING employeedb database")
+    }
+    
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
-		log.Info("Table created with the name employee")
-	}
-	defer db.Close()
+		log.Info("TABLE is created with name Employee")
+    }
+    defer db.Close()
+}
+func createDatabaseTable() {
+    createDatabase()
+    createTable()
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     selDB, err := db.Query("SELECT * FROM Employee ORDER BY id DESC")
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     emp := Employee{}
     res := []Employee{}
@@ -100,7 +104,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
         var name, city string
         err = selDB.Scan(&id, &name, &city)
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
@@ -117,7 +121,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     emp := Employee{}
     for selDB.Next() {
@@ -125,7 +129,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
         var name, city string
         err = selDB.Scan(&id, &name, &city)
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
@@ -145,7 +149,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     emp := Employee{}
     for selDB.Next() {
@@ -153,7 +157,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
         var name, city string
         err = selDB.Scan(&id, &name, &city)
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
@@ -171,7 +175,7 @@ func Insert(w http.ResponseWriter, r *http.Request) {
         city := r.FormValue("city")
         insForm, err := db.Prepare("INSERT INTO Employee(name, city) VALUES(?,?)")
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         insForm.Exec(name, city)
         log.Info("POST request on the /insert for "+ name)
@@ -188,7 +192,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
         id := r.FormValue("uid")
         insForm, err := db.Prepare("UPDATE Employee SET name=?, city=? WHERE id=?")
         if err != nil {
-            panic(err.Error())
+            log.Error(err.Error())
         }
         insForm.Exec(name, city, id)
         log.Info("POST request on the /update for "+ name)
@@ -202,7 +206,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
     emp := r.URL.Query().Get("id")
     delForm, err := db.Prepare("DELETE FROM Employee WHERE id=?")
     if err != nil {
-        panic(err.Error())
+        log.Error(err.Error())
     }
     delForm.Exec(emp)
     log.Println("DELETE")

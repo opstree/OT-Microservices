@@ -2,10 +2,17 @@ package webapp
 
 import (
     "net/http"
+    dbcheck "github.com/dimiro1/health/db"
+    "github.com/dimiro1/health"
 )
 
 func Run() {
-	createDatabaseTable()
+    db := dbConn()
+    createDatabaseTable()
+    mysql := dbcheck.NewMySQLChecker(db)
+    handler := health.NewHandler()
+    handler.AddChecker("MySQL", mysql)
+    http.Handle("/health", handler)
     http.HandleFunc("/", Index)
     http.HandleFunc("/show", Show)
     http.HandleFunc("/new", New)

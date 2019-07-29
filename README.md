@@ -10,4 +10,7 @@ I am a sample go application
 - [ ] Fix code if there is any mess
 - [ ] Integrate dependency management
 - [ ] Fill README with more information
-- [ ] Make application more interactive
+- [ ] Make application more attractive
+- [ ] Add healthcheck API
+- [ ] Logging of acccess and error log
+- [ ] Provide file uploading functionality
