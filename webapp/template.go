@@ -76,19 +76,15 @@ const htmltemplate=`{{ define "Index" }}
       <label for="inputName">Name</label>
       <input type="text" class="form-control" id="inputName" placeholder="Name" name="name">
     </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputCity">City</label>
-      <input type="text" class="form-control" id="inputCity" name="city">
-    </div>
     <div class="form-group col-md-4">
-      <label for="inputState">State</label>
-      <select id="inputState" class="form-control">
+      <label for="inputCity">State</label>
+      <select id="inputCity" class="form-control" name="city">
         <option selected>Choose...</option>
         <option>Delhi</option>
         <option>Bangalore</option>
       </select>
     </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   {{ template "Footer" }}
 {{ end }}
