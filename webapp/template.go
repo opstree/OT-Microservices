@@ -58,15 +58,15 @@ const htmltemplate=`{{ define "Index" }}
 
 {{ define "Menu" }}
 <br></br>
-<a href="/">HOME</a> | 
-<a href="/new">NEW</a>
+<a href="/"><strong>HOME</strong></a> | 
+<a href="/new"><strong>NEW</strong></a>
 <br></br>
 {{ end }}
 
 {{ define "Show" }}
   {{ template "Header" }}
     {{ template "Menu"  }}
-    <h2> Registeration Number:- {{ .Id }} </h2>
+    <h2><strong>Registeration Number:- {{ .Id }}</strong></h2>
     <table border="1" class="table table-bordered">
     <thead>
     <tr>
