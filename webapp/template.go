@@ -4,15 +4,15 @@ const htmltemplate=`{{ define "Index" }}
 {{ template "Header" }}
   {{ template "Menu"  }}
   <h2> Registered </h2>
-  <table border="1">
+  <table border="1" class="table table-bordered">
 	<thead>
 	<tr>
-	  <td>ID</td>
-	  <td>Name</td>
-	  <td>City</td>
-	  <td>View</td>
-	  <td>Edit</td>
-	  <td>Delete</td>
+	  <th>ID</th>
+	  <th>Name</th>
+	  <th>City</th>
+	  <th>View</th>
+	  <th>Edit</th>
+	  <th>Delete</th>
 	</tr>
 	 </thead>
 	 <tbody>
@@ -23,7 +23,7 @@ const htmltemplate=`{{ define "Index" }}
 	  <td>{{ .City }} </td> 
 	  <td><a href="/show?id={{ .Id }}">View</a></td>
 	  <td><a href="/edit?id={{ .Id }}">Edit</a></td>
-	  <td><a href="/delete?id={{ .Id }}">Delete</a><td>
+	  <td><a href="/delete?id={{ .Id }}">Delete</a></td>
 	</tr>
   {{ end }}
 	 </tbody>
@@ -45,7 +45,9 @@ const htmltemplate=`{{ define "Index" }}
     </head>
     <body>
     <div class="form-row">
-    <h2>OpsTree Employee Management</h2>
+    <div class="container">
+    <br></br>
+    <h2>Opstree Employee Management</h2>
 {{ end }}
 
 {{ define "Footer" }}
@@ -55,8 +57,10 @@ const htmltemplate=`{{ define "Index" }}
 {{ end }}
 
 {{ define "Menu" }}
+<br></br>
 <a href="/">HOME</a> | 
 <a href="/new">NEW</a>
+<br></br>
 {{ end }}
 
 {{ define "Show" }}
@@ -71,20 +75,11 @@ const htmltemplate=`{{ define "Index" }}
 {{ define "New" }}
   {{ template "Header" }}
     {{ template "Menu" }}  
-   <form>
-   <div class="form-group">
-      <label for="inputName">Name</label>
-      <input type="text" class="form-control" id="inputName" placeholder="Name" name="name">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputCity">State</label>
-      <select id="inputCity" class="form-control" name="city">
-        <option selected>Choose...</option>
-        <option>Delhi</option>
-        <option>Bangalore</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <h2>New Name and City</h2>  
+    <form method="POST" action="insert">
+      <label> Name </label><input type="text" name="name" /><br />
+      <label> City </label><input type="text" name="city" /><br />
+      <input type="submit" value="Save user" />
     </form>
   {{ template "Footer" }}
 {{ end }}
