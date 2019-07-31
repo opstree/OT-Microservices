@@ -100,7 +100,7 @@ const htmltemplate=`{{ define "Index" }}
   {{ template "Header" }}
     {{ template "Menu" }} 
    <h2>Edit Name and City</h2>  
-    <form method="POST" action="update">
+    <form method="POST" action="update" class="form-inline">
     <div class="form-group">
       <input type="hidden" name="uid" value="{{ .Id }}" />
     </div>
