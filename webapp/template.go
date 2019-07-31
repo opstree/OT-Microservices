@@ -91,11 +91,11 @@ const htmltemplate=`{{ define "Index" }}
     <form method="POST" action="insert">
     <div class="form-group">
       <label for="name">Name:</label>
-      <input type="text" name="name" value="{{ .Name }}" id="name" class="form-control" placeholder="e.g. Sandeep Rawat"/><br />
+      <input type="text" name="name" value="{{ .Name }}" id="name" class="form-control" placeholder="e.g. Sandeep Rawat">
     </div>
     <div class="form-group">
       <label for="city">City:</label>
-      <input type="text" name="city" value="{{ .City }}" id="city" class="form-control" placeholder="e.g. Delhi" /><br />
+      <input type="text" name="city" value="{{ .City }}" id="city" class="form-control" placeholder="e.g. Delhi">
     </div>
     <button type="submit" class="btn btn-success">Submit</button>
     </form>
