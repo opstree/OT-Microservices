@@ -47,7 +47,7 @@ const htmltemplate=`{{ define "Index" }}
     <div class="form-row">
     <div class="container">
     <br></br>
-    <h2>Opstree Employee Management</h2>
+    <h2>Opstree Golang Sample Crud Application</h2>
 {{ end }}
 
 {{ define "Footer" }}
@@ -66,9 +66,21 @@ const htmltemplate=`{{ define "Index" }}
 {{ define "Show" }}
   {{ template "Header" }}
     {{ template "Menu"  }}
-    <h2> Register {{ .Id }} </h2>
-      <p>Name: {{ .Name }}</p>
-      <p>City:  {{ .City }}</p><br /> <a href="/edit?id={{ .Id }}">Edit</a></p>
+    <h2> Registeration Number:- {{ .Id }} </h2>
+    <table border="1" class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{ .Name }}</td>
+      <td>{{ .City }}</td>
+    </tr>
+    </tbody>
+    </table>
   {{ template "Footer" }}
 {{ end }}
 
