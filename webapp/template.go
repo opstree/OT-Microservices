@@ -90,6 +90,9 @@ const htmltemplate=`{{ define "Index" }}
     <h2>Create Information</h2>  
     <form method="POST" action="insert">
     <div class="form-group">
+      <input type="hidden" name="uid" value="{{ .Id }}" />
+    </div>
+    <div class="form-group">
       <label for="name">Name:</label>
       <input type="text" name="name" value="{{ .Name }}" id="name" class="form-control" placeholder="e.g. Sandeep Rawat">
     </div>
