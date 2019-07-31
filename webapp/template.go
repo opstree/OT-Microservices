@@ -112,7 +112,7 @@ const htmltemplate=`{{ define "Index" }}
       <label for="city">City:</label>
       <input type="text" name="city" value="{{ .City }}" id="city" class="form-control"  /><br />
     </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button type="submit" class="btn btn-success">Submit</button>
     </form><br />    
   {{ template "Footer" }}
 {{ end }}`
