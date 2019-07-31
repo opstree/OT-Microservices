@@ -87,11 +87,17 @@ const htmltemplate=`{{ define "Index" }}
 {{ define "New" }}
   {{ template "Header" }}
     {{ template "Menu" }}  
-    <h2>New Name and City</h2>  
+    <h2>Create Information for {{ .Name }}</h2>  
     <form method="POST" action="insert">
-      <label> Name </label><input type="text" name="name" /><br />
-      <label> City </label><input type="text" name="city" /><br />
-      <input type="submit" value="Save user" />
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" name="name" value="{{ .Name }}" id="name"  class="form-control"/><br />
+    </div>
+    <div class="form-group">
+      <label for="city">City:</label>
+      <input type="text" name="city" value="{{ .City }}" id="city" class="form-control"  /><br />
+    </div>
+    <button type="submit" class="btn btn-success">Submit</button>
     </form>
   {{ template "Footer" }}
 {{ end }}
