@@ -47,7 +47,7 @@ const htmltemplate=`{{ define "Index" }}
     <div class="form-row">
     <div class="container">
     <br></br>
-    <h2>Opstree Employee Management</h2>
+    <h2>Opstree Golang Sample Crud Application</h2>
 {{ end }}
 
 {{ define "Footer" }}
@@ -66,9 +66,21 @@ const htmltemplate=`{{ define "Index" }}
 {{ define "Show" }}
   {{ template "Header" }}
     {{ template "Menu"  }}
-    <h2> Register {{ .Id }} </h2>
-      <p>Name: {{ .Name }}</p>
-      <p>City:  {{ .City }}</p><br /> <a href="/edit?id={{ .Id }}">Edit</a></p>
+    <h2> Registeration Number:- {{ .Id }} </h2>
+    <table border="1" class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{ .Name }}</td>
+      <td>{{ .City }}</td>
+    </tr>
+    </tbody>
+    </table>
   {{ template "Footer" }}
 {{ end }}
 
@@ -89,10 +101,18 @@ const htmltemplate=`{{ define "Index" }}
     {{ template "Menu" }} 
    <h2>Edit Name and City</h2>  
     <form method="POST" action="update">
+    <div class="form-group">
       <input type="hidden" name="uid" value="{{ .Id }}" />
-      <label> Name </label><input type="text" name="name" value="{{ .Name }}"  /><br />
-      <label> City </label><input type="text" name="city" value="{{ .City }}"  /><br />
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" name="name" value="{{ .Name }}" id="name"  /><br />
+    </div>
+    <div class="form-group">
+      <label for="city"> City </label>
+      <input type="text" name="city" value="{{ .City }}" id="city"  /><br />
       <input type="submit" value="Save user" />
+    </div>
     </form><br />    
   {{ template "Footer" }}
 {{ end }}`
