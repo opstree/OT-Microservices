@@ -101,10 +101,18 @@ const htmltemplate=`{{ define "Index" }}
     {{ template "Menu" }} 
    <h2>Edit Name and City</h2>  
     <form method="POST" action="update">
+    <div class="form-group">
       <input type="hidden" name="uid" value="{{ .Id }}" />
-      <label> Name </label><input type="text" name="name" value="{{ .Name }}"  /><br />
-      <label> City </label><input type="text" name="city" value="{{ .City }}"  /><br />
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" name="name" value="{{ .Name }}" id="name"  /><br />
+    </div>
+    <div class="form-group">
+      <label for="city"> City </label>
+      <input type="text" name="city" value="{{ .City }}" id="city"  /><br />
       <input type="submit" value="Save user" />
+    </div>
     </form><br />    
   {{ template "Footer" }}
 {{ end }}`
