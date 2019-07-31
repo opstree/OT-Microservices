@@ -108,7 +108,7 @@ const htmltemplate=`{{ define "Index" }}
 {{ define "Edit" }}
   {{ template "Header" }}
     {{ template "Menu" }} 
-   <h2>Edit Information for {{ .Name }}</h2>  
+   <h2><strong>Edit Information for {{ .Name }}</strong></h2>  
     <form method="POST" action="update">
     <div class="form-group">
       <input type="hidden" name="uid" value="{{ .Id }}" />
