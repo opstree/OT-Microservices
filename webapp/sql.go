@@ -214,7 +214,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
         if err != nil {
             log.Error(err.Error())
         }
-        insForm.Exec(name, city, id)
+        insForm.Exec(name, city, email, date, id)
         log.Info("POST request on the /update for "+ name)
     }
     defer db.Close()
