@@ -38,12 +38,13 @@ func generateLogging() {
     defer errorfile.Close()
 }
 
-func loggingInit(logFile) {
+func loggingInit(logFile string) {
 	log.SetFormatter(&log.TextFormatter{
 		DisableColors: true,
 		FullTimestamp: true,
     })
-    mw := io.MultiWriter(os.Stdout, logFile)
+    fmt.Println(logFile)
+    mw := io.MultiWriter(os.Stdout, accesslogfile)
     log.SetOutput(mw)
 }
 
