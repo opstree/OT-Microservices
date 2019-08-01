@@ -106,13 +106,13 @@ func Index(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        err = selDB.Scan(&id, &name, &city)
+        err = selDB.Scan(&id, &name, &city, &email, &date,)
         if err != nil {
             log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
-        emp.EmailID = email
+        emp.Email = email
         emp.Date = date
         emp.City = city
         res = append(res, emp)
@@ -133,14 +133,14 @@ func Show(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        err = selDB.Scan(&id, &name, &city)
+        err = selDB.Scan(&id, &name, &city, &email, &date,)
         if err != nil {
             log.Error(err.Error())
         }
         emp.Id = id
         emp.Name = name
+        emp.Email = email
         emp.Date = date
-        emp.City = city
         emp.City = city
         log.Info("GET request on the /show for "+ emp.Name)
     }
@@ -163,13 +163,13 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        err = selDB.Scan(&id, &name, &city)
+        err = selDB.Scan(&id, &name, &city, &email, &date,)
         if err != nil {
             log.Error(err.Error())
         }
         emp.Id = id
         emp.Date = date
-        emp.City = city
+        emp.Email = email
         emp.Name = name
         emp.City = city
         log.Info("POST request on the /edit for "+ emp.Name)
@@ -189,8 +189,8 @@ func Insert(w http.ResponseWriter, r *http.Request) {
         if err != nil {
             log.Error(err.Error())
         }
-        insForm.Exec(name, city)
-        log.Info("POST request on the /insert for "+ name)
+        insForm.Exec(name, city, email, date)
+        log.Info("POST request on the /insert for " + name)
     }
     defer db.Close()
     http.Redirect(w, r, "/", 301)
@@ -201,10 +201,10 @@ func Update(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
         name := r.FormValue("name")
         city := r.FormValue("city")
+        id := r.FormValue("uid")
         email := r.FormValue("email")
         date := r.FormValue("date")
-        id := r.FormValue("uid")
-        insForm, err := db.Prepare("UPDATE Employee SET name=?, city=? WHERE id=?")
+        insForm, err := db.Prepare("UPDATE Employee SET name=?, city=?, email=?, date=? WHERE id=?")
         if err != nil {
             log.Error(err.Error())
         }
