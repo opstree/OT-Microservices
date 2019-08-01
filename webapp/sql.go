@@ -16,7 +16,7 @@ type Employee struct {
     Name  string
     City  string
     Email string
-    Date time.Time
+    Date string
 }
 
 var tmpl = template.Must(template.New("Employee Management Template").Parse(htmltemplate))
@@ -107,7 +107,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
         var id int
         var name, city string
         var email string 
-        var date time.Time
+        var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
             log.Error(err.Error())
@@ -136,7 +136,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
         var id int
         var name, city string
         var email string
-        var date time.Time
+        var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
             log.Error(err.Error())
@@ -168,7 +168,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
         var id int
         var name, city string
         var email string
-        var date time.Time
+        var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
             log.Error(err.Error())
