@@ -135,7 +135,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        var email string, 
+        var email string
         var date time.Time
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
@@ -167,7 +167,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        var email string, 
+        var email string
         var date time.Time
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
