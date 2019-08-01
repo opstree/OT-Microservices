@@ -6,6 +6,7 @@ import (
     "github.com/magiconair/properties"
     "os"
     "net/http"
+    "time"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
 )
@@ -14,6 +15,8 @@ type Employee struct {
     Id    int
     Name  string
     City  string
+    Email string
+    Date time.Time
 }
 
 var tmpl = template.Must(template.New("Employee Management Template").Parse(htmltemplate))
