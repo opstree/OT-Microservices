@@ -3,16 +3,16 @@ package webapp
 const htmltemplate=`{{ define "Index" }}
 {{ template "Header" }}
   {{ template "Menu"  }}
-  <h2> Registered </h2>
-  <table border="1">
+  <h2><strong>Registered Users</strong></h2>
+  <table border="1" class="table table-bordered">
 	<thead>
 	<tr>
-	  <td>ID</td>
-	  <td>Name</td>
-	  <td>City</td>
-	  <td>View</td>
-	  <td>Edit</td>
-	  <td>Delete</td>
+	  <th>ID</th>
+	  <th>Name</th>
+	  <th>City</th>
+	  <th>View</th>
+	  <th>Edit</th>
+	  <th>Delete</th>
 	</tr>
 	 </thead>
 	 <tbody>
@@ -23,7 +23,7 @@ const htmltemplate=`{{ define "Index" }}
 	  <td>{{ .City }} </td> 
 	  <td><a href="/show?id={{ .Id }}">View</a></td>
 	  <td><a href="/edit?id={{ .Id }}">Edit</a></td>
-	  <td><a href="/delete?id={{ .Id }}">Delete</a><td>
+	  <td><a href="/delete?id={{ .Id }}">Delete</a></td>
 	</tr>
   {{ end }}
 	 </tbody>
@@ -35,40 +35,72 @@ const htmltemplate=`{{ define "Index" }}
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>OpsTree Golang Curd Example</title>
+        <title>OpsTree Golang Sample Crud Application</title>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <h1>OpsTree Golang Mysql Curd Example</h1>   
+    <div class="form-row">
+    <div class="container">
+    <br></br>
+    <h2><strong>Opstree Golang Sample Crud Application</strong></h2>
 {{ end }}
 
 {{ define "Footer" }}
+</div>
     </body>
 </html>
 {{ end }}
 
 {{ define "Menu" }}
-<a href="/">HOME</a> | 
-<a href="/new">NEW</a>
+<br></br>
+<a href="/"><strong>HOME</strong></a> | 
+<a href="/new"><strong>NEW</strong></a>
+<br></br>
 {{ end }}
 
 {{ define "Show" }}
   {{ template "Header" }}
     {{ template "Menu"  }}
-    <h2> Register {{ .Id }} </h2>
-      <p>Name: {{ .Name }}</p>
-      <p>City:  {{ .City }}</p><br /> <a href="/edit?id={{ .Id }}">Edit</a></p>
+    <h2><strong>Registeration Number:- {{ .Id }}</strong></h2>
+    <table border="1" class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{ .Name }}</td>
+      <td>{{ .City }}</td>
+    </tr>
+    </tbody>
+    </table>
   {{ template "Footer" }}
 {{ end }}
 
 {{ define "New" }}
   {{ template "Header" }}
-    {{ template "Menu" }} 
-   <h2>New Name and City</h2>  
+    {{ template "Menu" }}  
+    <h2>Create Information</h2>  
     <form method="POST" action="insert">
-      <label> Name </label><input type="text" name="name" /><br />
-      <label> City </label><input type="text" name="city" /><br />
-      <input type="submit" value="Save user" />
+    <div class="form-group">
+      <input type="hidden" name="uid" value="{{ .Id }}" />
+    </div>
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" name="name" value id="name" class="form-control" placeholder="e.g. Sandeep Rawat">
+    </div>
+    <div class="form-group">
+      <label for="city">City:</label>
+      <input type="text" name="city" value id="city" class="form-control" placeholder="e.g. Delhi">
+    </div>
+    <button type="submit" class="btn btn-success">Submit</button>
     </form>
   {{ template "Footer" }}
 {{ end }}
@@ -76,12 +108,20 @@ const htmltemplate=`{{ define "Index" }}
 {{ define "Edit" }}
   {{ template "Header" }}
     {{ template "Menu" }} 
-   <h2>Edit Name and City</h2>  
+   <h2><strong>Edit Information for {{ .Name }}</strong></h2>  
     <form method="POST" action="update">
+    <div class="form-group">
       <input type="hidden" name="uid" value="{{ .Id }}" />
-      <label> Name </label><input type="text" name="name" value="{{ .Name }}"  /><br />
-      <label> City </label><input type="text" name="city" value="{{ .City }}"  /><br />
-      <input type="submit" value="Save user" />
+    </div>
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" name="name" value="{{ .Name }}" id="name"  class="form-control"/><br />
+    </div>
+    <div class="form-group">
+      <label for="city">City:</label>
+      <input type="text" name="city" value="{{ .City }}" id="city" class="form-control"  /><br />
+    </div>
+      <button type="submit" class="btn btn-success">Submit</button>
     </form><br />    
   {{ template "Footer" }}
 {{ end }}`
