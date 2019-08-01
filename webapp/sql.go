@@ -190,7 +190,7 @@ func Insert(w http.ResponseWriter, r *http.Request) {
         city := r.FormValue("city")
         email := r.FormValue("email")
         date := r.FormValue("date")
-        insForm, err := db.Prepare("INSERT INTO Employee(name, city, email, date) VALUES(?,?)")
+        insForm, err := db.Prepare("INSERT INTO Employee(name, city, email, date) VALUES(?,?,?,?)")
         if err != nil {
             log.Error(err.Error())
         }
