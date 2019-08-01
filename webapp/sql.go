@@ -106,7 +106,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        err = selDB.Scan(&id, &name, &city, &email, &date,)
+        err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
             log.Error(err.Error())
         }
@@ -133,7 +133,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        err = selDB.Scan(&id, &name, &city, &email, &date,)
+        err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
             log.Error(err.Error())
         }
@@ -163,7 +163,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id int
         var name, city string
-        err = selDB.Scan(&id, &name, &city, &email, &date,)
+        err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
             log.Error(err.Error())
         }
