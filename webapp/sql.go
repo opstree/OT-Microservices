@@ -38,14 +38,35 @@ func generateLogging() {
     defer errorfile.Close()
 }
 
-func loggingInit(logFile string) {
+func loggingInit() {
 	log.SetFormatter(&log.TextFormatter{
 		DisableColors: true,
 		FullTimestamp: true,
     })
-    fmt.Println(logFile)
     mw := io.MultiWriter(os.Stdout)
     log.SetOutput(mw)
+}
+
+func loggingLogFileInit(logtype string) {
+	log.SetFormatter(&log.TextFormatter{
+		DisableColors: true,
+		FullTimestamp: true,
+    })
+    if logtype == "access" {
+        accessfile, err := os.OpenFile(accesslogfile, os.O_APPEND|os.O_WRONLY, 0644)
+        if err != nil {
+            fmt.Println(err)
+        }
+        defer accessfile.Close()
+        log.SetOutput(accessfile)
+    } else {
+        errorfile, err := os.OpenFile(errorlogfile, os.O_APPEND|os.O_WRONLY, 0644)
+        if err != nil {
+            fmt.Println(err)
+        }
+        defer errorfile.Close()
+        log.SetOutput(errorfile)
+    }
 }
 
 func dbConn() (db *sql.DB) {
@@ -58,12 +79,14 @@ func dbConn() (db *sql.DB) {
     propertyfile := "/etc/conf.d/ot-go-webapp/database.properties"
 
     if fileExists(propertyfile) {
-        loggingInit(accesslogfile)
+        loggingInit()
         vaules := properties.MustLoadFiles([]string{propertyfile}, properties.UTF8, true)
         dbUser = vaules.GetString("DB_USER", "DB_USER")
         dbPass = vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
         dbUrl  = vaules.GetString("DB_URL", "DB_URL")
         dbPort = vaules.GetString("DB_PORT", "DB_PORT")
+        log.Info("READING properties from /etc/conf.d/ot-go-webapp/database.properties")
+        loggingLogFileInit("access")
         log.Info("READING properties from /etc/conf.d/ot-go-webapp/database.properties")
     } else {
         dbUser = os.Getenv("DB_USER")
@@ -71,12 +94,16 @@ func dbConn() (db *sql.DB) {
         dbUrl  = os.Getenv("DB_URL")
         dbPort = os.Getenv("DB_PORT")
         log.Info("NO PROPERTY found in /etc/conf.d/ot-go-webapp/database.properties, USING environment variables")
+        loggingLogFileInit("access")
+        log.Info("NO PROPERTY found in /etc/conf.d/ot-go-webapp/database.properties, USING environment variables")
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
 
     if err != nil {
-        loggingInit(errorlogfile)
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
         log.Error(err.Error())
     }
     return db
@@ -94,11 +121,15 @@ func createDatabase() {
 	db := dbConn()
 	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
-        loggingInit(errorlogfile)
-		log.Error(err.Error())
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
+        log.Error(err.Error())
 	} else {
-        loggingInit(accesslogfile)
-		log.Info("DATABASE is created with name employeedb")
+        loggingInit()
+        log.Info("DATABASE is created with name employeedb")
+        loggingLogFileInit("access")
+        log.Info("DATABASE is created with name employeedb")
     }
     defer db.Close()
 }
@@ -108,20 +139,28 @@ func createTable() {
 
 	_,err := db.Exec("USE employeedb")
 	if err != nil {
-        loggingInit(errorlogfile)
-		log.Error(err.Error())
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
+        log.Error(err.Error())
 	} else {
-        loggingInit(accesslogfile)
-		log.Info("USING employeedb database")
+        loggingInit()
+        log.Info("USING employeedb database")
+        loggingLogFileInit("access")
+        log.Info("USING employeedb database")
     }
     
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, email varchar(50) NOT NULL, date varchar(50), PRIMARY KEY (id) )")
 	if err != nil {
-        loggingInit(errorlogfile)
-		log.Error(err.Error())
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
+        log.Error(err.Error())
 	} else {
-        loggingInit(accesslogfile)
-		log.Info("TABLE is created with name Employee")
+        loggingInit()
+        log.Info("TABLE is created with name Employee")
+        loggingLogFileInit("access")
+        log.Info("TABLE is created with name Employee")
     }
     defer db.Close()
 }
@@ -135,7 +174,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     selDB, err := db.Query("SELECT * FROM Employee ORDER BY id DESC")
     if err != nil {
-        loggingInit(errorlogfile)
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
         log.Error(err.Error())
     }
     emp := Employee{}
@@ -147,7 +188,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
         var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
-            loggingInit(errorlogfile)
+            loggingInit()
+            log.Error(err.Error())
+            loggingLogFileInit("error")
             log.Error(err.Error())
         }
         emp.Id = id
@@ -156,8 +199,10 @@ func Index(w http.ResponseWriter, r *http.Request) {
         emp.Date = date
         emp.City = city
         res = append(res, emp)
-        loggingInit(accesslogfile)
-        log.Error("GET request on the /index page")
+        loggingInit()
+        log.Info("GET request on the /index page")
+        loggingLogFileInit("access")
+        log.Info("GET request on the /index page")
     }
     tmpl.ExecuteTemplate(w, "Index", res)
     defer db.Close()
@@ -168,7 +213,9 @@ func Show(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        loggingInit(errorlogfile)
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
         log.Error(err.Error())
     }
     emp := Employee{}
@@ -179,7 +226,9 @@ func Show(w http.ResponseWriter, r *http.Request) {
         var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
-            loggingInit(errorlogfile)
+            loggingInit()
+            log.Error(err.Error())
+            loggingLogFileInit("error")
             log.Error(err.Error())
         }
         emp.Id = id
@@ -187,8 +236,10 @@ func Show(w http.ResponseWriter, r *http.Request) {
         emp.Email = email
         emp.Date = date
         emp.City = city
-        loggingInit(accesslogfile)
-        log.Info("GET request on the /show for "+ emp.Name)
+        loggingInit()
+        log.Info("GET request on the /show for " + emp.Name)
+        loggingLogFileInit("access")
+        log.Info("GET request on the /show for " + emp.Name)
     }
     tmpl.ExecuteTemplate(w, "Show", emp)
     defer db.Close()
@@ -203,7 +254,9 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        loggingInit(errorlogfile)
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
         log.Error(err.Error())
     }
     emp := Employee{}
@@ -214,7 +267,9 @@ func Edit(w http.ResponseWriter, r *http.Request) {
         var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
-            loggingInit(errorlogfile)
+            loggingInit()
+            log.Error(err.Error())
+            loggingLogFileInit("error")
             log.Error(err.Error())
         }
         emp.Id = id
@@ -222,8 +277,10 @@ func Edit(w http.ResponseWriter, r *http.Request) {
         emp.Email = email
         emp.Name = name
         emp.City = city
-        loggingInit(accesslogfile)
-        log.Info("POST request on the /edit for "+ emp.Name)
+        loggingInit()
+        log.Info("POST request on the /edit for " + emp.Name)
+        loggingLogFileInit("access")
+        log.Info("POST request on the /edit for " + emp.Name)
     }
     tmpl.ExecuteTemplate(w, "Edit", emp)
     defer db.Close()
@@ -238,11 +295,15 @@ func Insert(w http.ResponseWriter, r *http.Request) {
         date := r.FormValue("date")
         insForm, err := db.Prepare("INSERT INTO Employee(name, city, email, date) VALUES(?,?,?,?)")
         if err != nil {
-            loggingInit(errorlogfile)
+            loggingInit()
+            log.Error(err.Error())
+            loggingLogFileInit("error")
             log.Error(err.Error())
         }
         insForm.Exec(name, city, email, date)
-        loggingInit(accesslogfile)
+        loggingInit()
+        log.Info("POST request on the /insert for " + name)
+        loggingLogFileInit("access")
         log.Info("POST request on the /insert for " + name)
     }
     defer db.Close()
@@ -259,12 +320,16 @@ func Update(w http.ResponseWriter, r *http.Request) {
         date := r.FormValue("date")
         insForm, err := db.Prepare("UPDATE Employee SET name=?, city=?, email=?, date=? WHERE id=?")
         if err != nil {
-            loggingInit(errorlogfile)
+            loggingInit()
+            log.Error(err.Error())
+            loggingLogFileInit("error")
             log.Error(err.Error())
         }
         insForm.Exec(name, city, email, date, id)
-        loggingInit(accesslogfile)
-        log.Info("POST request on the /update for "+ name)
+        loggingInit()
+        log.Info("POST request on the /update for " + name)
+        loggingLogFileInit("access")
+        log.Info("POST request on the /update for " + name)
     }
     defer db.Close()
     http.Redirect(w, r, "/", 301)
@@ -275,11 +340,15 @@ func Delete(w http.ResponseWriter, r *http.Request) {
     emp := r.URL.Query().Get("id")
     delForm, err := db.Prepare("DELETE FROM Employee WHERE id=?")
     if err != nil {
-        loggingInit(errorlogfile)
+        loggingInit()
+        log.Error(err.Error())
+        loggingLogFileInit("error")
         log.Error(err.Error())
     }
     delForm.Exec(emp)
-    loggingInit(accesslogfile)
+    loggingInit()
+    log.Info("POST request on the /delete")
+    loggingLogFileInit("access")
     log.Info("POST request on the /delete")
     defer db.Close()
     http.Redirect(w, r, "/", 301)
