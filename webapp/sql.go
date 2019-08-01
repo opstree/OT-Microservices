@@ -227,7 +227,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
     emp := r.URL.Query().Get("id")
     delForm, err := db.Prepare("DELETE FROM Employee WHERE id=?")
     if err != nil {
-        log.Error(err.Error())
+        log.Println(err.Error())
     }
     delForm.Exec(emp)
     log.Println("DELETE")
