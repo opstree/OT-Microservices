@@ -44,7 +44,7 @@ func loggingInit(logFile string) {
 		FullTimestamp: true,
     })
     fmt.Println(logFile)
-    mw := io.MultiWriter(os.Stdout, accesslogfile)
+    mw := io.MultiWriter(os.Stdout)
     log.SetOutput(mw)
 }
 
