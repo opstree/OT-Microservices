@@ -6,7 +6,6 @@ import (
     "github.com/magiconair/properties"
     "os"
     "net/http"
-    "time"
     "text/template"
     _ "github.com/go-sql-driver/mysql"
 )
