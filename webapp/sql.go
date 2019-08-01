@@ -57,14 +57,14 @@ func loggingLogFileInit(logtype string) {
         if err != nil {
             fmt.Println(err)
         }
-        defer accessfile.Close()
+        // defer accessfile.Close()
         log.SetOutput(accessfile)
     } else {
         errorfile, err := os.OpenFile(errorlogfile, os.O_APPEND|os.O_WRONLY, 0644)
         if err != nil {
             fmt.Println(err)
         }
-        defer errorfile.Close()
+        // defer errorfile.Close()
         log.SetOutput(errorfile)
     }
 }
