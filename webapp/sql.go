@@ -60,20 +60,28 @@ func fileExists(filename string) bool {
     return !info.IsDir()
 }
 
-func createDatabase() {
-	db := dbConn()
+// func createDatabase() {
+// 	db := dbConn()
+// 	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
+// 	if err != nil {
+// 		log.Error(err.Error())
+// 	} else {
+// 		log.Info("DATABASE is created with name employeedb")
+//     }
+//     defer db.Close()
+// }
+
+func createTable() {
+    db := dbConn()
+
 	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
 		log.Info("DATABASE is created with name employeedb")
     }
-    defer db.Close()
-}
 
-func createTable() {
-    db := dbConn()
-	_,err := db.Exec("USE employeedb")
+	_,err = db.Exec("USE employeedb")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
@@ -90,7 +98,7 @@ func createTable() {
 }
 
 func createDatabaseTable() {
-    createDatabase()
+    // createDatabase()
     createTable()
 }
 
