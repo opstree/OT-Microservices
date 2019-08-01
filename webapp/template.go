@@ -107,7 +107,7 @@ const htmltemplate=`{{ define "Index" }}
       <input type="email" name="email" value id="email" class="form-control" placeholder="e.g. abc@example.com">
     </div>
     <div class="form-group">
-      <label for="date">Date:</label>
+      <label for="date">Joining Date:</label>
       <input type="date" name="date" value id="date" class="form-control" placeholder="e.g. 12/12/2012">
     </div>
     <button type="submit" class="btn btn-success">Submit</button>
@@ -136,7 +136,7 @@ const htmltemplate=`{{ define "Index" }}
       <input type="email" name="email" value="{{ .Email }}" id="email" class="form-control"  /><br />
     </div>
     <div class="form-group">
-      <label for="date">Date:</label>
+      <label for="date">Joining Date:</label>
       <input type="date" name="date" value="{{ .Date }}" id="date" class="form-control"  /><br />
     </div>
       <button type="submit" class="btn btn-success">Submit</button>
