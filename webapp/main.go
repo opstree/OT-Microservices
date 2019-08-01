@@ -7,8 +7,8 @@ import (
 )
 
 func Run() {
-    db := dbConn()
     createDatabaseTable()
+    db := dbConn()
     mysql := dbcheck.NewMySQLChecker(db)
     handler := health.NewHandler()
     handler.AddChecker("MySQL", mysql)
