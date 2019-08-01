@@ -2,7 +2,8 @@ package webapp
 
 import (
     "database/sql"
-    log "github.com/sirupsen/logrus"
+    // log "github.com/sirupsen/logrus"
+    "log"
     "github.com/magiconair/properties"
     "os"
     "net/http"
@@ -35,19 +36,19 @@ func dbConn() (db *sql.DB) {
         dbPass = vaules.GetString("DB_PASSWORD", "DB_PASSWORD")
         dbUrl  = vaules.GetString("DB_URL", "DB_URL")
         dbPort = vaules.GetString("DB_PORT", "DB_PORT")
-        log.Info("READING properties from /etc/conf.d/ot-go-webapp/database.properties")
+        log.Println("READING properties from /etc/conf.d/ot-go-webapp/database.properties")
     } else {
         dbUser = os.Getenv("DB_USER")
         dbPass = os.Getenv("DB_PASSWORD")
         dbUrl  = os.Getenv("DB_URL")
         dbPort = os.Getenv("DB_PORT")
-        log.Info("NO PROPERTY found in /etc/conf.d/ot-go-webapp/database.properties, USING environment variables")
+        log.Println("NO PROPERTY found in /etc/conf.d/ot-go-webapp/database.properties, USING environment variables")
     }
 
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbUrl+":"+dbPort+")/"+dbName)
 
     if err != nil {
-        log.Error(err.Error())
+        log.Println(err.Error())
     }
     return db
 }
@@ -64,9 +65,9 @@ func createDatabase() {
 	db := dbConn()
 	_, err := db.Exec("CREATE DATABASE IF NOT EXISTS employeedb")
 	if err != nil {
-		log.Error(err.Error())
+		log.Println(err.Error())
 	} else {
-		log.Info("DATABASE is created with name employeedb")
+		log.Println("DATABASE is created with name employeedb")
     }
     defer db.Close()
 }
@@ -76,16 +77,16 @@ func createTable() {
 
 	_,err := db.Exec("USE employeedb")
 	if err != nil {
-		log.Error(err.Error())
+		log.Println(err.Error())
 	} else {
-		log.Info("USING employeedb database")
+		log.Println("USING employeedb database")
     }
     
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, email varchar(50) NOT NULL, date varchar(50), PRIMARY KEY (id) )")
 	if err != nil {
-		log.Error(err.Error())
+		log.Println(err.Error())
 	} else {
-		log.Info("TABLE is created with name Employee")
+		log.Println("TABLE is created with name Employee")
     }
     defer db.Close()
 }
@@ -99,7 +100,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     selDB, err := db.Query("SELECT * FROM Employee ORDER BY id DESC")
     if err != nil {
-        log.Error(err.Error())
+        log.Println(err.Error())
     }
     emp := Employee{}
     res := []Employee{}
@@ -110,7 +111,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
         var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
-            log.Error(err.Error())
+            log.Println(err.Error())
         }
         emp.Id = id
         emp.Name = name
@@ -118,7 +119,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
         emp.Date = date
         emp.City = city
         res = append(res, emp)
-        log.Info("GET request on the /index page")
+        log.Println("GET request on the /index page")
     }
     tmpl.ExecuteTemplate(w, "Index", res)
     defer db.Close()
@@ -129,7 +130,7 @@ func Show(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        log.Error(err.Error())
+        log.Println(err.Error())
     }
     emp := Employee{}
     for selDB.Next() {
@@ -139,14 +140,14 @@ func Show(w http.ResponseWriter, r *http.Request) {
         var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
-            log.Error(err.Error())
+            log.Println(err.Error())
         }
         emp.Id = id
         emp.Name = name
         emp.Email = email
         emp.Date = date
         emp.City = city
-        log.Info("GET request on the /show for "+ emp.Name)
+        log.Println("GET request on the /show for "+ emp.Name)
     }
     tmpl.ExecuteTemplate(w, "Show", emp)
     defer db.Close()
@@ -161,7 +162,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     nId := r.URL.Query().Get("id")
     selDB, err := db.Query("SELECT * FROM Employee WHERE id=?", nId)
     if err != nil {
-        log.Error(err.Error())
+        log.Println(err.Error())
     }
     emp := Employee{}
     for selDB.Next() {
@@ -171,14 +172,14 @@ func Edit(w http.ResponseWriter, r *http.Request) {
         var date string
         err = selDB.Scan(&id, &name, &city, &email, &date)
         if err != nil {
-            log.Error(err.Error())
+            log.Println(err.Error())
         }
         emp.Id = id
         emp.Date = date
         emp.Email = email
         emp.Name = name
         emp.City = city
-        log.Info("POST request on the /edit for "+ emp.Name)
+        log.Println("POST request on the /edit for "+ emp.Name)
     }
     tmpl.ExecuteTemplate(w, "Edit", emp)
     defer db.Close()
@@ -193,10 +194,10 @@ func Insert(w http.ResponseWriter, r *http.Request) {
         date := r.FormValue("date")
         insForm, err := db.Prepare("INSERT INTO Employee(name, city, email, date) VALUES(?,?,?,?)")
         if err != nil {
-            log.Error(err.Error())
+            log.Println(err.Error())
         }
         insForm.Exec(name, city, email, date)
-        log.Info("POST request on the /insert for " + name)
+        log.Println("POST request on the /insert for " + name)
     }
     defer db.Close()
     http.Redirect(w, r, "/", 301)
@@ -212,10 +213,10 @@ func Update(w http.ResponseWriter, r *http.Request) {
         date := r.FormValue("date")
         insForm, err := db.Prepare("UPDATE Employee SET name=?, city=?, email=?, date=? WHERE id=?")
         if err != nil {
-            log.Error(err.Error())
+            log.Println(err.Error())
         }
         insForm.Exec(name, city, email, date, id)
-        log.Info("POST request on the /update for "+ name)
+        log.Println("POST request on the /update for "+ name)
     }
     defer db.Close()
     http.Redirect(w, r, "/", 301)
@@ -230,7 +231,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
     }
     delForm.Exec(emp)
     log.Println("DELETE")
-    log.Info("POST request on the /delete")
+    log.Println("POST request on the /delete")
     defer db.Close()
     http.Redirect(w, r, "/", 301)
 }
