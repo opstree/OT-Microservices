@@ -38,7 +38,7 @@ func generateLogging() {
     defer errorfile.Close()
 }
 
-func loggingInit(logFile string) {
+func loggingInit(logFile) {
 	log.SetFormatter(&log.TextFormatter{
 		DisableColors: true,
 		FullTimestamp: true,
