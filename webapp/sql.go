@@ -30,11 +30,12 @@ func generateLogging() {
     if err != nil {
         fmt.Println(err)
     }
-
+    defer accessfile.Close()
     errorfile, err := os.OpenFile(errorlogfile, os.O_CREATE|os.O_APPEND, 0644)
     if err != nil {
         fmt.Println(err)
     }
+    defer errorfile.Close()
 }
 
 func loggingInit(logFile string) {
