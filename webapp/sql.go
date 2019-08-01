@@ -78,7 +78,7 @@ func createTable() {
 		log.Info("USING employeedb database")
     }
     
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, PRIMARY KEY (id) )")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL, city varchar(50) NOT NULL, email varchar(50) NOT NULL, date DATE, PRIMARY KEY (id) )")
 	if err != nil {
 		log.Error(err.Error())
 	} else {
@@ -86,6 +86,7 @@ func createTable() {
     }
     defer db.Close()
 }
+
 func createDatabaseTable() {
     createDatabase()
     createTable()
@@ -108,6 +109,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
         }
         emp.Id = id
         emp.Name = name
+        emp.EmailID = email
+        emp.Date = date
         emp.City = city
         res = append(res, emp)
         log.Info("GET request on the /index page")
@@ -133,6 +136,8 @@ func Show(w http.ResponseWriter, r *http.Request) {
         }
         emp.Id = id
         emp.Name = name
+        emp.Date = date
+        emp.City = city
         emp.City = city
         log.Info("GET request on the /show for "+ emp.Name)
     }
@@ -160,6 +165,8 @@ func Edit(w http.ResponseWriter, r *http.Request) {
             log.Error(err.Error())
         }
         emp.Id = id
+        emp.Date = date
+        emp.City = city
         emp.Name = name
         emp.City = city
         log.Info("POST request on the /edit for "+ emp.Name)
@@ -173,7 +180,9 @@ func Insert(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
         name := r.FormValue("name")
         city := r.FormValue("city")
-        insForm, err := db.Prepare("INSERT INTO Employee(name, city) VALUES(?,?)")
+        email := r.FormValue("email")
+        date := r.FormValue("date")
+        insForm, err := db.Prepare("INSERT INTO Employee(name, city, email, date) VALUES(?,?)")
         if err != nil {
             log.Error(err.Error())
         }
@@ -189,6 +198,8 @@ func Update(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
         name := r.FormValue("name")
         city := r.FormValue("city")
+        email := r.FormValue("email")
+        date := r.FormValue("date")
         id := r.FormValue("uid")
         insForm, err := db.Prepare("UPDATE Employee SET name=?, city=? WHERE id=?")
         if err != nil {
