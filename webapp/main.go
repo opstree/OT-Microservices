@@ -7,6 +7,7 @@ import (
 )
 
 func Run() {
+    generateLogging()
     createDatabaseTable()
     db := dbConn()
     mysql := dbcheck.NewMySQLChecker(db)
