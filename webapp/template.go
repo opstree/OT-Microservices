@@ -9,7 +9,6 @@ const htmltemplate=`{{ define "Index" }}
 	<tr>
 	  <th>ID</th>
 	  <th>Name</th>
-	  <th>City</th>
 	  <th>View</th>
 	  <th>Edit</th>
 	  <th>Delete</th>
@@ -20,7 +19,6 @@ const htmltemplate=`{{ define "Index" }}
 	<tr>
 	  <td>{{ .Id }}</td>
 	  <td> {{ .Name }} </td>
-	  <td>{{ .City }} </td> 
 	  <td><a href="/show?id={{ .Id }}">View</a></td>
 	  <td><a href="/edit?id={{ .Id }}">Edit</a></td>
 	  <td><a href="/delete?id={{ .Id }}">Delete</a></td>
@@ -71,12 +69,16 @@ const htmltemplate=`{{ define "Index" }}
     <thead>
     <tr>
       <th>Name</th>
+      <th>Email</th>
+      <th>Joining Date</th>
       <th>City</th>
     </tr>
     </thead>
     <tbody>
     <tr>
       <td>{{ .Name }}</td>
+      <td>{{ .Email }}</td>
+      <td>{{ .Date }}</td>
       <td>{{ .City }}</td>
     </tr>
     </tbody>
@@ -100,6 +102,14 @@ const htmltemplate=`{{ define "Index" }}
       <label for="city">City:</label>
       <input type="text" name="city" value id="city" class="form-control" placeholder="e.g. Delhi">
     </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" value id="email" class="form-control" placeholder="e.g. abc@example.com">
+    </div>
+    <div class="form-group">
+      <label for="date">Joining Date:</label>
+      <input type="date" name="date" value id="date" class="form-control" placeholder="e.g. 12/12/2012">
+    </div>
     <button type="submit" class="btn btn-success">Submit</button>
     </form>
   {{ template "Footer" }}
@@ -120,6 +130,14 @@ const htmltemplate=`{{ define "Index" }}
     <div class="form-group">
       <label for="city">City:</label>
       <input type="text" name="city" value="{{ .City }}" id="city" class="form-control"  /><br />
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" value="{{ .Email }}" id="email" class="form-control"  /><br />
+    </div>
+    <div class="form-group">
+      <label for="date">Joining Date:</label>
+      <input type="date" name="date" value="{{ .Date }}" id="date" class="form-control"  /><br />
     </div>
       <button type="submit" class="btn btn-success">Submit</button>
     </form><br />    
