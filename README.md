@@ -58,13 +58,14 @@ ot-go-webapp
 
 ## Building Application
 
+#### For non-dockerized environment
 This webapp is written in go so it builds the application in the form of binary. For downloading the dependency through dep:-
 
 ```shell
 dep ensure
 ```
 
-If you are not using the dep use go for downloading the dependency but there is a fallback in this, you will not get the exact version ;)
+If you are not using the dep use go for downloading the dependency but there is a fallback in this, you will not get the exact version :stuck_out_tongue_winking_eye:
 
 ```shell
 go get -u ./...
@@ -74,6 +75,14 @@ After downloading the dependency only thing left is building it, for which we ca
 
 ```shell
 go build
+```
+
+#### For dockerized environment
+
+For dockerized environment just run:-
+
+```shell
+docker build -t opstreedevops/ot-go-webapp:latest -f Dockerfile .
 ```
 
 ## To Do
