@@ -34,6 +34,8 @@ DB_PORT = 3306
     - **DB_URL** ---> URL of the database server
     - **DB_PORT** ---> Port on which database is running
 
+- There is health check url also available at /health, which provides the information that application is healthy or nots
+
 **Important:- In MySQL database should exist with name employeedb**
 
 ## Directory Layout
@@ -85,6 +87,38 @@ For dockerized environment just run:-
 docker build -t opstreedevops/ot-go-webapp:latest -f Dockerfile .
 ```
 
+## Running Application
+
+#### For non-dockerized environment
+
+First we have to create a database in MySQL
+
+```sql
+CREATE DATABASE IF NOT EXISTS employeedb;
+```
+
+Once the database is created, create a properties file or set environment as given above and then execute the binary
+
+```shell
+./ot-go-webapp
+```
+
+Now you will be able to access the app at http://<your_server_ip>:8080 and health url at http://<your_server_ip>:8080/health
+
+#### For dockerized environment
+
+First we have to run the mysql container
+
+```shell
+docker run -itd --name mysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=employeedb mysql:5.6
+```
+
+Once the mysql container is created, we have to start the application
+
+```shell
+docker run -itd --name application --link mysql:mysql -e DB_USER=root -e DB_PASSWORD=password -e DB_URL=mysql -e DB_PORT=3306 opstreedevops/ot-go-webapp:latest
+```
+
 ## To Do
 - [X] Implement logging
 - [X] Property file 
@@ -98,3 +132,4 @@ docker build -t opstreedevops/ot-go-webapp:latest -f Dockerfile .
 - [X] Logging of acccess and error log
 - [ ] Provide file uploading functionality
 - [ ] Integrate redis for caching purpose
+- [ ] Dump manifests file for kubernetes deployment
