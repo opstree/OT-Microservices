@@ -56,6 +56,26 @@ ot-go-webapp
     └── template.go  ---> This file has the HTML template for Web Interface
 ```
 
+## Building Application
+
+This webapp is written in go so it builds the application in the form of binary. For downloading the dependency through dep:-
+
+```shell
+dep ensure
+```
+
+If you are not using the dep use go for downloading the dependency but there is a fallback in this, you will not get the exact version ;)
+
+```shell
+go get -u ./...
+```
+
+After downloading the dependency only thing left is building it, for which we can use simple golang command line
+
+```shell
+go build
+```
+
 ## To Do
 - [X] Implement logging
 - [X] Property file 
@@ -68,3 +88,4 @@ ot-go-webapp
 - [X] Add healthcheck API
 - [X] Logging of acccess and error log
 - [ ] Provide file uploading functionality
+- [ ] Integrate redis for caching purpose
