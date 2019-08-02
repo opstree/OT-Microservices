@@ -2,7 +2,7 @@
 
 The main goal of creating this sample Golang application is to provide an environment and idea of Golang Application's **build**, **test** and **deploy** phase.
 
-**The application looks likes this**
+**The application looks likes this:-**
 
 ![](./img/app.png)
 
