@@ -36,6 +36,26 @@ DB_PORT = 3306
 
 **Important:- In MySQL database should exist with name employeedb**
 
+## Directory Layout
+
+The folder structure of the codebase looks like this:-
+
+```s
+ot-go-webapp
+├── Dockerfile       ---> Dockerfile to dockerize the complete application
+├── Gopkg.lock       ---> Automated generated file by dep dependency manager
+├── Gopkg.toml       ---> Automated generated file by dep dependency manager
+├── main.go          ---> Main function file to call all the function
+├── main_test.go     ---> Test case for main function calling
+├── README.md        ---> The file which you are going through right now
+└── webapp           ---> Actual codebase for webapp folder
+    ├── main.go      ---> Main file for calling webapps functions
+    ├── main_test.go ---> Main webapp test cases file
+    ├── sql.go       ---> This file holds all the sql functionalities related stuff
+    ├── sql_test.go  ---> Test cases file for sql functionalities
+    └── template.go  ---> This file has the HTML template for Web Interface
+```
+
 ## To Do
 - [X] Implement logging
 - [X] Property file 
