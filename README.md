@@ -2,6 +2,8 @@
 
 The main goal of creating this sample Golang application is to provide an environment and idea of Golang Application's **build**, **test** and **deploy** phase.
 
+![](./img/app.png)
+
 ## Requirments
 
 - **[Golang](https://golang.org/)** ---> For development environment
@@ -103,7 +105,7 @@ Once the database is created, create a properties file or set environment as giv
 ./ot-go-webapp
 ```
 
-Now you will be able to access the app at http://<your_server_ip>:8080 and health url at http://<your_server_ip>:8080/health
+Now you will be able to access the app at http://<your_server_ip>:8080/ and health url at http://<your_server_ip>:8080/health
 
 #### For dockerized environment
 
