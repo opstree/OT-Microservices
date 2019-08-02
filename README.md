@@ -21,7 +21,9 @@ OT Go-App is a CRUD application which provides a Web UI Interface for Employee M
 - It provides functionality of auto-reconnection of database
 - Generates log file for access log and error in */var/log*
     - Access logs will lies in `/var/log/ot-go-webapp.access.log`
+![](./img/access_log.png)
     - Error logs will lies in `/var/log/ot-go-webapp.error.log`
+![](./img/error_log.png)
 - We can pass the database credentials via properties file or environment variables
 - For properties file we have to store `database.properties` at this location `/etc/conf.d/ot-go-webapp/database.properties` and the content should be something like this :-
 
