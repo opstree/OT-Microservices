@@ -1,4 +1,4 @@
-# OT Go-App
+# OT-Go-WebApp
 
 The main goal of creating this sample Golang application is to provide an environment and idea of Golang Application's **build**, **test** and **deploy** phase.
 
@@ -38,7 +38,9 @@ DB_PORT = 3306
     - **DB_URL** ---> URL of the database server
     - **DB_PORT** ---> Port on which database is running
 
-- There is health check url also available at /health, which provides the information that application is healthy or nots
+- There is health check url also available at /health, which provides the information that application is healthy or not
+
+![](./img/healthcheck.png)
 
 **Important:- In MySQL database should exist with name employeedb**
 
