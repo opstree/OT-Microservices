@@ -12,5 +12,8 @@ func main() {
     router.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "index.html", nil)
 	})
+    router.GET("/list", func(c *gin.Context) {
+        c.HTML(http.StatusOK, "list.html", nil)
+	})
 	router.Run(":8000")
 }

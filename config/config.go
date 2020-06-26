@@ -8,6 +8,7 @@ import (
 // Configuration is struct for configuration file
 type Configuration struct {
 	Elasticsearch Elasticsearch `yaml:"elasticsearch"`
+	Management    Management    `yaml:"management"`
 }
 
 // Elasticsearch is struct for elasticsearch configuration
@@ -16,6 +17,11 @@ type Elasticsearch struct {
 	Host     string `yaml:"host"`
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
+}
+
+// Management is struct for management API config
+type Management struct {
+	API string `yaml:"api_endpoint"`
 }
 
 // ParseFile parses config from a file.
