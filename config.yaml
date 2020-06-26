@@ -1,0 +1,6 @@
+---
+elasticsearch:
+  enabled: true
+  host: http://172.17.0.2:9200
+  username: elastic
+  password: elastic
