@@ -10,6 +10,7 @@ function preventDefault(event) {
 const useStyles = makeStyles({
   depositContext: {
     flex: 1,
+    paddingTop: 30,
   },
 });
 
@@ -33,7 +34,7 @@ export default function Deposits() {
       <Typography align="center">
       <Title>Total Employees</Title>
       </Typography>
-      <Typography component="p" variant="h4" align="center">
+      <Typography component="p" variant="h4" align="center" className={classes.depositContext}>
       {data2}
       </Typography>
       <Typography color="textSecondary" className={classes.depositContext} align="center">

@@ -13,7 +13,7 @@ state = {
     datasets: [
       {
         data: [300, 50, 100],
-        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+        backgroundColor: ["#949FB1", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
         hoverBackgroundColor: [
           "#FF5A5E",
           "#5AD3D1",
