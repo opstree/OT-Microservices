@@ -19,6 +19,7 @@ import opstreeLogo from './static/opstree.png';
 import Grid from '@material-ui/core/Grid';
 import goICON from './static/go-icon-logo.svg';
 import Deposits from './employeeCount.js';
+import Charts from './jobRole.js';
 
 const drawerWidth = 240;
 
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: 240,
+    height: 300,
   },
 }));
 
@@ -153,11 +154,11 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Chart */}
-            {/* <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <Chart />
+                <Charts />
               </Paper>
-            </Grid> */}
+            </Grid>
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
