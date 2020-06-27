@@ -5,6 +5,7 @@ import (
 	"ot-go-webapp/elastic"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 	"github.com/sirupsen/logrus"
 
 	"encoding/json"
@@ -32,10 +33,13 @@ func main() {
 	logrus.Infof("employee-management is listening on port: %v", conf.Management.APIPort)
 	logrus.Infof("Endpoint is available now - http://0.0.0.0:%v/create", conf.Management.APIPort)
 	router := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	router.Use(cors.New(config))
 	router.POST("/create", pushEmployeeData)
 	router.GET("/search", fetchEmployeeData)
 	router.GET("/search/all", fetchALLEmployeeData)
-	router.Run(":%v", conf.Management.APIPort)
+	router.Run(":"+conf.Management.APIPort)
 }
 
 func pushEmployeeData(c *gin.Context) {
