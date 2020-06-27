@@ -22,6 +22,7 @@ type Elasticsearch struct {
 // Management is struct for management API config
 type Management struct {
 	API string `yaml:"api_endpoint"`
+	APIPort string `yaml:"api_port"`
 }
 
 // ParseFile parses config from a file.

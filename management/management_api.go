@@ -24,14 +24,18 @@ type EmployeeInfo struct {
 }
 
 func main() {
+	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	if err != nil {
+		logrus.Errorf("Unable to parse configuration file for management: %v", err)
+	}
 	logrus.Infof("Running employee-management in webserver mode")
-	logrus.Infof("employee-management is listening on port: 8080")
-	logrus.Infof("Endpoint is available now - http://0.0.0.0:8080/create")
+	logrus.Infof("employee-management is listening on port: %v", conf.Management.APIPort)
+	logrus.Infof("Endpoint is available now - http://0.0.0.0:%v/create", conf.Management.APIPort)
 	router := gin.Default()
 	router.POST("/create", pushEmployeeData)
 	router.GET("/search", fetchEmployeeData)
 	router.GET("/search/all", fetchALLEmployeeData)
-	router.Run(":8080")
+	router.Run(":%v", conf.Management.APIPort)
 }
 
 func pushEmployeeData(c *gin.Context) {

@@ -1,2 +1,4 @@
 management/management
 frontend/frontend
+frontend/node_modules
+frontend/package-lock.json

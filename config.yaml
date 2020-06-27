@@ -6,5 +6,5 @@ elasticsearch:
   password: elastic
 
 management:
-  api_endpoint: "http://172.17.0.3:8080"
-
+  api_endpoint: "http://172.17.0.3"
+  api_port: "8080"
