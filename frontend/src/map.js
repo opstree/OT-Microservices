@@ -27,11 +27,11 @@ const COLOR_RANGE = [
   '#ff5533',
   '#e2492d',
   '#be3d26',
-  '#9a311f',
-  '#CCCCFF'
+  '#8C92AC',
+  '#92A1CF'
 ];
 
-const DEFAULT_COLOR = '	#92A1CF';
+const DEFAULT_COLOR = '#EEE';
 
 const geographyStyle = {
   default: {
@@ -47,8 +47,15 @@ const geographyStyle = {
   }
 };
 
-// will generate random heatmap data on every call
+function generateNumber(input) {
+  if (input === undefined) {
+    return 0
+  } else {
+    return input
+  }
+}
 
+// will generate random heatmap data on every call
 function Map() {
   const [stats, handleStats] = useState([]);
 
@@ -58,47 +65,47 @@ function Map() {
     handleStats(stats)  
   }
   const newjsondata = stats
-  console.log(newjsondata["Uttarakhand"])
+  console.log(newjsondata)
 
   const getHeatMapData = () => {
     return [
-      { id: 'AP', state: 'Andhra Pradesh', value: newjsondata["Andhra Pradesh"] },
-      { id: 'AR', state: 'Arunachal Pradesh', value: newjsondata["Arunachal Pradesh"] },
-      { id: 'AS', state: 'Assam', value: newjsondata["Assam"] },
-      { id: 'BR', state: 'Bihar', value: newjsondata["Bihar"] },
-      { id: 'CT', state: 'Chhattisgarh', value: newjsondata["Chhattisgarh"] },
-      { id: 'GA', state: 'Goa', value: newjsondata["Goa"] },
-      { id: 'GJ', state: 'Gujarat', value: newjsondata["Gujarat"] },
-      { id: 'HR', state: 'Haryana', value: newjsondata["Haryana"] },
-      { id: 'HP', state: 'Himachal Pradesh', value: newjsondata["Himachal Pradesh"] },
-      { id: 'JH', state: 'Jharkhand', value: newjsondata["Jharkhand"] },
-      { id: 'KA', state: 'Karnataka', value: newjsondata["Karnataka"] },
-      { id: 'KL', state: 'Kerala', value: newjsondata["Kerala"] },
-      { id: 'MP', state: 'Madhya Pradesh', value: newjsondata["Madhya Pradesh"] },
-      { id: 'MH', state: 'Maharashtra', value: newjsondata["Maharashtra"] },
-      { id: 'MN', state: 'Manipur', value: newjsondata["Manipur"] },
-      { id: 'ML', state: 'Meghalaya', value: newjsondata["Meghalaya"] },
-      { id: 'MZ', state: 'Mizoram', value: newjsondata["Mizoram"] },
-      { id: 'NL', state: 'Nagaland', value: newjsondata["Nagaland"] },
-      { id: 'OR', state: 'Odisha', value: newjsondata["Odisha"] },
-      { id: 'PB', state: 'Punjab', value: newjsondata["Punjab"] },
-      { id: 'RJ', state: 'Rajasthan', value: newjsondata["Rajasthan"] },
-      { id: 'SK', state: 'Sikkim', value: newjsondata["Sikkim"] },
-      { id: 'TN', state: 'Tamil Nadu', value: newjsondata["Tamil Nadu"] },
-      { id: 'TG', state: 'Telangana', value: newjsondata["Telangana"] },
-      { id: 'TR', state: 'Tripura', value: newjsondata["Tripura"] },
-      { id: 'UT', state: 'Uttarakhand', value: newjsondata["Uttarakhand"] },
-      { id: 'UP', state: 'Uttar Pradesh', value: newjsondata["Uttar Pradesh"] },
-      { id: 'WB', state: 'West Bengal', value: newjsondata["West Bengal"] },
-      { id: 'AN', state: 'Andaman and Nicobar Islands', value: newjsondata["Andaman and Nicobar Islands"] },
-      { id: 'CH', state: 'Chandigarh', value: newjsondata["Chandigarh"] },
-      { id: 'DN', state: 'Dadra and Nagar Haveli', value: newjsondata["Dadra and Nagar Haveli"] },
-      { id: 'DD', state: 'Daman and Diu', value: newjsondata["Daman and Diu"] },
-      { id: 'DL', state: 'Delhi', value: newjsondata["Delhi"] },
-      { id: 'JK', state: 'Jammu and Kashmir', value: newjsondata["Jammu and Kashmir"] },
-      { id: 'LA', state: 'Ladakh', value: newjsondata["Ladakh"] },
-      { id: 'LD', state: 'Lakshadweep', value: newjsondata["Lakshadweep"] },
-      { id: 'PY', state: 'Puducherry', value: newjsondata["Puducherry"] }
+      { id: 'AP', state: 'Andhra Pradesh', value: generateNumber(newjsondata["Andhra Pradesh"]) },
+      { id: 'AR', state: 'Arunachal Pradesh', value: generateNumber(newjsondata["Arunachal Pradesh"]) },
+      { id: 'AS', state: 'Assam', value: generateNumber(newjsondata["Assam"]) },
+      { id: 'BR', state: 'Bihar', value: generateNumber(newjsondata["Bihar"]) },
+      { id: 'CT', state: 'Chhattisgarh', value: generateNumber(newjsondata["Chhattisgarh"]) },
+      { id: 'GA', state: 'Goa', value: generateNumber(newjsondata["Goa"]) },
+      { id: 'GJ', state: 'Gujarat', value: generateNumber(newjsondata["Gujarat"]) },
+      { id: 'HR', state: 'Haryana', value: generateNumber(newjsondata["Haryana"]) },
+      { id: 'HP', state: 'Himachal Pradesh', value: generateNumber(newjsondata["Himachal Pradesh"]) },
+      { id: 'JH', state: 'Jharkhand', value: generateNumber(newjsondata["Jharkhand"]) },
+      { id: 'KA', state: 'Karnataka', value: generateNumber(newjsondata["Karnataka"]) },
+      { id: 'KL', state: 'Kerala', value: generateNumber(newjsondata["Kerala"]) },
+      { id: 'MP', state: 'Madhya Pradesh', value: generateNumber(newjsondata["Madhya Pradesh"]) },
+      { id: 'MH', state: 'Maharashtra', value: generateNumber(newjsondata["Maharashtra"]) },
+      { id: 'MN', state: 'Manipur', value: generateNumber(newjsondata["Manipur"]) },
+      { id: 'ML', state: 'Meghalaya', value: generateNumber(newjsondata["Meghalaya"]) },
+      { id: 'MZ', state: 'Mizoram', value: generateNumber(newjsondata["Mizoram"]) },
+      { id: 'NL', state: 'Nagaland', value: generateNumber(newjsondata["Nagaland"]) },
+      { id: 'OR', state: 'Odisha', value: generateNumber(newjsondata["Odisha"]) },
+      { id: 'PB', state: 'Punjab', value: generateNumber(newjsondata["Punjab"]) },
+      { id: 'RJ', state: 'Rajasthan', value: generateNumber(newjsondata["Rajasthan"]) },
+      { id: 'SK', state: 'Sikkim', value: generateNumber(newjsondata["Sikkim"]) },
+      { id: 'TN', state: 'Tamil Nadu', value: generateNumber(newjsondata["Tamil Nadu"]) },
+      { id: 'TG', state: 'Telangana', value: generateNumber(newjsondata["Telangana"]) },
+      { id: 'TR', state: 'Tripura', value: generateNumber(newjsondata["Tripura"]) },
+      { id: 'UT', state: 'Uttarakhand', value: generateNumber(newjsondata["Uttarakhand"]) },
+      { id: 'UP', state: 'Uttar Pradesh', value: generateNumber(newjsondata["Uttar Pradesh"]) },
+      { id: 'WB', state: 'West Bengal', value: generateNumber(newjsondata["West Bengal"]) },
+      { id: 'AN', state: 'Andaman and Nicobar Islands', value: generateNumber(newjsondata["Andaman and Nicobar Islands"]) },
+      { id: 'CH', state: 'Chandigarh', value: generateNumber(newjsondata["Chandigarh"]) },
+      { id: 'DN', state: 'Dadra and Nagar Haveli', value: generateNumber(newjsondata["Dadra and Nagar Haveli"]) },
+      { id: 'DD', state: 'Daman and Diu', value: generateNumber(newjsondata["Daman and Diu"]) },
+      { id: 'DL', state: 'Delhi', value: generateNumber(newjsondata["Delhi"]) },
+      { id: 'JK', state: 'Jammu and Kashmir', value: generateNumber(newjsondata["Jammu and Kashmir"]) },
+      { id: 'LA', state: 'Ladakh', value: generateNumber(newjsondata["Ladakh"]) },
+      { id: 'LD', state: 'Lakshadweep', value: generateNumber(newjsondata["Lakshadweep"]) },
+      { id: 'PY', state: 'Puducherry', value: generateNumber(newjsondata["Puducherry"]) }
     ];
   };
   

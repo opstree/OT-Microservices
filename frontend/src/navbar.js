@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
-import { mainListItems, getCurrentDate } from './listItems';
+import MainListItems from './listItems.js';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,7 +17,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import opstreeLogo from './static/opstree.png';
 import Grid from '@material-ui/core/Grid';
-import goICON from './static/go-icon-logo.svg';
+import CreateIcon from '@material-ui/icons/Create';
 import Deposits from './employeeCount.js';
 import Charts from './jobRole.js';
 import Map from './map.js';
@@ -146,7 +146,11 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        {/* <List></List> */}
+        {/* {MainListItems} */}
+        <div>
+          <MainListItems />
+        </div>
         <Divider />
         {/* <List>{secondaryListItems}</List> */}
       </Drawer>
@@ -174,50 +178,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-// export default function PrimarySearchAppBar() {
-//   const classes = useStyles();
-//   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-//   return (
-//     <div className={classes.grow}>
-//         <CssBaseline/>
-//       <AppBar position="sticky">
-//         <Toolbar>
-//             {/* <div style={classes.logoHorizontallyCenter}> */}
-//             <img src={opstreeLogo} className={classes.logo} alt="logo" />
-//             {/* </div> */}
-//           <div className={classes.grow} />
-//           <div className={classes.sectionMobile}>
-//           </div>
-//         </Toolbar>
-//         <Typography variant="h4" component="h4" align="center">
-//           <img src={goICON} className={classes.gologo} alt="golang" />
-//         </Typography>
-//       </AppBar>
-//       <main className={classes.content}>
-//       <div className={classes.appBarSpacer} />
-//       <Container maxWidth="lg" className={classes.container}>
-//       <Grid container spacing={3}>
-//       <Grid item xs={12} md={8} lg={9}>
-//               <Paper className={fixedHeightPaper}>
-//                 {/* <Chart /> */}
-//               </Paper>
-//             </Grid>
-//             {/* Recent Deposits */}
-//             <Grid item xs={12} md={4} lg={3}>
-//               <Paper className={fixedHeightPaper}>
-//                 <Deposits />
-//               </Paper>
-//             </Grid>
-//             {/* Recent Orders */}
-//             <Grid item xs={12}>
-//               <Paper className={classes.paper}>
-//                 {/* <Orders /> */}
-//               </Paper>
-//             </Grid>
-//       </Grid>
-//       </Container>
-//       </main>
-//     </div>
-//   );
-// }
