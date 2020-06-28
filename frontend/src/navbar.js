@@ -20,6 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import goICON from './static/go-icon-logo.svg';
 import Deposits from './employeeCount.js';
 import Charts from './jobRole.js';
+import Map from './map.js';
 
 const drawerWidth = 240;
 
@@ -166,6 +167,7 @@ export default function Dashboard() {
               </Paper>
             </Grid>
             {/* Recent Orders */}
+              <Map /> 
           </Grid>
         </Container>
       </main>

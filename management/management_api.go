@@ -42,6 +42,7 @@ func main() {
 	router.GET("/search", fetchEmployeeData)
 	router.GET("/search/all", fetchALLEmployeeData)
 	router.GET("/search/roles", fetchEmployeeRoles)
+	router.GET("/search/city", fetchEmployeeCity)
 	router.Run(":"+conf.Management.APIPort)
 }
 
@@ -155,6 +156,36 @@ func fetchEmployeeRoles(c *gin.Context) {
 		"value": duplicate_frequency["Developer"],
 	})
 	c.JSON(http.StatusOK, finalData)
+}
+
+func fetchEmployeeCity(c *gin.Context) {
+	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	if err != nil {
+		logrus.Errorf("Unable to parse configuration file for management: %v", err)
+	}
+	data := elastic.SearchALLDataInElastic(conf)
+
+	var employeeInfo []EmployeeInfo
+	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		response := &EmployeeInfo{}
+		empData, err := json.Marshal(parsedData.(map[string]interface{})["_source"])
+		if err != nil {
+			logrus.Errorf("Unable to marshal response JSON: %v", err)
+		}
+		json.Unmarshal(empData, &response)
+		employeeInfo = append(employeeInfo, *response)
+	}
+	duplicate_frequency := make(map[string]int)
+	for _, role := range employeeInfo {
+		_, exist := duplicate_frequency[role.City]
+
+		if exist {
+			duplicate_frequency[role.City] += 1
+		} else {
+			duplicate_frequency[role.City] = 1 // else start counting from 1
+		}
+	}
+	c.JSON(http.StatusOK, duplicate_frequency)
 }
 
 func errorResponse(c *gin.Context, code int, err string) {
