@@ -28,14 +28,10 @@ const COLOR_RANGE = [
   '#e2492d',
   '#be3d26',
   '#9a311f',
-  '#782618'
+  '#CCCCFF'
 ];
 
-const DEFAULT_COLOR = '#EEE';
-
-const getRandomInt = () => {
-  return parseInt(Math.random() * 100);
-};
+const DEFAULT_COLOR = '	#92A1CF';
 
 const geographyStyle = {
   default: {
