@@ -34,7 +34,7 @@ export default function Deposits() {
       <Typography align="center">
       <Title>Total Employees</Title>
       </Typography>
-      <Typography component="p" variant="h4" align="center" className={classes.depositContext}>
+      <Typography component="p" variant="h1" align="center" className={classes.depositContext}>
       {data2}
       </Typography>
       <Typography color="textSecondary" className={classes.depositContext} align="center">
@@ -43,3 +43,4 @@ export default function Deposits() {
     </React.Fragment>
   );
 }
+
