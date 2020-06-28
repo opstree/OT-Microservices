@@ -1,39 +1,49 @@
-import React from "react";
-import { Doughnut } from "react-chartjs-2";
-import { MDBContainer } from "mdbreact";
+import * as React from "react";
+import { useState, useEffect } from 'react';
+import { DonutChart } from "@opd/g2plot-react";
 
-function preventDefault(event) {
-    event.preventDefault();
-}
-  
-class Charts extends React.Component {
-state = {
-  dataDoughnut: {
-    labels: ["DevOps", "Human Resources", "Manager"],
-    datasets: [
-      {
-        data: [300, 50, 100],
-        backgroundColor: ["#949FB1", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-        hoverBackgroundColor: [
-          "#FF5A5E",
-          "#5AD3D1",
-          "#FFC870",
-          "#A8B3C5",
-          "#616774"
-        ]
+export default function Chart() {
+  const [stats, handleStats] = useState([]);
+
+  const FetchData = async () => {
+    const data = await fetch('http://172.17.0.3:8080/search/roles');
+    const stats = await data.json();
+    handleStats(stats)  
+  }
+  const data = stats
+  console.log(stats)
+
+  const config = {
+    forceFit: true,
+    title: {
+      visible: true,
+      text: "Roles Distribution",
+      style:{
+        fontSize: 15,
+        fill: 'black',
       }
-    ]
-  }
-}
+    },
+    statistic: {
+      totalLabel: "Total"
+    },
+    description: {
+      visible: false,
+      text: "环图指标卡能够代替tooltip，在环图中心挖空部分显示各分类的详细信息。"
+    },
+    radius: 0.9,
+    height: 300,
+    padding: "auto",
+    data,
+    angleField: "value",
+    colorField: "type"
+  };
 
-render() {
-    return (
-    <MDBContainer>
-      <h6 className="mt-5">Job Role Distribution</h6>
-      <Doughnut data={this.state.dataDoughnut} options={{ responsive: true, maintainAspectRatio: true }} height="50" width="180"/>
-    </MDBContainer>
-    );
-  }
+  useEffect(() => {
+    FetchData()
+  }, [])
+  return (
+    <section>
+    <DonutChart {...config} />
+  </section>
+  )
 }
-
-export default Charts;
