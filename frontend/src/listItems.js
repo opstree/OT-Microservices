@@ -13,7 +13,11 @@ import HowToRegIcon from '@material-ui/icons/HowToReg';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import CreateIcon from '@material-ui/icons/Create';
 import ListIcon from '@material-ui/icons/List';
-import { Link } from 'react-router-dom';
+import { Router, Link } from 'react-router-dom';
+import { createBrowserHistory } from "history";
+import SignupForm from './form.js';
+
+const history = createBrowserHistory();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,11 +42,8 @@ export default function MainListItems() {
     attendsetOpen(!attendopen);
   };
 
-  const CustomLink = () => (
-    <Link to="/about" />
-  );
-
   return (
+    <Router history={history}>
     <List
       component="nav"
       aria-labelledby="nested-list-subheader"
@@ -53,6 +54,12 @@ export default function MainListItems() {
       }
       className={classes.root}
     >
+      <ListItem component={Link} to="/">
+        <ListItemIcon>
+          <MonetizationOnIcon />
+        </ListItemIcon>
+        <ListItemText primary="Overview"/>
+      </ListItem>
       <ListItem button onClick={handleClick}>
         <ListItemIcon>
           <GroupIcon />
@@ -62,7 +69,7 @@ export default function MainListItems() {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested} link="/">
+          <ListItem button className={classes.nested} component={Link} to="/#/create">
             <ListItemIcon>
               <CreateIcon />
             </ListItemIcon>
@@ -100,5 +107,6 @@ export default function MainListItems() {
         <ListItemText primary="Salary" />
       </ListItem>
     </List>
+    </Router>
   );
 }

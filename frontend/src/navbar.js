@@ -18,9 +18,15 @@ import Paper from '@material-ui/core/Paper';
 import opstreeLogo from './static/opstree.png';
 import Grid from '@material-ui/core/Grid';
 import CreateIcon from '@material-ui/icons/Create';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import Deposits from './employeeCount.js';
 import Charts from './jobRole.js';
 import Map from './map.js';
+import { createBrowserHistory } from "history";
+import SignupForm from './form.js';
+import Overview from './overview';
+
+const history = createBrowserHistory();
 
 const drawerWidth = 240;
 
@@ -154,27 +160,6 @@ export default function Dashboard() {
         <Divider />
         {/* <List>{secondaryListItems}</List> */}
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Charts />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-              <Map /> 
-          </Grid>
-        </Container>
-      </main>
     </div>
   );
 }
