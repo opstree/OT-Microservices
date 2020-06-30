@@ -9,6 +9,8 @@ import (
 type Configuration struct {
 	Elasticsearch Elasticsearch `yaml:"elasticsearch"`
 	Management    Management    `yaml:"management"`
+	Attendance    Attendance    `yaml:"attendance"`
+	MySQL         MySQL         `yaml:"mysql"`
 }
 
 // Elasticsearch is struct for elasticsearch configuration
@@ -21,8 +23,23 @@ type Elasticsearch struct {
 
 // Management is struct for management API config
 type Management struct {
-	API string `yaml:"api_endpoint"`
+	API     string `yaml:"api_endpoint"`
 	APIPort string `yaml:"api_port"`
+}
+
+// Attendance is struct for management API config
+type Attendance struct {
+	API     string `yaml:"api_endpoint"`
+	APIPort string `yaml:"api_port"`
+}
+
+// MySQL will the struct for MYSQL Config
+type MySQL struct {
+	Enabled  bool   `yaml:"enabled"`
+	Host     string `yaml:"host"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	DBName   string `yaml:"db_name"`
 }
 
 // ParseFile parses config from a file.
