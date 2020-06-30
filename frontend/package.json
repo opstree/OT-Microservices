@@ -21,6 +21,8 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
     "@opd/g2plot-react": "^1.5.2",
+    "@progress/kendo-drawing": "^1.8.1",
+    "@progress/kendo-react-pdf": "^3.14.0",
     "axios": "^0.19.2",
     "clsx": "latest",
     "d3-scale": "^3.2.1",

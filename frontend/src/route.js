@@ -1,12 +1,14 @@
 import React from "react";
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ListIcon from '@material-ui/icons/List';
 import Overview from "./overview";
 import UserForm from "./form";
 import EmployeeList from './ListEmployee';
 import CreateAttendance from './CreateAttendance';
 import ListAttendance from './ListAttendance';
+import SalaryGenerator from './SalaryGenerator';
 
 const routes = [
   {
@@ -44,6 +46,13 @@ const routes = [
     icon: <ListIcon />,
     toolbar: () => <p>List Attendance</p>,
     main: () => <ListAttendance />
+  },
+  {
+    path: "/salary",
+    name: "Salary",
+    icon: <MonetizationOnIcon />,
+    toolbar: () => <p>Salary</p>,
+    main: () => <SalaryGenerator />
   }
 ];
 
