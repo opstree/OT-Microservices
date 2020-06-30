@@ -4,8 +4,8 @@ import (
 	"ot-go-webapp/config"
 	"ot-go-webapp/elastic"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
 	"encoding/json"
@@ -43,7 +43,7 @@ func main() {
 	router.GET("/search/all", fetchALLEmployeeData)
 	router.GET("/search/roles", fetchEmployeeRoles)
 	router.GET("/search/city", fetchEmployeeCity)
-	router.Run(":"+conf.Management.APIPort)
+	router.Run(":" + conf.Management.APIPort)
 }
 
 func pushEmployeeData(c *gin.Context) {
@@ -147,12 +147,12 @@ func fetchEmployeeRoles(c *gin.Context) {
 		}
 	}
 	finalData = append(finalData, map[string]interface{}{
-		"type": "DevOps",
+		"type":  "DevOps",
 		"value": duplicate_frequency["DevOps"],
 	})
 
 	finalData = append(finalData, map[string]interface{}{
-		"type": "Developer",
+		"type":  "Developer",
 		"value": duplicate_frequency["Developer"],
 	})
 	c.JSON(http.StatusOK, finalData)
