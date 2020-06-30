@@ -94,6 +94,7 @@ func fetchEmployeeData(c *gin.Context) {
 		}
 		json.Unmarshal(empData, &response)
 	}
+	logrus.Infof("Successfully fetched employee information")
 	c.JSON(http.StatusOK, response)
 }
 
@@ -114,6 +115,7 @@ func fetchALLEmployeeData(c *gin.Context) {
 		json.Unmarshal(empData, &response)
 		employeeInfo = append(employeeInfo, *response)
 	}
+	logrus.Infof("Successfully fetched all employee's information")
 	c.JSON(http.StatusOK, employeeInfo)
 }
 
@@ -155,6 +157,7 @@ func fetchEmployeeRoles(c *gin.Context) {
 		"type":  "Developer",
 		"value": duplicate_frequency["Developer"],
 	})
+	logrus.Infof("Successfully fetched all employee's roles")
 	c.JSON(http.StatusOK, finalData)
 }
 
@@ -185,6 +188,7 @@ func fetchEmployeeCity(c *gin.Context) {
 			duplicate_frequency[role.City] = 1 // else start counting from 1
 		}
 	}
+	logrus.Infof("Successfully fetched all employee's city information")
 	c.JSON(http.StatusOK, duplicate_frequency)
 }
 
