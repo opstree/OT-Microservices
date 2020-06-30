@@ -6,18 +6,16 @@ import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import MailIcon from "@material-ui/icons/Mail";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import clsx from 'clsx';
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import routes from "./route";
 
@@ -84,16 +82,16 @@ const useStyles = makeStyles(theme => ({
       width: theme.spacing(9),
     },
   },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
+  // toolbar: {
+  //   paddingRight: 24, // keep right padding when drawer closed
+  // },
+  // toolbarIcon: {
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   justifyContent: 'flex-end',
+  //   padding: '0 8px',
+  //   ...theme.mixins.toolbar,
+  // },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3)
@@ -103,12 +101,12 @@ const useStyles = makeStyles(theme => ({
 const ResponsiveDrawer = props => {
   const { container } = props;
   const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  // const theme = useTheme();
+  // const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  // const handleDrawerToggle = () => {
+  //   setMobileOpen(!mobileOpen);
+  // };
 
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
