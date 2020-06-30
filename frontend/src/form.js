@@ -1,11 +1,10 @@
 import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form, ErrorMessage, useField } from 'formik';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import clsx from 'clsx';
+import { Datepicker } from 'react-formik-ui';
 import * as Yup from 'yup';
 
 const styles = theme => ({ 
@@ -23,7 +22,6 @@ const styles = theme => ({
       paddingBottom: theme.spacing(4),
     },
 });
-
 
 class UserForm extends React.Component {
     render() {
@@ -68,7 +66,14 @@ class UserForm extends React.Component {
                       .required('Phone number is required')
                 })}
                 onSubmit={fields => {
-                    alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
+                  // feilds.preventDefault();
+                  fetch('http://172.17.0.3:8080/create', {
+                    method: 'POST',
+                    body: JSON.stringify(fields, null, 4),
+                    headers: {
+                        'Content-Type': 'application/json'
+                  }})
+                  alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
                 }}
                 render={({ errors, status, touched }) => (
                     <Form>
@@ -89,7 +94,10 @@ class UserForm extends React.Component {
                         </div>
                         <div className="form-group">
                             <label htmlFor="job_role">Job Role</label>
-                            <Field name="job_role" type="text" className={'form-control' + (errors.job_role && touched.job_role ? ' is-invalid' : '')} />
+                            <Field name="job_role" as="select" className={'form-control'}>
+                              <option value="DevOps">DevOps</option>
+                              <option value="Developer">Develeoper</option>
+                            </Field>
                             <ErrorMessage name="job_role" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
@@ -98,13 +106,18 @@ class UserForm extends React.Component {
                             <ErrorMessage name="address" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="joining_date">Joining Date</label>
-                            <Field name="joining_date" type="text" className={'form-control' + (errors.joining_date && touched.joining_date ? ' is-invalid' : '')} />
-                            <ErrorMessage name="joining_date" component="div" className="invalid-feedback" />
+                        <label htmlFor="joining">Date</label>
+                          <Datepicker
+                              name='joining_date'
+                            />
                         </div>
                         <div className="form-group">
                             <label htmlFor="city">City</label>
-                            <Field name="city" type="text" className={'form-control' + (errors.city && touched.city ? ' is-invalid' : '')} />
+                            {/* <Field name="city" type="text" className={'form-control' + (errors.city && touched.city ? ' is-invalid' : '')} /> */}
+                            <Field name="city" as="select" className={'form-control'}>
+                              <option value="Delhi">Delhi</option>
+                              <option value="Himachal Pradesh">Himachal Pradesh</option>
+                            </Field>
                             <ErrorMessage name="city" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
@@ -135,74 +148,3 @@ class UserForm extends React.Component {
 // export default withStyles(styles, { withTheme: true })(SignupForm);
 
 export default withStyles(styles, { withTheme: true })(UserForm);
-
-// import React from 'react';
-// import { useFormik } from 'formik';
-// import { fade, withStyles } from '@material-ui/core/styles';
-// import TextField from '@material-ui/core/TextField';
-// import Container from '@material-ui/core/Container';
-// import Button from '@material-ui/core/Button';
-
-// import Input from '@material-ui/core/Input';
-
-// const styles = theme => ({ 
-//   fixedHeight: {
-//       height: 350,
-//     },
-//     appBarSpacer: theme.mixins.toolbar,
-//     content: {
-//       flexGrow: 1,
-//       height: '100vh',
-//       overflow: 'auto',
-//     },
-//     container: {
-//       paddingTop: theme.spacing(8),
-//       paddingBottom: theme.spacing(4),
-//     },
-// });
-
-
-// class SignupForm extends React.Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = {value: ''};
-
-//     this.handleChange = this.handleChange.bind(this);
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//   }
-
-//   handleSubmit(event) {
-//     event.preventDefault();
-//     const data = new FormData(event.target);
-//     console.log(JSON.stringify(data))
-//     // alert(JSON.stringify(event, null, 2)); 
-//     alert(JSON.stringify(data));
-//   }
-
-//   handleChange(event) {
-//     this.setState({value: event.target.value});
-//   }
-//   render() {
-//     const { classes } = this.props;
-//     return (
-//       <Container maxWidth="lg" className={classes.container}>
-//         <form onSubmit={this.handleSubmit}>
-//         <div>
-//          <TextField label="Name" type="text" name="name" onChange={this.handleChange} />
-//          </div>
-//          <div>
-//          <Button variant="contained">
-//             <Input type="submit">
-//                 Submit
-//             </Input>
-//           </Button>
-//          </div>
-//           {/* <button type="submit">Submit</button> */}
-//         </form>
-//         </Container>
-//       );
-//   }
-// };
-
-// export default withStyles(styles, { withTheme: true })(SignupForm);

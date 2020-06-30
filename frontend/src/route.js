@@ -4,6 +4,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ListIcon from '@material-ui/icons/List';
 import Overview from "./overview";
 import UserForm from "./form";
+import EmployeeList from './ListEmployee';
 
 const routes = [
   {
@@ -26,7 +27,7 @@ const routes = [
     name: "List Employee",
     icon: <ListIcon />,
     toolbar: () => <p>List Employee</p>,
-    main: () => <UserForm />
+    main: () => <EmployeeList />
   }
 ];
 
