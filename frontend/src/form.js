@@ -3,6 +3,9 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import clsx from 'clsx';
 import * as Yup from 'yup';
 
 const styles = theme => ({ 
@@ -29,6 +32,8 @@ class UserForm extends React.Component {
           <div>
           <CssBaseline />
           <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+          <Grid item xs={12} md={10} lg={9} >
             <Formik
                 initialValues={{
                     id: '',
@@ -119,6 +124,8 @@ class UserForm extends React.Component {
                     </Form>
                 )}
             />
+            </Grid>
+            </Grid>
             </Container>
             </div>
         )

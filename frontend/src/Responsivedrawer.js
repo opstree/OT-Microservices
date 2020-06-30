@@ -128,7 +128,8 @@ const ResponsiveDrawer = props => {
             <ListItem button key={route.name}>
               <ListItemIcon>
                 {/* <InboxIcon /> */}
-                <DashboardIcon />
+                {route.icon}
+                {/* <DashboardIcon /> */}
               </ListItemIcon>
               <ListItemText primary={route.name} />
             </ListItem>
