@@ -49,7 +49,7 @@ const geographyStyle = {
 
 function generateNumber(input) {
   if (input === undefined) {
-    return 0
+    return undefined
   } else {
     return input
   }

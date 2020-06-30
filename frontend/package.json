@@ -31,9 +31,12 @@
     "react": "latest",
     "react-dom": "latest",
     "react-fusioncharts": "^3.1.2",
+    "react-jss": "^8.0.0",
+    "react-material-ui-form": "^1.1.7",
     "react-scripts": "latest",
     "react-simple-maps": "^2.1.2",
-    "react-tooltip": "^4.2.7"
+    "react-tooltip": "^4.2.7",
+    "yup": "^0.29.1"
   },
   "browserslist": {
     "production": [
