@@ -28,6 +28,7 @@ type EmployeeInfo struct {
 
 func main() {
 	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	logrus.SetFormatter(&logrus.JSONFormatter{})
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
