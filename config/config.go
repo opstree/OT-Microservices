@@ -11,6 +11,7 @@ type Configuration struct {
 	Management    Management    `yaml:"management"`
 	Attendance    Attendance    `yaml:"attendance"`
 	MySQL         MySQL         `yaml:"mysql"`
+	Salary        Salary        `yaml:"salary"`
 }
 
 // Elasticsearch is struct for elasticsearch configuration
@@ -29,6 +30,12 @@ type Management struct {
 
 // Attendance is struct for management API config
 type Attendance struct {
+	API     string `yaml:"api_endpoint"`
+	APIPort string `yaml:"api_port"`
+}
+
+// Salary is struct for management API config
+type Salary struct {
 	API     string `yaml:"api_endpoint"`
 	APIPort string `yaml:"api_port"`
 }

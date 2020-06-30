@@ -13,6 +13,10 @@ attendance:
   api_endpoint: "http://172.17.0.3"
   api_port: "8081"
 
+salary:
+  api_endpoint: "http://172.17.0.3"
+  api_port: "8082"
+
 mysql:
   enabled: true
   db_name: "attendancedb"

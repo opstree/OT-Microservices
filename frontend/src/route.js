@@ -5,6 +5,8 @@ import ListIcon from '@material-ui/icons/List';
 import Overview from "./overview";
 import UserForm from "./form";
 import EmployeeList from './ListEmployee';
+import CreateAttendance from './CreateAttendance';
+import ListAttendance from './ListAttendance';
 
 const routes = [
   {
@@ -28,6 +30,20 @@ const routes = [
     icon: <ListIcon />,
     toolbar: () => <p>List Employee</p>,
     main: () => <EmployeeList />
+  },
+  {
+    path: "/attendance/create",
+    name: "Add Attendance",
+    icon: <AddCircleOutlineIcon />,
+    toolbar: () => <p>Add Attendance</p>,
+    main: () => <CreateAttendance />
+  },
+  {
+    path: "/attendance/list",
+    name: "List Attendance",
+    icon: <ListIcon />,
+    toolbar: () => <p>List Attendance</p>,
+    main: () => <ListAttendance />
   }
 ];
 
