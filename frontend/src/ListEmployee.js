@@ -4,6 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from '@material-ui/core/Container';
 
+const gatewayURL = process.env.REACT_APP_GATEWAY_URL
+
+const employeeURL = gatewayURL + "/employee/search/all"
+
 const useStyles = makeStyles((theme) => ({ 
     fixedHeight: {
         height: 600,
@@ -37,7 +41,7 @@ export default function EmployeeList() {
     const [stats, handleStats] = useState([]);
 
     const FetchData = async () => {
-      const data = await fetch('http://172.17.0.3:8080/search/all');
+      const data = await fetch(employeeURL);
       const stats = await data.json();
       handleStats(stats)  
     }
