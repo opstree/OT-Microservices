@@ -39,11 +39,11 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
-	router.POST("/create", pushEmployeeData)
-	router.GET("/search", fetchEmployeeData)
-	router.GET("/search/all", fetchALLEmployeeData)
-	router.GET("/search/roles", fetchEmployeeRoles)
-	router.GET("/search/city", fetchEmployeeCity)
+	router.POST("/employee/create", pushEmployeeData)
+	router.GET("/employee/search", fetchEmployeeData)
+	router.GET("/employee/search/all", fetchALLEmployeeData)
+	router.GET("/employee/search/roles", fetchEmployeeRoles)
+	router.GET("/employee/search/city", fetchEmployeeCity)
 	router.Run(":" + conf.Management.APIPort)
 }
 

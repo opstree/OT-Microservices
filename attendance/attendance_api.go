@@ -36,8 +36,8 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
-	router.POST("/create/attendance", pushAttendanceData)
-	router.GET("/search/attendance", fetchAttendanceData)
+	router.POST("/attendance/create", pushAttendanceData)
+	router.GET("/attendance/search", fetchAttendanceData)
 	router.Run(":" + conf.Attendance.APIPort)
 }
 

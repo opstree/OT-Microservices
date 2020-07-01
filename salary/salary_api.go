@@ -48,7 +48,7 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
-	router.GET("/search", fetchEmployeeSalary)
+	router.GET("/salary/search", fetchEmployeeSalary)
 	router.Run(":" + conf.Salary.APIPort)
 }
 
