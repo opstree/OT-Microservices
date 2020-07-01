@@ -1,0 +1,2 @@
+build-code:
+	go build
