@@ -4,4 +4,5 @@ Salary is a application which will manage employee's salary information. This ap
 
 ```shell
 export CONFIG_FILE=config.yaml
+./salary
 ```

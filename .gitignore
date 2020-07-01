@@ -6,3 +6,4 @@ attendance/attendance
 salary/salary
 gateway/target/*
 config.yaml
+frontend/build
