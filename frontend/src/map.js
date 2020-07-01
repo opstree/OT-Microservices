@@ -55,12 +55,17 @@ function generateNumber(input) {
   }
 }
 
+const gatewayURL = process.env.REACT_APP_GATEWAY_URL
+
+const employeeURL = gatewayURL + "/employee/search/city"
+
 // will generate random heatmap data on every call
 function Map() {
   const [stats, handleStats] = useState([]);
+  
 
   const FetchData = async () => {
-    const jsondata = await fetch('http://172.17.0.3:8080/search/city');
+    const jsondata = await fetch(employeeURL);
     const stats = await jsondata.json();
     handleStats(stats)  
   }

@@ -10,10 +10,15 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"net/http"
+	"os"
 )
 
 const (
 	dbDriver = "mysql"
+)
+
+var (
+	configFile = os.Getenv("CONFIG_FILE")
 )
 
 // AttendanceInfo struct will be the data structure for employee's attendance
@@ -24,7 +29,7 @@ type AttendanceInfo struct {
 }
 
 func main() {
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for attendance: %v", err)
@@ -42,7 +47,7 @@ func main() {
 }
 
 func initDBConnection() (*sql.DB, error) {
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for attendance: %v", err)
 	}
@@ -54,7 +59,7 @@ func initDBConnection() (*sql.DB, error) {
 }
 
 func pushAttendanceData(c *gin.Context) {
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for attendance: %v", err)
 	}

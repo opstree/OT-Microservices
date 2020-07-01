@@ -21,6 +21,8 @@ import routes from "./route";
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+require('dotenv').config()
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({

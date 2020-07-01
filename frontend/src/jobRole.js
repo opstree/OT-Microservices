@@ -2,11 +2,17 @@ import * as React from "react";
 import { useState, useEffect } from 'react';
 import { DonutChart } from "@opd/g2plot-react";
 
+require('dotenv').config();
+
+const gatewayURL = process.env.REACT_APP_GATEWAY_URL;
+
+const employeeURL = gatewayURL + "/employee/search/roles"
+
 export default function Chart() {
   const [stats, handleStats] = useState([]);
 
   const FetchData = async () => {
-    const data = await fetch('http://172.17.0.3:8080/search/roles');
+    const data = await fetch(employeeURL);
     const stats = await data.json();
     handleStats(stats)  
   }

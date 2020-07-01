@@ -11,6 +11,11 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
+	"os"
+)
+
+var (
+	configFile = os.Getenv("CONFIG_FILE")
 )
 
 // EmployeeInfo struct will be the data structure for employee's information
@@ -27,7 +32,7 @@ type EmployeeInfo struct {
 }
 
 func main() {
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
@@ -66,7 +71,7 @@ func pushEmployeeData(c *gin.Context) {
 		AnnualPackage: request.AnnualPackage,
 		PhoneNumber:   request.PhoneNumber,
 	}
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
@@ -82,7 +87,7 @@ func fetchEmployeeData(c *gin.Context) {
 	for _, value := range searchQuery {
 		searchValue = strings.Join(value, "")
 	}
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
@@ -100,7 +105,7 @@ func fetchEmployeeData(c *gin.Context) {
 }
 
 func fetchALLEmployeeData(c *gin.Context) {
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
@@ -121,7 +126,7 @@ func fetchALLEmployeeData(c *gin.Context) {
 }
 
 func fetchEmployeeRoles(c *gin.Context) {
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
@@ -163,7 +168,7 @@ func fetchEmployeeRoles(c *gin.Context) {
 }
 
 func fetchEmployeeCity(c *gin.Context) {
-	conf, err := config.ParseFile("/go/src/ot-go-webapp/config.yaml")
+	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}

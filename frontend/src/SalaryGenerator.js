@@ -29,7 +29,7 @@ class SalaryGenerator extends Component {
     return (
       <React.Fragment>
         <section className="header-bar">
-          <span className="header">Export React Component to PDF</span>
+          <span className="header">Generate Salary Slip</span>
         </section>
         <PdfContainer createPdf={this.createPdf}>
           <React.Fragment>
