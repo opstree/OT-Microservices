@@ -3,7 +3,7 @@ MAINTAINER OpsTree Solutions
 COPY ./ /go/src/ot-microservices/
 WORKDIR /go/src/ot-microservices/management
 RUN go get -v -t -d ./... \
-    && go build -o druid-exporter
+    && go build -o management
 
 FROM alpine:latest
 MAINTAINER OpsTree Solutions
