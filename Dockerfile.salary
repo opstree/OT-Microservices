@@ -1,0 +1,13 @@
+FROM golang:latest as builder
+MAINTAINER OpsTree Solutions
+COPY ./ /go/src/ot-microservices/
+WORKDIR /go/src/ot-microservices/salary
+RUN go get -v -t -d ./... \
+    && go build -o druid-exporter
+
+FROM alpine:latest
+MAINTAINER OpsTree Solutions
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+COPY --from=builder /go/src/ot-microservices/salary/salary /app/
+ENTRYPOINT ["./salary"]
