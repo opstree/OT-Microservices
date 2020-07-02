@@ -1,0 +1,13 @@
+FROM maven:latest as builder
+MAINTAINER Opstree Solutions
+COPY . /java/
+WORKDIR /java/gateway
+RUN mvn package
+
+FROM alpine:latest
+MAINTAINER Opstree Solutions
+RUN apk update && \
+    apk fetch openjdk8 && \
+    apk add openjdk8
+COPY --from=builder /java//java/gateway/target/gateway-service.jar
+ENTRYPOINT ["java" "-jar" "/app/gateway-service.jar"]

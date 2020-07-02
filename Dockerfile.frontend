@@ -1,0 +1,14 @@
+FROM node:lts-stretch-slim
+MAINTAINER Opstree Solutions
+
+COPY . /app
+
+WORKDIR /app/frontend
+RUN npm install && \
+    npm i serve
+
+RUN npm run build
+
+ENTRYPOINT ["serve"]
+
+CMD ["-s" "build"]
