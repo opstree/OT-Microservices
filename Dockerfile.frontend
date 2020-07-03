@@ -4,6 +4,10 @@ MAINTAINER Opstree Solutions
 COPY . /app
 
 WORKDIR /app/frontend
+
+RUN apt-get update -y && \
+    apt-get install git -y
+
 RUN npm install && \
     npm i serve
 
