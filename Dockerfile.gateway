@@ -6,6 +6,7 @@ RUN mvn package
 
 FROM alpine:latest
 MAINTAINER Opstree Solutions
+USER root
 RUN apk update && \
     apk fetch openjdk8 && \
     apk add openjdk8
