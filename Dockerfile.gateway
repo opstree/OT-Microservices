@@ -10,4 +10,5 @@ RUN apk update && \
     apk fetch openjdk8 && \
     apk add openjdk8
 COPY --from=builder /java/gateway/target/gateway-service.jar /app/gateway.jar
-ENTRYPOINT ["java" "-jar" "/app/gateway-service.jar"]
+
+ENTRYPOINT ["/usr/bin/java", "-jar", "/app/gateway-service.jar"]
