@@ -14,6 +14,5 @@ RUN npm run build
 
 RUN yarn global add serve
 
-ENTRYPOINT ["serve"]
 
-CMD ["-s" "build"]
+ENTRYPOINT ["serve", "-s", "build"]
