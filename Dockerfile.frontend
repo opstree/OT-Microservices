@@ -8,10 +8,11 @@ WORKDIR /app/frontend
 RUN apt-get update -y && \
     apt-get install git -y
 
-RUN npm install && \
-    npm i serve
+RUN npm install
 
 RUN npm run build
+
+RUN yarn global add serve
 
 ENTRYPOINT ["serve"]
 
