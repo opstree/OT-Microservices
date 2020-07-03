@@ -5,15 +5,15 @@ zuul:
   routes:
     employee:
       path: /employee/**
-      url: http://managment-dev-dev/employee
+      url: http://managment-dev-dev:8080/employee
       service-id: /employee/**
 
     attendance:
       path: /attendance/**
-      url: http://attendance-dev-dev/attendance
+      url: http://attendance-dev-dev:8081/attendance
       service-id: /attendance/**
 
     salary:
       path: /salary/**
-      url: http://salary-dev-dev/salary
+      url: http://salary-dev-dev:8082/salary
       service-id: /salary/**

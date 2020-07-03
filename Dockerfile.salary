@@ -10,4 +10,6 @@ MAINTAINER OpsTree Solutions
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY --from=builder /go/src/ot-microservices/salary/salary /app/
+COPY salary/config.yaml /app/config.yaml
+ENV CONFIG_FILE "/app/config.yaml"
 ENTRYPOINT ["./salary"]

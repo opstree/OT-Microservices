@@ -10,4 +10,6 @@ MAINTAINER OpsTree Solutions
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY --from=builder /go/src/ot-microservices/attendance/attendance /app/
+COPY attendance/config.yaml /app/config.yaml
+ENV CONFIG_FILE "/app/config.yaml"
 ENTRYPOINT ["./attendance"]
