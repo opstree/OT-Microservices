@@ -6,6 +6,10 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
+const gatewayURL = process.env.REACT_APP_GATEWAY_URL
+
+const employeeURL = gatewayURL + "/create"
+
 const useStyles = makeStyles((theme) => ({ 
   fixedHeight: {
       height: 350,
@@ -43,7 +47,7 @@ export default function UserForm() {
             phone_number: ''
           }}
           onSubmit={data =>
-            fetch('http://172.17.0.3:8080/create', {
+            fetch(employeeURL, {
               method: 'POST',
               body: JSON.stringify(data),
               headers: {
