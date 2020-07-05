@@ -5,7 +5,7 @@ zuul:
   routes:
     employee:
       path: /employee/**
-      url: http://managment-dev-dev:8080/employee
+      url: http://management-dev-dev:8080/employee
       service-id: /employee/**
 
     attendance:
