@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"ot-go-webapp/config"
+	"attendance/config"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

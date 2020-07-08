@@ -1,13 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ResponsiveDrawers from "./Responsivedrawer";
+import React from "react";
+import ReactDOM from "react-dom";
 
-require('dotenv').config()
+import "./index.css";
+import "./custom.css";
 
+import App from "./App.react";
 
-ReactDOM.render(<ResponsiveDrawers />, document.getElementById("app"));
+const rootElement = document.getElementById("root");
 
-// ReactDOM.render(<App />, document.querySelector('#app')
-
-// );
-ReactDOM.render(<employeeCount />, document.querySelector('#cards'));
+if (rootElement) {
+  ReactDOM.render(<App />, rootElement);
+} else {
+  throw new Error("Could not find root element to mount to!");
+}
