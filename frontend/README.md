@@ -1,11 +1,20 @@
 # Frontend
 
-Frontend is a reactjs application which interacts with gateway and display data on browser.
+Frontend is written in ReactJS and gets served using nginx proxy, config can be found [here](../webserver)
 
-We need to update [.env] file before building the code.
+## Quickstart
+
 
 ```shell
-npm install
-npm run build
+# For compiling code
+make build
+```
+
+```shell
+To run the code
 serve -s build
+```
+
+```shell
+make image
 ```

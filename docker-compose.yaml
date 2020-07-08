@@ -1,0 +1,115 @@
+---
+version: '3.2'
+
+services:
+  elastic:
+    build:
+      context: elasticsearch/
+    volumes:
+      - type: bind
+        source: ./elasticsearch/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTIC_PASSWORD: elastic
+    networks:
+      - ot-microservices
+
+  mysql:
+    build:
+      context: mysql/
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABASE: "attendancedb"
+    networks:
+      - ot-microservices
+
+  attendance:
+    build:
+      context: attendance/
+    ports:
+      - "8081:8081"
+    volumes:
+      - type: bind
+        source: ./attendance/config.yaml
+        target: /app/config.yaml
+        read_only: true
+    environment:
+      CONFIG_FILE: "/app/config.yaml"
+    networks:
+      - ot-microservices
+
+  salary:
+    build:
+      context: salary/
+    ports:
+      - "8082:8082"
+    volumes:
+      - type: bind
+        source: ./salary/config.yaml
+        target: /app/config.yaml
+        read_only: true
+    environment:
+      CONFIG_FILE: "/app/config.yaml"
+    networks:
+      - ot-microservices
+
+  employee:
+    build:
+      context: employee/
+    ports:
+      - "8083:8083"
+    volumes:
+      - type: bind
+        source: ./employee/config.yaml
+        target: /app/config.yaml
+        read_only: true
+    environment:
+      CONFIG_FILE: "/app/config.yaml"
+    networks:
+      - ot-microservices
+
+  gateway:
+    build:
+      context: gateway/
+    ports:
+      - "8080:8080"
+    networks:
+      - ot-microservices
+
+  frontend:
+    build:
+      context: frontend/
+    ports:
+      - "5000:5000"
+    networks:
+      - ot-microservices
+
+  webserver:
+    build:
+      context: webserver/
+    volumes:
+      - type: bind
+        source: ./webserver/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+    ports:
+      - "80:80"
+    networks:
+      - ot-microservices
+
+networks:
+  ot-microservices:
+    driver: bridge
+
+volumes:
+  elasticsearch:
