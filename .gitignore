@@ -6,3 +6,4 @@ attendance/attendance
 salary/salary
 gateway/target/*
 frontend/build
+frontend/.env
