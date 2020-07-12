@@ -43,6 +43,7 @@ func main() {
 	router.Use(cors.New(config))
 	router.POST("/attendance/create", pushAttendanceData)
 	router.GET("/attendance/search", fetchAttendanceData)
+	router.GET("attendance/healthz", healthCheckMySQL)
 	router.Run(":" + conf.Attendance.APIPort)
 }
 
@@ -118,6 +119,27 @@ func fetchAttendanceData(c *gin.Context) {
 		})
 	}
 	c.JSON(http.StatusOK, attendanceInfo)
+}
+
+func healthCheckMySQL(c *gin.Context) {
+	db, err := initDBConnection()
+	if err != nil {
+		logrus.Errorf("Error while creating sql connection for fetching attendance data: %v", err)
+	}
+
+	defer db.Close()
+	err = db.Ping()
+	if err != nil {
+		logrus.Errorf("Unable to communicate with MySQL database: %v", err)
+		errorResponse(c, http.StatusBadRequest, "MySQL connection is not up")
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "up",
+		"database": "MySQL",
+		"message": "MySQL is running",
+	})
 }
 
 func errorResponse(c *gin.Context, code int, err string) {

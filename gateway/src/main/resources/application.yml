@@ -4,7 +4,8 @@ spring:
 zuul:
   debug:
     request: true
-
+  health:
+    enabled: true
   routes:
     employee:
       path: /employee/**
