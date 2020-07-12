@@ -2,16 +2,35 @@
 
 Gateway is a springboot based API gateway which manages the routing between applications.
 
+## Endpoints
+
+The available endpoints for this application are:-
+
+|**ENDPOINT**|**REQUEST TYPE**|**DESCRIPTION**|
+|------------|----------------|---------------|
+| `/employee/*` | POST and GET | /employee/* will send all the request for employee related stuff to employee microservice |
+| `/attendance/*` | POST and GET | /attendance/* will send all the request for attendance related stuff to attendance microservice  |
+| `/salary/*` | POST and GET | /salary/* will send all the request for salary related stuff to salary microservice |
+| `/notification/*` | POST and GET | /notification/* will send all the request for notification related stuff to notification microservice |
+| `/health` | GET | /health will return the health complete gateway service |
+
 ## Quickstart
 
 Before compilation [application.yml](./src/resources/application.yml)
 
 ```yaml
-# Application port on which application will listen
 spring:
   profiles: default
 
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+
 zuul:
+  debug:
+    request: true
+
   routes:
     employee:
       path: /employee/**
@@ -27,6 +46,11 @@ zuul:
       path: /salary/**
       url: http://salary:8082/salary
       service-id: /salary/**
+
+    notification:
+      path: /notification/**
+      url: http://notification:8085/notification
+      service-id: /notification/**
 ```
 
 ```shell
