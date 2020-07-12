@@ -1,9 +1,9 @@
 package main
 
 import (
+	"attendance/config"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"attendance/config"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -136,9 +136,9 @@ func healthCheckMySQL(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"status": "up",
+		"status":   "up",
 		"database": "MySQL",
-		"message": "MySQL is running",
+		"message":  "MySQL is running",
 	})
 }
 

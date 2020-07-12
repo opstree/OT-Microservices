@@ -186,7 +186,7 @@ func CheckElasticHealth(c conf.Configuration) (bool, error) {
 	if err != nil {
 		logrus.Errorf("Unable to create client connection with elastic: %v", err)
 	}
-	
+
 	_, err = es.Info()
 	if err != nil {
 		return false, err

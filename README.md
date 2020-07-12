@@ -18,8 +18,9 @@ These are few microservices which are getting used in this complete project.
 | [attendance](./attendance) | 8081 | MySQL | Attendance is a microservice which is designed in Golang to manage employee's attendance information. |
 | [employee](./employee) | 8083 | Elasticsearch | Employee microservice is also designed in Golang to manage employee's information. |
 | [salary](./salary) | 8082 | Elasticsearch | Salary is also a golang based application which creates and manages employee's salary information. |
+| [notification](./notification) | 8085 | SMTP Server | Notification is a service which gets used to send mail notifications to employees. |
 | [frontend](./frontend) | 5000 | Gateway | Frontend is written in ReactJS and gets served using nginx proxy, config can be found [here](./webserver) |
-| [gateway](./gateway) | 8080 | <ul><li>attendance</li><li>employee</li><li>salary</li></ul> | Gateway is a springboot based API gateway which manages the routing between applications. |
+| [gateway](./gateway) | 8080 | <ul><li>attendance</li><li>employee</li><li>salary</li><li>notification</li></ul> | Gateway is a springboot based API gateway which manages the routing between applications. |
 | [webserver](./webserver) | 80 | frontend | Webserver is a nginx based proxy which proxies the frontend application. |
 
 For further information about the component you can click on the application.

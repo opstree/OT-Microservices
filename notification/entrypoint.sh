@@ -2,7 +2,7 @@
 
 BASE_COMMAND="notification"
 CONFIG_FILE=${CONFIG_FILE:-"/app/config.yaml"}
-
+API_PORT=${API_PORT:-8085}
 
 if [ -f "${CONFIG_FILE}" ]; then
     echo "Reading properties from config file"

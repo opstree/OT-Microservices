@@ -3,11 +3,11 @@ package elastic
 import (
 	"bytes"
 	"context"
+	conf "employee/config"
 	"encoding/json"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/elastic/go-elasticsearch/v8/esutil"
 	"github.com/sirupsen/logrus"
-	conf "employee/config"
 	"sync/atomic"
 	"time"
 )
@@ -186,7 +186,7 @@ func CheckElasticHealth(c conf.Configuration) (bool, error) {
 	if err != nil {
 		logrus.Errorf("Unable to create client connection with elastic: %v", err)
 	}
-	
+
 	_, err = es.Info()
 	if err != nil {
 		return false, err
