@@ -9,10 +9,10 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"encoding/json"
-	"strings"
 	"net/http"
-	"time"
 	"os"
+	"strings"
+	"time"
 )
 
 var (
@@ -34,10 +34,10 @@ type EmployeeInfo struct {
 
 // SalaryInfo struct will be the data structure for employee's information
 type SalaryInfo struct {
-	ID            string  `json:"id"`
-	Name          string  `json:"name"`
-	Month         string  `json:"month"`
-	Salary        float64  `json:"salary"`
+	ID     string  `json:"id"`
+	Name   string  `json:"name"`
+	Month  string  `json:"month"`
+	Salary float64 `json:"salary"`
 }
 
 func main() {
@@ -79,12 +79,12 @@ func fetchEmployeeSalary(c *gin.Context) {
 		}
 		json.Unmarshal(empData, &response)
 	}
-	
+
 	salaryData := SalaryInfo{
-		ID: response.ID,
-		Name: response.Name,
+		ID:     response.ID,
+		Name:   response.Name,
 		Salary: (response.AnnualPackage / 12),
-		Month: time.Now().UTC().Format("Jan"),
+		Month:  time.Now().UTC().Format("Jan"),
 	}
 	c.JSON(http.StatusOK, salaryData)
 }
@@ -105,13 +105,13 @@ func healthCheck(c *gin.Context) {
 
 	if status != false {
 		c.JSON(http.StatusOK, gin.H{
-			"status": "up",
+			"status":   "up",
 			"database": "elasticsearch",
-			"message": "Elasticsearch is running",
+			"message":  "Elasticsearch is running",
 		})
 		return
 	}
-	
+
 	errorResponse(c, http.StatusBadRequest, "Elasticsearch is not running")
 }
 
