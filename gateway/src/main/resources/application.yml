@@ -1,11 +1,15 @@
 spring:
   profiles: default
 
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+
 zuul:
   debug:
     request: true
-  health:
-    enabled: true
+
   routes:
     employee:
       path: /employee/**
