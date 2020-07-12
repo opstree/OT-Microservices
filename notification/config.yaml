@@ -1,0 +1,10 @@
+---
+notification:
+  api_port: "8085"
+
+smtp:
+  from: "test@example.com"
+  username: "test"
+  password: "test"
+  smtp_server: "test.smtp.com"
+  smtp_port: "25"
