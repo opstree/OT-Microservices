@@ -6,6 +6,15 @@ Salary is also a golang based application which creates and manages employee's s
 
 - [Elasticsearch](../elasticsearch) => Salary application stores information in easticsearch
 
+## Endpoints
+
+The available endpoints for this application are:-
+
+|**ENDPOINT**|**REQUEST TYPE**|**DESCRIPTION**|
+|------------|----------------|---------------|
+| `/salary/search` | GET | search will fetches the salary of a user based on URL query. |
+| `/salary/healthz` | GET | healthz will check the DB connectivity and return the status of application that whether it can serve the requests or not. |
+
 ## Environment Variable
 
 |**ENVIRONMENT VARIABLE**|**DESCRIPTION**|

@@ -6,6 +6,15 @@ Notification is a service which gets used to send mail notifications to employee
 
 Notification service is dependent on SMTP server. SMTP server details needs to be provided at application bootup.
 
+## Endpoints
+
+The available endpoints for this application are:-
+
+|**ENDPOINT**|**REQUEST TYPE**|**DESCRIPTION**|
+|------------|----------------|---------------|
+| `/notification/send` | POST | send request will collect the email id data from HTML form and send the mail. |
+| `/notification/healthz` | GET | healthz will return the health status of notification service. |
+
 ## Environment Variable
 
 |**ENVIRONMENT VARIABLE**|**DEFAULT VALUE**|**DESCRIPTION**|
