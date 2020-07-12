@@ -10,8 +10,8 @@ import (
 
 	"encoding/json"
 	"net/http"
-	"strings"
 	"os"
+	"strings"
 )
 
 var (
@@ -238,13 +238,13 @@ func healthCheck(c *gin.Context) {
 
 	if status != false {
 		c.JSON(http.StatusOK, gin.H{
-			"status": "up",
+			"status":   "up",
 			"database": "elasticsearch",
-			"message": "Elasticsearch is running",
+			"message":  "Elasticsearch is running",
 		})
 		return
 	}
-	
+
 	errorResponse(c, http.StatusBadRequest, "Elasticsearch is not running")
 }
 

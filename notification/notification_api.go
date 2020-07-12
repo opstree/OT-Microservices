@@ -77,7 +77,7 @@ func sendNotification(c *gin.Context) {
 
 func healthCheck(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Notification service is running successfully",
+		"message":     "Notification service is running successfully",
 		"status_code": 200,
 	})
 }

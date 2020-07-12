@@ -1,8 +1,8 @@
 package elastic
 
 import (
-	"github.com/elastic/go-elasticsearch/v8"
 	"employee/config"
+	"github.com/elastic/go-elasticsearch/v8"
 )
 
 func generateElasticClient(conf config.Configuration) (*elasticsearch.Client, error) {
