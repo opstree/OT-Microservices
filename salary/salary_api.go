@@ -54,6 +54,7 @@ func main() {
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
 	router.GET("/salary/search", fetchEmployeeSalary)
+	router.GET("/salary/healthz", healthCheck)
 	router.Run(":" + conf.Salary.APIPort)
 }
 
@@ -86,4 +87,36 @@ func fetchEmployeeSalary(c *gin.Context) {
 		Month: time.Now().UTC().Format("Jan"),
 	}
 	c.JSON(http.StatusOK, salaryData)
+}
+
+func healthCheck(c *gin.Context) {
+	conf, err := config.ParseFile(configFile)
+	if err != nil {
+		logrus.Errorf("Unable to parse configuration file for management: %v", err)
+	}
+
+	status, err := elastic.CheckElasticHealth(conf)
+
+	if err != nil {
+		logrus.Errorf("Error while getting elasticsearch health: %v", err)
+		errorResponse(c, http.StatusBadRequest, "Elasticsearch is not running")
+		return
+	}
+
+	if status != false {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "up",
+			"database": "elasticsearch",
+			"message": "Elasticsearch is running",
+		})
+		return
+	}
+	
+	errorResponse(c, http.StatusBadRequest, "Elasticsearch is not running")
+}
+
+func errorResponse(c *gin.Context, code int, err string) {
+	c.JSON(code, gin.H{
+		"error": err,
+	})
 }

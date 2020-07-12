@@ -179,3 +179,18 @@ func SearchALLDataInElastic(c conf.Configuration) map[string]interface{} {
 	}
 	return r
 }
+
+// CheckElasticHealth is a method to check elasticsearch health
+func CheckElasticHealth(c conf.Configuration) (bool, error) {
+	es, err := generateElasticClient(c)
+	if err != nil {
+		logrus.Errorf("Unable to create client connection with elastic: %v", err)
+	}
+	
+	_, err = es.Info()
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}

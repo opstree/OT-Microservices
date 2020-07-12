@@ -51,6 +51,7 @@ func main() {
 	router.GET("/employee/search/roles", fetchEmployeeRoles)
 	router.GET("/employee/search/location", fetchEmployeeLocation)
 	router.GET("/employee/search/status", fetchEmployeeStatus)
+	router.GET("/employee/healthz", healthCheck)
 	router.Run(":" + conf.Employee.APIPort)
 }
 
@@ -219,6 +220,32 @@ func fetchEmployeeStatus(c *gin.Context) {
 	}
 	logrus.Infof("Successfully fetched all employee's status information")
 	c.JSON(http.StatusOK, duplicate_frequency)
+}
+
+func healthCheck(c *gin.Context) {
+	conf, err := config.ParseFile(configFile)
+	if err != nil {
+		logrus.Errorf("Unable to parse configuration file for management: %v", err)
+	}
+
+	status, err := elastic.CheckElasticHealth(conf)
+
+	if err != nil {
+		logrus.Errorf("Error while getting elasticsearch health: %v", err)
+		errorResponse(c, http.StatusBadRequest, "Elasticsearch is not running")
+		return
+	}
+
+	if status != false {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "up",
+			"database": "elasticsearch",
+			"message": "Elasticsearch is running",
+		})
+		return
+	}
+	
+	errorResponse(c, http.StatusBadRequest, "Elasticsearch is not running")
 }
 
 func errorResponse(c *gin.Context, code int, err string) {
