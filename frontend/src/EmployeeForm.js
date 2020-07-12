@@ -143,6 +143,12 @@ const FormikApp = withFormik({
       headers: {
           'Content-Type': 'application/json'
     }})
+    fetch('/notification/send', {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {
+          'Content-Type': 'application/json'
+    }})
     console.log(JSON.stringify(values))
   }
 })(EmployeeForm);
