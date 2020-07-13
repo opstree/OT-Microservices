@@ -1,10 +1,13 @@
 ---
-notification:
-  api_port: "8085"
-
 smtp:
   from: "test@example.com"
   username: "test"
   password: "test"
   smtp_server: "test.smtp.com"
   smtp_port: "25"
+
+elasticsearch:
+  username: "elastic"
+  password: "elastic"
+  host: "172.17.0.2"
+  port: 9200
