@@ -1,0 +1,4 @@
+emails==0.6
+elasticsearch==7.8.0
+config-with-yaml==0.1.0
+schedule==0.6.0
