@@ -13,15 +13,15 @@ The purpose of creating this application is to provide an individual, a holistic
 
 These are few microservices which are getting used in this complete project.
 
-|**Application Name**|**Default Port**|**Dependency**|**Description**|
-|--------------------|----------------|--------------|---------------|
-| [attendance](./attendance) | 8081 | MySQL | Attendance is a microservice which is designed in Golang to manage employee's attendance information. |
-| [employee](./employee) | 8083 | Elasticsearch | Employee microservice is also designed in Golang to manage employee's information. |
-| [salary](./salary) | 8082 | Elasticsearch | Salary is also a golang based application which creates and manages employee's salary information. |
-| [notification](./notification) | - | SMTP Server | Notification is a scheduled service which gets used to send mail notifications to employees. |
-| [frontend](./frontend) | 5000 | Gateway | Frontend is written in ReactJS and gets served using nginx proxy, config can be found [here](./webserver) |
-| [gateway](./gateway) | 8080 | <ul><li>attendance</li><li>employee</li><li>salary</li><li>notification</li></ul> | Gateway is a springboot based API gateway which manages the routing between applications. |
-| [webserver](./webserver) | 80 | frontend | Webserver is a nginx based proxy which proxies the frontend application. |
+|**Application Name**|**Default Port**|**Language**|**Dependency**|**Description**|
+|--------------------|----------------|------------|--------------|---------------|
+| [attendance](./attendance) | 8081 | MySQL | ![](https://cdn.worldvectorlogo.com/logos/gopher.svg) | Attendance is a microservice which is designed in Golang to manage employee's attendance information. |
+| [employee](./employee) | 8083 | Elasticsearch | ![](https://cdn.worldvectorlogo.com/logos/gopher.svg) | Employee microservice is also designed in Golang to manage employee's information. |
+| [salary](./salary) | 8082 | Elasticsearch | ![](https://cdn.worldvectorlogo.com/logos/gopher.svg) | Salary is also a golang based application which creates and manages employee's salary information. |
+| [notification](./notification) | - | SMTP Server | ![](https://cdn.worldvectorlogo.com/logos/gopher.svg) | Notification is a scheduled service which gets used to send mail notifications to employees. |
+| [frontend](./frontend) | 5000 | Gateway | ![](https://cdn.worldvectorlogo.com/logos/gopher.svg) | Frontend is written in ReactJS and gets served using nginx proxy, config can be found [here](./webserver) |
+| [gateway](./gateway) | 8080 | <ul><li>attendance</li><li>employee</li><li>salary</li><li>notification</li></ul> | ![](https://cdn.worldvectorlogo.com/logos/gopher.svg) | Gateway is a springboot based API gateway which manages the routing between applications. |
+| [webserver](./webserver) | 80 | frontend | ![](https://cdn.worldvectorlogo.com/logos/gopher.svg) | Webserver is a nginx based proxy which proxies the frontend application. |
 
 For further information about the component you can click on the application.
 
