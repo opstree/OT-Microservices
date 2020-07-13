@@ -96,8 +96,10 @@ def send_mail_to_all_users():
 
 def schedule_operation():
     """This function will gets executed for a scheduled interval"""
+    logger = get_logger()
     schedule.every().hour.do(send_mail_to_all_users)
     while True:
+        logger.info("Waiting for scheduled time to come, I am sure it will come")
         schedule.run_pending()
         time.sleep(1)
 
