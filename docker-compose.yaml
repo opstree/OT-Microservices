@@ -70,15 +70,16 @@ services:
   notification:
     build:
       context: notification/
-    ports:
-      - "8085:8085"
     environment:
-      API_PORT: "8085"
       FROM: "${FROM}"
       SMTP_USERNAME: "${SMTP_USERNAME}"
       SMTP_PASSWORD: "${SMTP_PASSWORD}"
       SMTP_SERVER: "${SMTP_SERVER}"
       SMTP_PORT: "${SMTP_PORT}"
+      ELASTIC_USERNAME: "elastic"
+      ELASTIC_PASSWORD: "elastic"
+      ELASTIC_HOST: "elastic"
+      ELASTIC_PORT: 9200
     networks:
       - ot-microservices
 
