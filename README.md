@@ -41,7 +41,7 @@ For further information, click on the DB.
 The architecture of the complete microservice interaction looks like this:-
 
 <div align="center">
-  <img src="./static/architecture.png">
+  <img src="./static/architecture.svg">
 </div>
 
 ## Screenshot
