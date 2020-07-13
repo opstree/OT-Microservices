@@ -11,7 +11,6 @@ The available endpoints for this application are:-
 | `/employee/*` | POST and GET | /employee/* will send all the request for employee related stuff to employee microservice |
 | `/attendance/*` | POST and GET | /attendance/* will send all the request for attendance related stuff to attendance microservice  |
 | `/salary/*` | POST and GET | /salary/* will send all the request for salary related stuff to salary microservice |
-| `/notification/*` | POST and GET | /notification/* will send all the request for notification related stuff to notification microservice |
 | `/health` | GET | /health will return the health complete gateway service |
 
 ## Quickstart
@@ -46,11 +45,6 @@ zuul:
       path: /salary/**
       url: http://salary:8082/salary
       service-id: /salary/**
-
-    notification:
-      path: /notification/**
-      url: http://notification:8085/notification
-      service-id: /notification/**
 ```
 
 ```shell

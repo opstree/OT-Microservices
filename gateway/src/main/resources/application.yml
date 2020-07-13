@@ -25,8 +25,3 @@ zuul:
       path: /salary/**
       url: http://salary:8082/salary
       service-id: /salary/**
-
-    notification:
-      path: /notification/**
-      url: http://notification:8085/notification
-      service-id: /notification/**
