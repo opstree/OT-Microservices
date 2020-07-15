@@ -31,7 +31,7 @@ These applications are using two kinds of databases, one is structured and other
 
 |**Application Name**|**Default Port**|**Dependency**|**Description**|
 |--------------------|----------------|--------------|---------------|
-| [elastic](./elastic) | 9092 | - | Elasticsearch is being used as non-structured database which manages the employee's information and salary. |
+| [elastic](./elastic) | 9200 | - | Elasticsearch is being used as non-structured database which manages the employee's information and salary. |
 | [mysql](./mysql) | 3306 | - | MySQL is getting used for structured database which manages the employee's attendance information. |
 
 For further information, click on the DB.
