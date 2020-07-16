@@ -14,12 +14,14 @@ The available endpoints for this application are:-
 |------------|----------------|---------------|
 | `/salary/search` | GET | search will fetches the salary of a user based on URL query. |
 | `/salary/healthz` | GET | healthz will check the DB connectivity and return the status of application that whether it can serve the requests or not. |
+| `/salary/configure/liveness` | POST | configure/liveness healthcheck will slow the response of healthcheck to simulate liveness in Kubernetes |
 
 ## Environment Variable
 
 |**ENVIRONMENT VARIABLE**|**DESCRIPTION**|
 |------------------------|---------------|
 | CONFIG_FILE | Path of configuration file |
+| DELAY_TIME | This will delay the bootup time of the application to simulate readiness in Kubernetes |
 
 ## Quickstart
 

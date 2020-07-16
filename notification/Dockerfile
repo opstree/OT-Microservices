@@ -6,7 +6,7 @@ COPY ./ /app
 
 WORKDIR /app
 
-RUN apk add --update --no-cache g++ gcc libxslt-dev
+RUN apk add --update --no-cache g++ gcc libxslt-dev bash
 
 RUN pip3 install -r requirements.txt
 
