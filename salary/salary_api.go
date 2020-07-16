@@ -9,14 +9,21 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
 
+const (
+	fileName = "delay.txt"
+)
+
 var (
 	configFile = os.Getenv("CONFIG_FILE")
+	delayTime  = os.Getenv("DELAY_TIME")
 )
 
 // EmployeeInfo struct will be the data structure for employee's information
@@ -41,6 +48,7 @@ type SalaryInfo struct {
 }
 
 func main() {
+	var waitTime int
 	conf, err := config.ParseFile(configFile)
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 	if err != nil {
@@ -49,10 +57,18 @@ func main() {
 	logrus.Infof("Running employee-salary in webserver mode")
 	logrus.Infof("employee-salary is listening on port: %v", conf.Salary.APIPort)
 	logrus.Infof("Endpoint is available now - http://0.0.0.0:%v/create", conf.Salary.APIPort)
+
+	if delayTime == "" {
+		waitTime = 1
+	} else {
+		waitTime, _ = strconv.Atoi(delayTime)
+	}
+	time.Sleep(time.Duration(waitTime) * time.Second)
 	router := gin.Default()
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
+	router.POST("/salary/configure/liveness", configureLiveness)
 	router.GET("/salary/search", fetchEmployeeSalary)
 	router.GET("/salary/healthz", healthCheck)
 	router.Run(":" + conf.Salary.APIPort)
@@ -90,6 +106,7 @@ func fetchEmployeeSalary(c *gin.Context) {
 }
 
 func healthCheck(c *gin.Context) {
+	var waitTime int
 	conf, err := config.ParseFile(configFile)
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
@@ -103,6 +120,19 @@ func healthCheck(c *gin.Context) {
 		return
 	}
 
+	if Exists(fileName) {
+		content, err := ioutil.ReadFile(fileName)
+		if err != nil {
+			logrus.Errorf("Delay file doesn't exists: %v", err)
+		}
+		waitTime, _ = strconv.Atoi(string(content))
+	} else {
+		waitTime = 1
+	}
+
+	logrus.Infof("Response is slow by: %v seconds", waitTime)
+	time.Sleep(time.Duration(waitTime) * time.Second)
+
 	if status != false {
 		c.JSON(http.StatusOK, gin.H{
 			"status":   "up",
@@ -113,6 +143,37 @@ func healthCheck(c *gin.Context) {
 	}
 
 	errorResponse(c, http.StatusBadRequest, "Elasticsearch is not running")
+}
+
+func configureLiveness(c *gin.Context) {
+	searchQuery := c.Request.URL.Query()
+	var searchValue string
+
+	for _, value := range searchQuery {
+		searchValue = strings.Join(value, "")
+	}
+
+	file, err := os.Create(fileName)
+
+	if err != nil {
+		logrus.Errorf("Unable to set delay period: %v", err)
+		errorResponse(c, http.StatusBadRequest, "Unable to set delay period")
+		return
+	}
+
+	defer file.Close()
+
+	file.WriteString(searchValue)
+}
+
+// Exists function checks if file exists or not
+func Exists(name string) bool {
+	if _, err := os.Stat(name); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
 }
 
 func errorResponse(c *gin.Context, code int, err string) {
