@@ -42,3 +42,12 @@ For validating the attendance service, we have to make sure that our frontend an
 - [Frontend](./frontend)
 - [Webserver](./webserver)
 
+## Employee
+
+So once the attendance service is up, the next service we can hop on is employee service. So employee service depends on elasticsearch service.
+
+- [Elasticsearch](./elasticsearch)
+
+Once the elastisearch is up, we can up the employee service as well
+
+- [Employee](./employee)
