@@ -51,3 +51,13 @@ So once the attendance service is up, the next service we can hop on is employee
 Once the elastisearch is up, we can up the employee service as well
 
 - [Employee](./employee)
+
+So the frontend is already deployed and we can test the employee management functionality from there.
+
+## Salary
+
+Salary service depends on elasticsearch which is already up, so we can directly up that service without any hesitation.
+
+- [Salary](./salary)
+
+Once the salary service is up, you can try generating the PDF from salary tab.
