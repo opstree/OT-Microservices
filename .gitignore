@@ -9,4 +9,3 @@ frontend/build
 frontend/.env
 notification/notification
 notification/test_config.yaml
-mysql-healthcheck/*
