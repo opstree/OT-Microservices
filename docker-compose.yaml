@@ -2,7 +2,7 @@
 version: '3.2'
 
 services:
-  elastic:
+  empms-es:
     build:
       context: elasticsearch/
     volumes:
@@ -22,7 +22,7 @@ services:
     networks:
       - ot-microservices
 
-  mysql:
+  empms-db:
     build:
       context: mysql/
     ports:
@@ -33,7 +33,7 @@ services:
     networks:
       - ot-microservices
 
-  attendance:
+  empms-attendance:
     build:
       context: attendance/
     ports:
@@ -48,9 +48,9 @@ services:
     networks:
       - ot-microservices
     depends_on:
-      - mysql
+      - empms-db
 
-  salary:
+  empms-salary:
     build:
       context: salary/
     ports:
@@ -65,9 +65,9 @@ services:
     networks:
       - ot-microservices
     depends_on:
-      - elastic
+      - empms-es
 
-  notification:
+  empms-notification:
     build:
       context: notification/
     environment:
@@ -82,8 +82,10 @@ services:
       ELASTIC_PORT: 9200
     networks:
       - ot-microservices
+    depends_on:
+      - empms-es
 
-  employee:
+  empms-employee:
     build:
       context: employee/
     ports:
@@ -98,9 +100,9 @@ services:
     networks:
       - ot-microservices
     depends_on:
-      - elastic
+      - empms-es
 
-  gateway:
+  empms-gateway:
     build:
       context: gateway/
     ports:
@@ -108,12 +110,12 @@ services:
     networks:
       - ot-microservices
     depends_on:
-      - attendance
-      - salary
-      - employee
-      - notification
+      - empms-attendance
+      - empms-salary
+      - empms-employee
+      - empms-notification
 
-  frontend:
+  empms-frontend:
     build:
       context: frontend/
     ports:
@@ -121,9 +123,9 @@ services:
     networks:
       - ot-microservices
     depends_on:
-      - gateway
+      - empms-gateway
 
-  webserver:
+  empms-webserver:
     build:
       context: webserver/
     volumes:
@@ -136,7 +138,7 @@ services:
     networks:
       - ot-microservices
     depends_on:
-      - frontend
+      - empms-frontend
 
 networks:
   ot-microservices:

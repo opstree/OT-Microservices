@@ -8,7 +8,7 @@ RUN go get -v -t -d ./... \
 FROM alpine:latest
 MAINTAINER OpsTree Solutions
 WORKDIR /app
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat curl
 COPY --from=builder /go/src/salary/salary /app/
 COPY config.yaml /app/config.yaml
 ENV CONFIG_FILE "/app/config.yaml"

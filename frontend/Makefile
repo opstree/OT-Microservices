@@ -5,4 +5,4 @@ build: install
 	npm run build
 
 image:
-	docker build -t opstree/frontend:1.0 -f Dockerfile .
+	docker build -t opstree/empms-frontend:1.0 -f Dockerfile .

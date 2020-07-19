@@ -9,5 +9,5 @@ smtp:
 elasticsearch:
   username: "elastic"
   password: "elastic"
-  host: "172.17.0.2"
+  host: "empms-es"
   port: 9200

@@ -1,2 +1,2 @@
 build-image:
-	docker build -t opstree/elasticsearch:1.0 -f Dockerfile .
+	docker build -t opstree/empms-es:1.0 -f Dockerfile .

@@ -4,6 +4,6 @@ attendance:
 mysql:
   enabled: true
   db_name: "attendancedb"
-  host: "mysql:3306"
+  host: "empms-db:3306"
   username: root
   password: password

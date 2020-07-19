@@ -13,15 +13,15 @@ zuul:
   routes:
     employee:
       path: /employee/**
-      url: http://employee:8083/employee
+      url: http://empms-employee:8083/employee
       service-id: /employee/**
 
     attendance:
       path: /attendance/**
-      url: http://attendance:8081/attendance
+      url: http://empms-attendance:8081/attendance
       service-id: /attendance/**
 
     salary:
       path: /salary/**
-      url: http://salary:8082/salary
+      url: http://empms-salary:8082/salary
       service-id: /salary/**
