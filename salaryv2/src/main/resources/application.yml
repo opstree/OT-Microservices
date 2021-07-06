@@ -1,0 +1,6 @@
+---
+elasticsearch:
+  host: localhost
+  port: 9200
+  username: elastic
+  password: elastic
