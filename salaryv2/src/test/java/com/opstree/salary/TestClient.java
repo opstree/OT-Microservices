@@ -1,33 +1,44 @@
 package com.opstree.salary;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.apache.http.HttpHost;
-import org.elasticsearch.action.get.GetRequest;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.TransportAddress;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.junit.runner.RunWith;
 
-
-@SuppressWarnings({ "deprecation", "resource" })
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class TestClient {
 
-    private static String CLUSTER_NAME = "elasticsearch";
-    private static String HOST_IP = "172.17.0.3";
-    private static int TCP_PORT = 9300;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    public void testRestClient() throws Exception {
-        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost(HOST_IP, 9200, "http")));
-        GetRequest getRequest = new GetRequest("books", "1");
-        GetResponse getResponse = client.get(getRequest, RequestOptions.DEFAULT);
-        System.out.println(getResponse.getSourceAsString());
-    }
+	@Test
+	public void testSearchEndpoint() throws Exception {
+		RequestBuilder request = MockMvcRequestBuilders
+				.get("/search");
+
+		MvcResult result = mockMvc.perform(request)
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("Required String parameter 'technology' is not present"))
+				.andReturn();
+		assertEquals("Required String parameter 'technology' is not present", result.getResponse().getContentAsString());
+	}
 }
