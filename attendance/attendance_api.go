@@ -3,10 +3,10 @@ package main
 import (
 	"attendance/config"
 	"database/sql"
-// 	_ "github.com/go-sql-driver/mysql"
-    _ "go.elastic.co/apm/module/apmsql/v2/mysql"
-    "go.elastic.co/apm/module/apmsql/v2"
+	// 	_ "github.com/go-sql-driver/mysql"
 	"go.elastic.co/apm/module/apmgin/v2"
+	"go.elastic.co/apm/module/apmsql/v2"
+	_ "go.elastic.co/apm/module/apmsql/v2/mysql"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -69,14 +69,15 @@ func pushAttendanceData(c *gin.Context) {
 		logrus.Errorf("Unable to parse configuration file for attendance: %v", err)
 	}
 	db, err := initDBConnection()
+	tx, err := db.BeginTx(c.Request.Context(), nil)
 	if err != nil {
 		logrus.Errorf("Error while creating sql connection for pushing attendance data: %v", err)
 	}
-	_, err = db.Exec("USE " + conf.MySQL.DBName)
+	_, err = tx.ExecContext(c.Request.Context(), "USE "+conf.MySQL.DBName)
 	if err != nil {
 		logrus.Errorf("Not able to use database: %v", err)
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL, status varchar(50) NOT NULL, date varchar(50), PRIMARY KEY (id) )")
+	_, err = tx.ExecContext(c.Request.Context(), "CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL, status varchar(50) NOT NULL, date varchar(50), PRIMARY KEY (id) )")
 	if err != nil {
 		logrus.Errorf("Error while creating Table: %v", err)
 	}
@@ -88,23 +89,27 @@ func pushAttendanceData(c *gin.Context) {
 		logrus.Errorf("Error parsing the request body in JSON: %v", err)
 		return
 	}
-	insForm, err := db.Prepare("INSERT INTO Employee(id, status, date) VALUES(?,?,?)")
+	insForm, err := tx.Prepare("INSERT INTO Employee(id, status, date) VALUES(?,?,?)")
 
 	if err != nil {
 		logrus.Errorf("Cannot create db insertion command: %v", err)
 	}
 
-	insForm.Exec(request.ID, request.Status, request.Date)
+	insForm.ExecContext(c.Request.Context(), request.ID, request.Status, request.Date)
+	if err := tx.Commit(); err != nil {
+		logrus.Errorf("Cannot create db insertion command: %v", err)
+	}
 	defer db.Close()
 	logrus.Infof("Successfully pushed employee's attendance information")
 }
 
 func fetchAttendanceData(c *gin.Context) {
 	db, err := initDBConnection()
+	tx, err := db.BeginTx(c.Request.Context(), nil)
 	if err != nil {
 		logrus.Errorf("Error while creating sql connection for fetching attendance data: %v", err)
 	}
-	selDB, err := db.Query("SELECT * FROM Employee ORDER BY id DESC")
+	selDB, err := tx.QueryContext(c.Request.Context(), "SELECT * FROM Employee ORDER BY id DESC")
 
 	var attendanceInfo []AttendanceInfo
 
@@ -122,6 +127,9 @@ func fetchAttendanceData(c *gin.Context) {
 			Date:   date,
 		})
 	}
+	if err := tx.Commit(); err != nil {
+		logrus.Errorf("Cannot create db fetch command: %v", err)
+	}
 	c.JSON(http.StatusOK, attendanceInfo)
 }
 
@@ -131,13 +139,13 @@ func healthCheckMySQL(c *gin.Context) {
 		logrus.Errorf("Error while creating sql connection for fetching attendance data: %v", err)
 	}
 
-	defer db.Close()
-	err = db.Ping()
+	err = db.PingContext(c.Request.Context())
 	if err != nil {
 		logrus.Errorf("Unable to communicate with MySQL database: %v", err)
 		errorResponse(c, http.StatusBadRequest, "MySQL connection is not up")
 		return
 	}
+	defer db.Close()
 
 	c.JSON(http.StatusOK, gin.H{
 		"status":   "up",
