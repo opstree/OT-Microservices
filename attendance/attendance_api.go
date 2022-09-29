@@ -3,7 +3,10 @@ package main
 import (
 	"attendance/config"
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+// 	_ "github.com/go-sql-driver/mysql"
+    _ "go.elastic.co/apm/module/apmsql/v2/mysql"
+    "go.elastic.co/apm/module/apmsql/v2"
+	"go.elastic.co/apm/module/apmgin/v2"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -38,6 +41,7 @@ func main() {
 	logrus.Infof("employee-attendance api is listening on port: %v", conf.Attendance.APIPort)
 	logrus.Infof("Endpoint is available now - http://0.0.0.0:%v/create", conf.Attendance.APIPort)
 	router := gin.Default()
+	router.Use(apmgin.Middleware(router))
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
@@ -52,7 +56,7 @@ func initDBConnection() (*sql.DB, error) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for attendance: %v", err)
 	}
-	db, err := sql.Open(dbDriver, conf.MySQL.Username+":"+conf.MySQL.Password+"@tcp("+conf.MySQL.Host+")/"+conf.MySQL.DBName)
+	db, err := apmsql.Open(dbDriver, conf.MySQL.Username+":"+conf.MySQL.Password+"@tcp("+conf.MySQL.Host+")/"+conf.MySQL.DBName)
 	if err != nil {
 		return db, err
 	}
