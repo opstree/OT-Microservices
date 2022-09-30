@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"go.elastic.co/apm/module/apmgin/v2"
 
 	"encoding/json"
 	"io/ioutil"
@@ -65,6 +66,7 @@ func main() {
 	}
 	time.Sleep(time.Duration(waitTime) * time.Second)
 	router := gin.Default()
+	router.Use(apmgin.Middleware(router))
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
@@ -86,7 +88,7 @@ func fetchEmployeeSalary(c *gin.Context) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
-	data := elastic.SearchDataInElastic(conf, searchValue)
+	data := elastic.SearchDataInElastic(conf, searchValue, c.Request.Context())
 
 	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
 		empData, err := json.Marshal(parsedData.(map[string]interface{})["_source"])
@@ -112,7 +114,7 @@ func healthCheck(c *gin.Context) {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
 
-	status, err := elastic.CheckElasticHealth(conf)
+	status, err := elastic.CheckElasticHealth(conf, c.Request.Context())
 
 	if err != nil {
 		logrus.Errorf("Error while getting elasticsearch health: %v", err)

@@ -95,7 +95,7 @@ func indexExists(c conf.Configuration, index string) int {
 }
 
 // SearchDataInElastic will search data in elasticsearch
-func SearchDataInElastic(c conf.Configuration, Id string) map[string]interface{} {
+func SearchDataInElastic(c conf.Configuration, Id string, ctxReq context.Context) map[string]interface{} {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
@@ -114,7 +114,7 @@ func SearchDataInElastic(c conf.Configuration, Id string) map[string]interface{}
 	}
 	// Perform the search request.
 	res, err = es.Search(
-		es.Search.WithContext(context.Background()),
+		es.Search.WithContext(ctxReq),
 		es.Search.WithIndex(indexName),
 		es.Search.WithBody(&buf),
 		es.Search.WithTrackTotalHits(true),
@@ -181,16 +181,13 @@ func SearchALLDataInElastic(c conf.Configuration) map[string]interface{} {
 }
 
 // CheckElasticHealth is a method to check elasticsearch health
-func CheckElasticHealth(c conf.Configuration) (bool, error) {
+func CheckElasticHealth(c conf.Configuration, ctxReq context.Context) (bool, error) {
 	es, err := generateElasticClient(c)
 	if err != nil {
 		logrus.Errorf("Unable to create client connection with elastic: %v", err)
 	}
 
-	_, err = es.Info()
-	if err != nil {
-		return false, err
-	}
+	_ = es.Info.WithContext(ctxReq)
 
 	return true, nil
 }

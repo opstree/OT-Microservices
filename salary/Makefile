@@ -1,5 +1,10 @@
+VERSION := v3.0
+IMG := opstree/empms-salary:$(VERSION)
 build:
 	go build
 
 image:
-	docker build -t opstree/empms-salary:1.0 -f Dockerfile .
+	docker build -t ${IMG} -f Dockerfile .
+
+push:
+	docker push ${IMG}

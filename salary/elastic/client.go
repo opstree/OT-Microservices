@@ -2,6 +2,8 @@ package elastic
 
 import (
 	"github.com/elastic/go-elasticsearch/v8"
+	"go.elastic.co/apm/module/apmelasticsearch/v2"
+	"net/http"
 	"salary/config"
 )
 
@@ -14,6 +16,7 @@ func generateElasticClient(conf config.Configuration) (*elasticsearch.Client, er
 		Password:      conf.Elasticsearch.Password,
 		MaxRetries:    15,
 		RetryOnStatus: []int{502, 503, 504, 429},
+		Transport:     apmelasticsearch.WrapRoundTripper(http.DefaultTransport),
 	}
 	es, err := elasticsearch.NewClient(cfg)
 	if err != nil {
