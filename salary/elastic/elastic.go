@@ -143,7 +143,7 @@ func SearchDataInElastic(c conf.Configuration, Id string, ctxReq context.Context
 }
 
 // SearchALLDataInElastic will search all data in elasticsearch
-func SearchALLDataInElastic(c conf.Configuration) map[string]interface{} {
+func SearchALLDataInElastic(c conf.Configuration, ctxReq context.Context) map[string]interface{} {
 	var buf bytes.Buffer
 	es, err := generateElasticClient(c)
 
@@ -152,7 +152,7 @@ func SearchALLDataInElastic(c conf.Configuration) map[string]interface{} {
 	}
 	// Perform the search request.
 	res, err = es.Search(
-		es.Search.WithContext(context.Background()),
+		es.Search.WithContext(ctxReq),
 		es.Search.WithIndex(indexName),
 		es.Search.WithBody(&buf),
 		es.Search.WithTrackTotalHits(true),

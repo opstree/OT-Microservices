@@ -72,6 +72,7 @@ func main() {
 	router.Use(cors.New(config))
 	router.POST("/salary/configure/liveness", configureLiveness)
 	router.GET("/salary/search", fetchEmployeeSalary)
+	router.GET("/salary/search/all", fetchALLSalaryData)
 	router.GET("/salary/healthz", healthCheck)
 	router.Run(":" + conf.Salary.APIPort)
 }
@@ -105,6 +106,27 @@ func fetchEmployeeSalary(c *gin.Context) {
 		Month:  time.Now().UTC().Format("Jan"),
 	}
 	c.JSON(http.StatusOK, salaryData)
+}
+
+func fetchALLSalaryData(c *gin.Context) {
+	conf, err := config.ParseFile(configFile)
+	if err != nil {
+		logrus.Errorf("Unable to parse configuration file for management: %v", err)
+	}
+	data := elastic.SearchALLDataInElastic(conf, c.Request.Context())
+
+	var salaryInfo []SalaryInfo
+	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		response := &SalaryInfo{}
+		salData, err := json.Marshal(parsedData.(map[string]interface{})["_source"])
+		if err != nil {
+			logrus.Errorf("Unable to marshal response JSON: %v", err)
+		}
+		json.Unmarshal(salData, &response)
+		salaryInfo = append(salaryInfo, *response)
+	}
+	logrus.Infof("Successfully fetched all salary's information")
+	c.JSON(http.StatusOK, salaryInfo)
 }
 
 func healthCheck(c *gin.Context) {
