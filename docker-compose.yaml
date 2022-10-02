@@ -22,6 +22,36 @@ services:
     networks:
       - ot-microservices
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.6
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_HOSTS: '["http://empms-es:9200"]'
+      ELASTICSEARCH_USERNAME: "elastic"
+      ELASTICSEARCH_PASSWORD: "elastic"
+    depends_on:
+      - empms-es
+    networks:
+      - ot-microservices
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.17.6
+    ports:
+      - 8200:8200
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E apm-server.host=0.0.0.0:8200
+        -E setup.kibana.host=kibana:5601
+        -E output.elasticsearch.hosts=["empms-es:9200"]
+        -E output.elasticsearch.username=elastic
+        -E output.elasticsearch.password=elastic
+    depends_on:
+      - empms-es
+    networks:
+      - ot-microservices
+
   empms-db:
     build:
       context: mysql/
@@ -45,6 +75,8 @@ services:
         read_only: true
     environment:
       CONFIG_FILE: "/app/config.yaml"
+      ELASTIC_APM_SERVICE_NAME: "attendance"
+      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
     networks:
       - ot-microservices
     depends_on:
@@ -54,32 +86,13 @@ services:
     build:
       context: salary/
     ports:
-      - "8082:8082"
-    volumes:
-      - type: bind
-        source: ./salary/config.yaml
-        target: /app/config.yaml
-        read_only: true
+      - "8080:8080"
     environment:
-      CONFIG_FILE: "/app/config.yaml"
-    networks:
-      - ot-microservices
-    depends_on:
-      - empms-es
-
-  empms-notification:
-    build:
-      context: notification/
-    environment:
-      FROM: "${FROM}"
-      SMTP_USERNAME: "${SMTP_USERNAME}"
-      SMTP_PASSWORD: "${SMTP_PASSWORD}"
-      SMTP_SERVER: "${SMTP_SERVER}"
-      SMTP_PORT: "${SMTP_PORT}"
-      ELASTIC_USERNAME: "elastic"
-      ELASTIC_PASSWORD: "elastic"
-      ELASTIC_HOST: "elastic"
-      ELASTIC_PORT: 9200
+      ELASTIC_APM_SERVICE_NAME: "salary"
+      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
+      SPRING_ELASTICSEARCH_REST_URIS: "empms-es:9200"
+      SPRING_ELASTICSEARCH_REST_USERNAME: elastic
+      SPRING_ELASTICSEARCH_REST_PASSWORD: elastic
     networks:
       - ot-microservices
     depends_on:
@@ -97,23 +110,12 @@ services:
         read_only: true
     environment:
       CONFIG_FILE: "/app/config.yaml"
+      ELASTIC_APM_SERVICE_NAME: "employee"
+      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
     networks:
       - ot-microservices
     depends_on:
       - empms-es
-
-  empms-gateway:
-    build:
-      context: gateway/
-    ports:
-      - "8080:8080"
-    networks:
-      - ot-microservices
-    depends_on:
-      - empms-attendance
-      - empms-salary
-      - empms-employee
-      - empms-notification
 
   empms-frontend:
     build:
@@ -122,8 +124,6 @@ services:
       - "5000:5000"
     networks:
       - ot-microservices
-    depends_on:
-      - empms-gateway
 
   empms-webserver:
     build:

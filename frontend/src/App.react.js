@@ -15,7 +15,7 @@ import "tabler-react/dist/Tabler.css";
 type Props = {||};
 
 initApm({
-  serverUrl: "http://apm.monitoring.opstree.com",
+  serverUrl: "http://apm-server:8200",
   serviceName: "frontend",
 });
 
