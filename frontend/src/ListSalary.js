@@ -40,7 +40,7 @@ class ListSalary extends React.Component {
                     <Table.Row>
                         <Table.Col>{item.id}</Table.Col>
                         <Table.Col>{item.name}</Table.Col>
-                        <Table.Col>{item.salary}</Table.Col>
+                        <Table.Col>{item.annual_package}</Table.Col>
                     </Table.Row>
                 );
                 })

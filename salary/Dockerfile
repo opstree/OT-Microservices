@@ -1,16 +1,16 @@
-FROM golang:latest as builder
-MAINTAINER OpsTree Solutions
-COPY ./ /go/src/salary/
-WORKDIR /go/src/salary
-RUN go get -v -t -d ./... \
-    && go build -o salary
+FROM maven:latest as builder
+MAINTAINER Opstree Solutions
+WORKDIR /java/
+COPY pom.xml /java/
+COPY src /java/src/
+RUN mvn clean package
 
 FROM alpine:latest
-MAINTAINER OpsTree Solutions
-WORKDIR /app
-RUN apk add --no-cache libc6-compat curl
-COPY --from=builder /go/src/salary/salary /app/
-COPY config.yaml /app/config.yaml
-ENV CONFIG_FILE "/app/config.yaml"
-EXPOSE 8082
-ENTRYPOINT ["./salary"]
+MAINTAINER Opstree Solutions
+USER root
+RUN apk update && \
+    apk add openjdk17
+
+COPY --from=builder /java/target/salary-0.3.0-RELEASE.jar /app/salary.jar
+EXPOSE 8080
+ENTRYPOINT ["/usr/bin/java", "-jar", "/app/salary.jar"]
