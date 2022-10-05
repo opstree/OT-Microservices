@@ -1,0 +1,5 @@
+pymysql
+pyyaml
+elastic-apm[flask]
+flask
+cryptography

@@ -2,8 +2,7 @@ attendance:
   api_port: "8081"
 
 mysql:
-  enabled: true
   db_name: "attendancedb"
-  host: "empms-db:3306"
+  host: "172.17.0.3"
   username: root
   password: password
