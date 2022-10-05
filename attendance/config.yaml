@@ -3,6 +3,6 @@ attendance:
 
 mysql:
   db_name: "attendance_db"
-  host: "empms-db"
+  host: "192.168.0.2"
   username: root
   password: password
