@@ -17,6 +17,7 @@ type Props = {||};
 initApm({
   serverUrl: "http://apm-server:8200",
   serviceName: "frontend"
+//  distributedTracingOrigins: "http://"
 });
 
 function App(props: Props): React.Node {
@@ -29,7 +30,7 @@ function App(props: Props): React.Node {
           <ApmRoute exact path="/employee-list" component={EmployeeList} />
           <ApmRoute exact path="/attendance-add" component={AttendanceForm} />
           <ApmRoute exact path="/attendance-list" component={ListAttendance} />
-          <ApmRoute exact path="/salary" component={ListSalary} />
+          <ApmRoute exact path="/salary-list" component={ListSalary} />
         </Switch>
       </Router>
     </React.Fragment>

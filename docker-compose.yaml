@@ -28,7 +28,7 @@ services:
       - 5601:5601
     environment:
       ELASTICSEARCH_HOSTS: '["http://empms-es:9200"]'
-      ELASTICSEARCH_SERVICEACCOUNTTOKEN: AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYTpOZ3FHa1NxSlNoNmJnN29sS1g2Ukx3
+      ELASTICSEARCH_SERVICEACCOUNTTOKEN: AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYToxa0pGUEs3WVRINmQwaG5JZ29NN21n
     depends_on:
       - empms-es
     networks:
@@ -42,6 +42,7 @@ services:
       apm-server -e
         -E apm-server.rum.enabled=true
         -E apm-server.host=0.0.0.0:8200
+        -E apm-server.rum.allow_origins=["*"]
         -E setup.kibana.host=kibana:5601
         -E output.elasticsearch.hosts=["empms-es:9200"]
         -E output.elasticsearch.username=elastic
@@ -56,6 +57,10 @@ services:
       context: mysql/
     ports:
       - "3306:3306"
+    volumes:
+      - type: volume
+        source: mysql
+        target: /var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "password"
       MYSQL_DATABASE: "attendance_db"
@@ -65,6 +70,9 @@ services:
   empms-attendance:
     build:
       context: attendance/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.empms-attendance.rule=Host(`ot-microservices.opstree.com`) && PathPrefix(`/attendance/`)"
     volumes:
       - type: bind
         source: ./attendance/config.yaml
@@ -82,6 +90,9 @@ services:
   empms-salary:
     build:
       context: salary/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.empms-salary.rule=Host(`ot-microservices.opstree.com`) && PathPrefix(`/salary/`)"
     environment:
       ELASTIC_APM_SERVICE_NAME: "salary"
       ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
@@ -96,8 +107,9 @@ services:
   empms-employee:
     build:
       context: employee/
-    ports:
-      - "8083:8083"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.empms-employee.rule=Host(`ot-microservices.opstree.com`) && PathPrefix(`/employee/`)"
     volumes:
       - type: bind
         source: ./employee/config.yaml
@@ -115,23 +127,32 @@ services:
   empms-frontend:
     build:
       context: frontend/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.empms-frontend.rule=Host(`ot-microservices.opstree.com`) && PathPrefix(`/`)"
+      - "traefik.http.services.empms-frontend.loadbalancer.server.port=3000"
     networks:
       - ot-microservices
 
-  empms-webserver:
-    build:
-      context: webserver/
-    volumes:
-      - type: bind
-        source: ./webserver/nginx.conf
-        target: /etc/nginx/nginx.conf
-        read_only: true
+  empms-traefik:
+    image: traefik:v2.9
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+      - "--providers.docker.exposedbydefault=false"
     ports:
-      - "80:80"
-    networks:
-      - ot-microservices
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - empms-frontend
+      - empms-attendance
+      - empms-salary
+      - empms-employee
+    networks:
+      - ot-microservices
 
 networks:
   ot-microservices:
@@ -139,3 +160,4 @@ networks:
 
 volumes:
   elasticsearch:
+  mysql:
