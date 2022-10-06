@@ -1,6 +1,7 @@
 import react, * as React from "react";
 import { Page, Grid, Table, Button } from "tabler-react";
 import SiteWrapper from "./SiteWrapper.react";
+import { withTransaction } from '@elastic/apm-rum-react';
 
 class ListEmployee extends React.Component {
 	constructor(props) {
@@ -59,4 +60,5 @@ class ListEmployee extends React.Component {
   }
 }
 
-export default ListEmployee
+//export default ListEmployee
+export default withTransaction('ListEmployee', 'component')(ListEmployee)

@@ -16,7 +16,7 @@ type Props = {||};
 
 initApm({
   serverUrl: "http://apm-server:8200",
-  serviceName: "frontend",
+  serviceName: "frontend"
 });
 
 function App(props: Props): React.Node {
