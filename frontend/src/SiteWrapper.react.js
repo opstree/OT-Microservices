@@ -127,7 +127,7 @@ class SiteWrapper extends React.Component<Props, State> {
         headerProps={{
           href: "/",
           alt: "",
-          imageURL: "https://vectr.com/tmp/b7azJri65/c2qJDS7TO8.svg?width=203&height=41&select=d5G0RcsXD&source=selection",
+          imageURL: "https://www.buildpiper.io/wp-content/uploads/2022/05/logo_black.png",
           navItems: (
             <Nav.Item type="div" className="d-none d-md-flex">
             </Nav.Item>

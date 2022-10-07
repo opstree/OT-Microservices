@@ -1,6 +1,6 @@
 # Salary
 
-Salary is also a golang based application which creates and manages employee's salary information.
+Salary is also a java based application which creates and manages employee's salary information.
 
 ## Database
 
@@ -10,34 +10,22 @@ Salary is also a golang based application which creates and manages employee's s
 
 The available endpoints for this application are:-
 
-|**ENDPOINT**|**REQUEST TYPE**|**DESCRIPTION**|
-|------------|----------------|---------------|
-| `/salary/search` | GET | search will fetches the salary of a user based on URL query. |
-| `/salary/healthz` | GET | healthz will check the DB connectivity and return the status of application that whether it can serve the requests or not. |
-| `/salary/configure/liveness` | POST | configure/liveness healthcheck will slow the response of healthcheck to simulate liveness in Kubernetes |
+| **ENDPOINT**                 | **REQUEST TYPE** | **DESCRIPTION**                                                                                                            |
+|------------------------------|------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `/salary/search/all`         | GET              | search will fetches the salary of all users.                                                                               |
+| `/salary/healthz`            | GET              | healthz will check the DB connectivity and return the status of application that whether it can serve the requests or not. |
 
 ## Environment Variable
 
-|**ENVIRONMENT VARIABLE**|**DESCRIPTION**|
-|------------------------|---------------|
-| CONFIG_FILE | Path of configuration file |
-| DELAY_TIME | This will delay the bootup time of the application to simulate readiness in Kubernetes |
+| **ENVIRONMENT VARIABLE**            | **DESCRIPTION**                                  |
+|-------------------------------------|--------------------------------------------------|
+| ELASTIC_APM_SERVICE_NAME            | Service name of elastic APM configuration        |
+| ELASTIC_APM_SERVER_URL              | APM service URL for sending metrics and insights |
+| SPRING_ELASTICSEARCH_REST_URIS      | URL for elasticsearch database for interaction   |
+| SPRING_ELASTICSEARCH_REST_USERNAME  | Username for elasticsearch database              |
+| SPRING_ELASTICSEARCH_REST_PASSWORD  | Password for elasticsearch database              |
 
 ## Quickstart
-
-```yaml
----
-# elasticsearch connection details
-elasticsearch:
-  enabled: true
-  host: http://elastic:9200
-  username: elastic
-  password: elastic
-
-# Salary application api port
-salary:
-  api_port: "8082"
-```
 
 ```shell
 # For compiling code
@@ -46,8 +34,7 @@ make build
 
 ```shell
 # For running code locally
-export CONFIG_FILE=/path/to/config.yaml
-./salary
+java -jar target/salary.jar
 ```
 
 ```shell

@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"go.elastic.co/apm/module/apmgin/v2"
 
 	"encoding/json"
 	"net/http"
@@ -43,7 +44,11 @@ func main() {
 	logrus.Infof("Endpoint is available now - http://0.0.0.0:%v", conf.Employee.APIPort)
 	router := gin.Default()
 	config := cors.DefaultConfig()
+	router.Use(apmgin.Middleware(router))
 	config.AllowOrigins = []string{"*"}
+	config.AllowMethods = []string{"*"}
+	config.AllowHeaders = []string{"*"}
+	config.AllowCredentials = true
 	router.Use(cors.New(config))
 	router.POST("/employee/create", pushEmployeeData)
 	router.GET("/employee/search", fetchEmployeeData)
@@ -79,7 +84,7 @@ func pushEmployeeData(c *gin.Context) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
-	elastic.PostDataInSearch(conf, request.ID, info)
+	elastic.PostDataInSearch(conf, request.ID, info, c.Request.Context())
 	logrus.Infof("Successfully pushed employee's data to elasticsearch")
 }
 
@@ -95,7 +100,7 @@ func fetchEmployeeData(c *gin.Context) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
-	data := elastic.SearchDataInElastic(conf, searchValue)
+	data := elastic.SearchDataInElastic(conf, searchValue, c.Request.Context())
 
 	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
 		empData, err := json.Marshal(parsedData.(map[string]interface{})["_source"])
@@ -113,7 +118,7 @@ func fetchALLEmployeeData(c *gin.Context) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
-	data := elastic.SearchALLDataInElastic(conf)
+	data := elastic.SearchALLDataInElastic(conf, c.Request.Context())
 
 	var employeeInfo []EmployeeInfo
 	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
@@ -134,7 +139,7 @@ func fetchEmployeeRoles(c *gin.Context) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
-	data := elastic.SearchALLDataInElastic(conf)
+	data := elastic.SearchALLDataInElastic(conf, c.Request.Context())
 
 	var employeeInfo []EmployeeInfo
 	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
@@ -165,7 +170,7 @@ func fetchEmployeeLocation(c *gin.Context) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
-	data := elastic.SearchALLDataInElastic(conf)
+	data := elastic.SearchALLDataInElastic(conf, c.Request.Context())
 
 	var employeeInfo []EmployeeInfo
 	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
@@ -196,7 +201,7 @@ func fetchEmployeeStatus(c *gin.Context) {
 	if err != nil {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
-	data := elastic.SearchALLDataInElastic(conf)
+	data := elastic.SearchALLDataInElastic(conf, c.Request.Context())
 
 	var employeeInfo []EmployeeInfo
 	for _, parsedData := range data["hits"].(map[string]interface{})["hits"].([]interface{}) {
@@ -228,7 +233,7 @@ func healthCheck(c *gin.Context) {
 		logrus.Errorf("Unable to parse configuration file for management: %v", err)
 	}
 
-	status, err := elastic.CheckElasticHealth(conf)
+	status, err := elastic.CheckElasticHealth(conf, c.Request.Context())
 
 	if err != nil {
 		logrus.Errorf("Error while getting elasticsearch health: %v", err)

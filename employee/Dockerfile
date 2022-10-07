@@ -1,4 +1,4 @@
-FROM golang:latest as builder
+FROM golang:1.18 as builder
 MAINTAINER OpsTree Solutions
 COPY ./ /go/src/employee
 WORKDIR /go/src/employee

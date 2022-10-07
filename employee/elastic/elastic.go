@@ -20,7 +20,7 @@ var (
 )
 
 // PostDataInSearch method will push data to elasticsearch
-func PostDataInSearch(c conf.Configuration, id string, data interface{}) {
+func PostDataInSearch(c conf.Configuration, id string, data interface{}, ctxReq context.Context) {
 	esClient, err := generateElasticClient(c)
 	if err != nil {
 		logrus.Errorf("Unable to create client connection with elasticsearch: %v", err)
@@ -46,20 +46,20 @@ func PostDataInSearch(c conf.Configuration, id string, data interface{}) {
 		}
 	}
 
-	putDataInSearch(data, bulkIndexer, id)
-	if err := bulkIndexer.Close(context.Background()); err != nil {
+	putDataInSearch(data, bulkIndexer, id, ctxReq)
+	if err := bulkIndexer.Close(ctxReq); err != nil {
 		logrus.Errorf("Unexpected error: While closing bulk indexing: %v", err)
 	}
 	logrus.Infof("Successfully pushed employee's information in elasticsearch")
 }
 
-func putDataInSearch(jsonData interface{}, bulkIndexer esutil.BulkIndexer, id string) {
+func putDataInSearch(jsonData interface{}, bulkIndexer esutil.BulkIndexer, id string, ctxReq context.Context) {
 	data, err := json.Marshal(jsonData)
 	if err != nil {
 		logrus.Errorf("Cannot marshal data into JSON: %v", err)
 	}
 	err = bulkIndexer.Add(
-		context.Background(),
+		ctxReq,
 		esutil.BulkIndexerItem{
 			Action:     "index",
 			DocumentID: id,
@@ -95,7 +95,7 @@ func indexExists(c conf.Configuration, index string) int {
 }
 
 // SearchDataInElastic will search data in elasticsearch
-func SearchDataInElastic(c conf.Configuration, Id string) map[string]interface{} {
+func SearchDataInElastic(c conf.Configuration, Id string, ctxReq context.Context) map[string]interface{} {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
@@ -114,7 +114,7 @@ func SearchDataInElastic(c conf.Configuration, Id string) map[string]interface{}
 	}
 	// Perform the search request.
 	res, err = es.Search(
-		es.Search.WithContext(context.Background()),
+		es.Search.WithContext(ctxReq),
 		es.Search.WithIndex(indexName),
 		es.Search.WithBody(&buf),
 		es.Search.WithTrackTotalHits(true),
@@ -143,7 +143,7 @@ func SearchDataInElastic(c conf.Configuration, Id string) map[string]interface{}
 }
 
 // SearchALLDataInElastic will search all data in elasticsearch
-func SearchALLDataInElastic(c conf.Configuration) map[string]interface{} {
+func SearchALLDataInElastic(c conf.Configuration, ctxReq context.Context) map[string]interface{} {
 	var buf bytes.Buffer
 	es, err := generateElasticClient(c)
 
@@ -152,7 +152,7 @@ func SearchALLDataInElastic(c conf.Configuration) map[string]interface{} {
 	}
 	// Perform the search request.
 	res, err = es.Search(
-		es.Search.WithContext(context.Background()),
+		es.Search.WithContext(ctxReq),
 		es.Search.WithIndex(indexName),
 		es.Search.WithBody(&buf),
 		es.Search.WithTrackTotalHits(true),
@@ -181,16 +181,13 @@ func SearchALLDataInElastic(c conf.Configuration) map[string]interface{} {
 }
 
 // CheckElasticHealth is a method to check elasticsearch health
-func CheckElasticHealth(c conf.Configuration) (bool, error) {
+func CheckElasticHealth(c conf.Configuration, ctxReq context.Context) (bool, error) {
 	es, err := generateElasticClient(c)
 	if err != nil {
 		logrus.Errorf("Unable to create client connection with elastic: %v", err)
 	}
 
-	_, err = es.Info()
-	if err != nil {
-		return false, err
-	}
+	_ = es.Info.WithContext(ctxReq)
 
 	return true, nil
 }

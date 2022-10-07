@@ -1,16 +1,14 @@
-FROM golang:1.18 as builder
+FROM python:latest
 MAINTAINER OpsTree Solutions
-COPY . /go/src/attendance
-WORKDIR /go/src/attendance
-RUN go get -v -t -d ./... \
-    && go build -o attendance
+LABEL application="attendance" \
+      stack="OT-Microservices"
 
-FROM alpine:latest
-MAINTAINER OpsTree Solutions
-WORKDIR /app
-RUN apk add --no-cache libc6-compat curl
-COPY --from=builder /go/src/attendance/attendance /app/
-COPY config.yaml /app/config.yaml
-ENV CONFIG_FILE "/app/config.yaml"
+WORKDIR /attendance/
+COPY requirements.txt /attendance/
+RUN pip3 install -r requirements.txt
+
+COPY attendance_api.py /attendance/
+COPY config.yaml /app/config/config.yaml
 EXPOSE 8081
-ENTRYPOINT ["./attendance"]
+ENTRYPOINT ["gunicorn"]
+CMD ["--bind", "0.0.0.0:8081", "attendance_api:app"]
