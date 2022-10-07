@@ -46,6 +46,9 @@ func main() {
 	config := cors.DefaultConfig()
 	router.Use(apmgin.Middleware(router))
 	config.AllowOrigins = []string{"*"}
+	config.AllowMethods = []string{"*"}
+	config.AllowHeaders = []string{"*"}
+	config.AllowCredentials = true
 	router.Use(cors.New(config))
 	router.POST("/employee/create", pushEmployeeData)
 	router.GET("/employee/search", fetchEmployeeData)
