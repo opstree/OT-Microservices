@@ -1,8 +1,0 @@
-attendance:
-  api_port: "8081"
-
-mysql:
-  db_name: "attendance_db"
-  host: "192.168.160.3"
-  username: root
-  password: password

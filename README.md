@@ -1,74 +1,42 @@
-<div align="center">
-  <img src="./static/logo.svg" height="249" width="255">
-  <h1>OT-Microservices</h1>
-</div>
+# Salary
 
-A loaded microservice applications for doing different kinds of POC. This is a sample Employee System which is designed to understand the microservices nature and behaviour.
+Salary is also a java based application which creates and manages employee's salary information.
 
-## Purpose
+## Database
 
-The purpose of creating this application is to provide an individual, a holistic idea of microservice architecture, it's working, and its setup.
+- [Elasticsearch](../elasticsearch) => Salary application stores information in easticsearch
 
-## Applications
+## Endpoints
 
-These are few microservices which are getting used in this complete project.
+The available endpoints for this application are:-
 
-| **Application Name**           | **Default Port** | **Dependency**                | **Language**                                                                                                                                          | **Description**                                                                                       |
-|--------------------------------|------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| [attendance](./attendance)     | 8081             | MySQL                         | <img src="https://cdn.worldvectorlogo.com/logos/python-5.svg" height="32" width="32">                                                                 | Attendance is a microservice which is designed in Golang to manage employee's attendance information. |
-| [employee](./employee)         | 8083             | Elasticsearch                 | <img src="https://cdn.worldvectorlogo.com/logos/gopher.svg" height="32" width="32">                                                                   | Employee microservice is also designed in Golang to manage employee's information.                    |
-| [salary](./salary)             | 8080             | Elasticsearch                 | <img src="https://cdn.worldvectorlogo.com/logos/java.svg" height="32" width="32">                                                                     | Salary is also a golang based application which creates and manages employee's salary information.    |
-| [notification](./notification) | -                | SMTP Server                   | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png" height="32" width="32"> | Notification is a scheduled service which gets used to send mail notifications to employees.          |
-| [frontend](./frontend)         | 3000             | attendance, employeee, salary | <img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" height="32" width="32">                                                         | Frontend is written in ReactJS and gets served using proxy.                                           |
-| [traefik]()                    | 80               | frontend                      | <img src="https://cdn.worldvectorlogo.com/logos/gopher.svg" height="32" width="32">                                                                   | Webserver is a traefik based proxy which proxies the frontend application.                            |
+| **ENDPOINT**                 | **REQUEST TYPE** | **DESCRIPTION**                                                                                                            |
+|------------------------------|------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `/salary/search/all`         | GET              | search will fetches the salary of all users.                                                                               |
+| `/salary/healthz`            | GET              | healthz will check the DB connectivity and return the status of application that whether it can serve the requests or not. |
 
-For further information about the component you can click on the application.
+## Environment Variable
 
-## Databases
-
-These applications are using two kinds of databases, one is structured and other is non-structured.
-
-| **Application Name** | **Default Port** | **Dependency** | **Description**                                                                                               |
-|----------------------|------------------|----------------|---------------------------------------------------------------------------------------------------------------|
-| [elastic](./elastic) | 9200             | -              | Elasticsearch is being used as non-structured database which manages the employee's information and salary.   |
-| [mysql](./mysql)     | 3306             | -              | MySQL is getting used for structured database which manages the employee's attendance information.            |
-
-For further information, click on the DB.
-
-## Architecture
-
-The architecture of the complete microservice interaction looks like this:-
-
-<div align="center">
-  <img src="./static/architecture.png">
-</div>
-
-## Screenshot
-
-<div align="center">
-  <img src="./static/frontend.png">
-</div>
+| **ENVIRONMENT VARIABLE**            | **DESCRIPTION**                                  |
+|-------------------------------------|--------------------------------------------------|
+| ELASTIC_APM_SERVICE_NAME            | Service name of elastic APM configuration        |
+| ELASTIC_APM_SERVER_URL              | APM service URL for sending metrics and insights |
+| SPRING_ELASTICSEARCH_REST_URIS      | URL for elasticsearch database for interaction   |
+| SPRING_ELASTICSEARCH_REST_USERNAME  | Username for elasticsearch database              |
+| SPRING_ELASTICSEARCH_REST_PASSWORD  | Password for elasticsearch database              |
 
 ## Quickstart
 
-The quickstart of application can be started using `docker` and `docker-compose`. We can use simple `docker-compose` command to build the images and start the setup.
-
 ```shell
-# To build the all images of ot-microservices
-make build-images
-
-# To start the setup locally
-make setup
+# For compiling code
+make build
 ```
 
-For further details checkout [GETTING_STARTED](./GETTING_STARTED.md)
+```shell
+# For running code locally
+java -jar target/salary.jar
+```
 
-## Release History
-
-Please see our [CHNANGELOG.md](./CHNANGELOG.md) for details.
-
-## Contact
-
-If you have any suggestion or query. Contact us at
-
-opensource@opstree.com
+```shell
+make image
+```
