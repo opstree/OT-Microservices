@@ -40,5 +40,5 @@ java -jar target/salary.jar
 ```shell
 make image
 ```
-`hi``
+`hi``hello
 ```
