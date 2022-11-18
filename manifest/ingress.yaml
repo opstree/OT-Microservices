@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: airport-cab-service
+spec:
+  selector:
+    app: spring-test-app
+  ports:
+    - protocol: "TCP"
+      port: 89
+      targetPort: 8995
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airport-cab-deploy 
+spec:
+  selector:
+    matchLabels:
+      app: spring-test-app
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        app: spring-test-app
+    spec:
+      containers:
+        - name: airport-cab 
+          image: dogra21703/bookairports:3
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8995
