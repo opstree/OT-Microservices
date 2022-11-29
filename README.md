@@ -27,26 +27,4 @@ The available endpoints for this application are:-
 
 ## Quickstart
 
-```shell
-# For compiling code
-make build
-```
 
-```shell
-# For running code locally
-java -jar target/salary.jar
-```
-
-```shell
-make image
-```
-`hi``hello
-```
-kk
-hi hello-----11111
-kk
-
-kkjjjkkkjjj77777888888
-ghjkhgsfdfgvcdgvdchgvgvghcvcdvgdcyd
-edfghjhgtrtyuikjhgf
-ffggghhhhhh
