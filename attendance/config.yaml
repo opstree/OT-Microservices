@@ -3,6 +3,6 @@ attendance:
 
 mysql:
   db_name: "attendance_db"
-  host: "192.168.160.3"
+  host: "172.19.0.2"
   username: root
   password: password

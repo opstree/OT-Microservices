@@ -34,6 +34,24 @@ services:
     networks:
       - ot-microservices
 
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:8.4.3
+    ports:
+      - 8200:8200
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E apm-server.host=0.0.0.0:8200
+        -E apm-server.rum.allow_origins=["*"]
+        -E setup.kibana.host=kibana:5601
+        -E output.elasticsearch.hosts=["empms-es:9200"]
+        -E output.elasticsearch.username=elastic
+        -E output.elasticsearch.password=elastic
+    depends_on:
+      - empms-es
+    networks:
+      - ot-microservices
+
   empms-db:
     build:
       context: mysql/
@@ -62,9 +80,8 @@ services:
         read_only: true
     environment:
       CONFIG_FILE: "/app/config.yaml"
-#      ELASTIC_APM_SERVICE_NAME: "attendance"
-#      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
-      ELASTIC_APM_ENABLED: "false"
+      ELASTIC_APM_SERVICE_NAME: "attendance"
+      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
     networks:
       - ot-microservices
     depends_on:
@@ -77,12 +94,11 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.empms-salary.rule=Host(`ot-microservices.opstree.com`) && PathPrefix(`/salary/`)"
     environment:
-#      ELASTIC_APM_SERVICE_NAME: "salary"
-#      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
+      ELASTIC_APM_SERVICE_NAME: "salary"
+      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
       SPRING_ELASTICSEARCH_REST_URIS: "empms-es:9200"
       SPRING_ELASTICSEARCH_REST_USERNAME: elastic
       SPRING_ELASTICSEARCH_REST_PASSWORD: elastic
-      ELASTIC_APM_ENABLED: "false"
     networks:
       - ot-microservices
     depends_on:
@@ -101,9 +117,8 @@ services:
         read_only: true
     environment:
       CONFIG_FILE: "/app/config.yaml"
-#      ELASTIC_APM_SERVICE_NAME: "employee"
-#      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
-      ELASTIC_APM_ENABLED: "false"
+      ELASTIC_APM_SERVICE_NAME: "employee"
+      ELASTIC_APM_SERVER_URL: "http://apm-server:8200"
     networks:
       - ot-microservices
     depends_on:
