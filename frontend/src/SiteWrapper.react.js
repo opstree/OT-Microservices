@@ -73,7 +73,7 @@ const navBarItems: Array<navItem> = [
   },
   {
     value: "Salary",
-    to: "/salary",
+    to: "/salary-list",
     icon: "dollar-sign",
     LinkComponent: withRouter(NavLink),
   },
