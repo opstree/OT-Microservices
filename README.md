@@ -26,5 +26,3 @@ The available endpoints for this application are:-
 | SPRING_ELASTICSEARCH_REST_PASSWORD  | Password for elasticsearch database              |
 
 ## Quickstartddd
-
-qqqqqqaas;;
