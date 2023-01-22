@@ -4,7 +4,7 @@ Salary is also a java based application which creates and manages employee's sal
 
 ## Database
 
-- [Elasticsearch](../elasticsearch) => Salary application stores information in easticsearch
+- [Elasticsearch]](../elasticsearch) => Salary application stores information in easticsearch
 
 ## Endpoints
 
