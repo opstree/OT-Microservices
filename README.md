@@ -8,7 +8,7 @@ Salary is also a java based application which creates and manages employee's sal
 
 ## Endpoints
 
-The available endpoints for this application are:-
+The available endpoints for this application are:---
 
 | **ENDPOINT**                 | **REQUEST TYPE** | **DESCRIPTION**                                                                                                            |
 |------------------------------|------------------|----------------------------------------------------------------------------------------------------------------------------|
