@@ -10,7 +10,7 @@ Salary is also a java based application which creates and manages employee's sal
 
 The available endpoints for this application are:---
 
-| **ENDPOINT***                | **REQUEST TYPE** | **DESCRIPTION**                                                                                                            |
+| **ENDPOINT*** 222               | **REQUEST TYPE** | **DESCRIPTION**                                                                                                            |
 |------------------------------|------------------|----------------------------------------------------------------------------------------------------------------------------|
 | `/salary/search/all`         | GET              | search will fetches the salary of all users.                                                                               |
 | `/salary/healthz`            | GET              | healthz will check the DB connectivity and return the status of application that whether it can serve the requests or not. |
