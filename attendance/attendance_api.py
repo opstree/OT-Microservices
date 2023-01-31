@@ -42,17 +42,11 @@ app.config['MYSQL_USERNAME'] = config_properties['mysql']['username']
 app.config['MYSQL_PASSWORD'] = config_properties['mysql']['password']
 app.config['MYSQL_DATABASE'] = config_properties['mysql']['db_name']
 
-connection = mysql.connector.connect(
-    host=app.config['MYSQL_HOST'],
-    user=app.config['MYSQL_USERNAME'],
-    passwd=app.config['MYSQL_PASSWORD'],
-    database=app.config['MYSQL_DATABASE']
-)
-
 @app.route("/attendance/healthz", methods=['GET'])
 def check_health():
     """Method for checking the health of MySQL"""
     try:
+        connection = create_mysql_client()
         connection.ping()
         return jsonify(mysql="up", description="MySQL is healthy"), 200
     except:
@@ -64,6 +58,7 @@ def push_attendance_data():
     """For pushing attendance data inside MySQL Database"""
     record = json.loads(request.data)
     try:
+        connection = create_mysql_client()
         cursor = connection.cursor()
         sql = "CREATE TABLE IF NOT EXISTS Employee ( id int(6) NOT NULL, status varchar(50) NOT NULL, date varchar(50), PRIMARY KEY (id) )"
         cursor.execute(sql)
@@ -85,6 +80,7 @@ def push_attendance_data():
 def fetch_attendance_data():
     """For pulling attendance data from MySQL Database"""
     try:
+        connection = create_mysql_client()
         cursor = connection.cursor()
         sql = "SELECT * FROM Employee ORDER BY id DESC"
         cursor.execute(sql)
@@ -101,6 +97,16 @@ def fetch_attendance_data():
     except:
         app.logger.error("Unable to pull attendance data from MySQL", exc_info=True)
         return jsonify(message="Error while pulling data for attendance"), 200
+
+def create_mysql_client():
+    """For creating the client connection with MySQL"""
+    connection = mysql.connector.connect(
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USERNAME'],
+        passwd=app.config['MYSQL_PASSWORD'],
+        database=app.config['MYSQL_DATABASE']
+    )
+    return connection
 
 if __name__ == "__main__":
     handler = LoggingHandler(client=apm.client)
