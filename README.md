@@ -1,6 +1,6 @@
 # Salaryddd
 
-Salary is also a java based application which creates and manages employee's salary information.
+Salary is also a java based application which creates and manages employedde's salary information.
 
 ## Database
 
