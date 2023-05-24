@@ -1,4 +1,4 @@
-FROM node:lts-stretch-slim
+FROM node:16.15.1
 
 MAINTAINER Opstree Solutions
 
@@ -9,7 +9,7 @@ WORKDIR /app/
 RUN apt-get update -y && \
     apt-get install git -y
 
-RUN npm install
+RUN npm install 
 
 RUN npm run build
 
