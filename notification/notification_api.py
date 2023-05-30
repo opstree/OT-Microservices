@@ -94,6 +94,7 @@ def send_mail_to_all_users():
         logger.info("Fetched results from ES")
         
         for data in result["hits"]["hits"]:
+            logger.info("Processing one record for email sending")
             send_mail(data["_source"]["email_id"])
             
         logger.info("Sent mail")
