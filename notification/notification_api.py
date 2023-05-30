@@ -78,7 +78,9 @@ def send_mail_to_all_users():
             scheme="http",
             port=config_content.getProperty("elasticsearch.port"),
         )
-
+        
+        logger.info("Connected to ES")
+        
         result = es_client.search(
             index="employee-management",
             body={
@@ -87,9 +89,12 @@ def send_mail_to_all_users():
                 }
             }
         )
-
+        logger.info("Fetched results from ES")
+        
         for data in result["hits"]["hits"]:
             send_mail(data["_source"]["email_id"])
+            
+        logger.info("Sent mail")
 
     except Exception as e:
         logger.error("Error while executing elasticsearch query: %s", e)
