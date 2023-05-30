@@ -43,7 +43,9 @@ def read_configuration():
 def send_mail(email_id):
     """function which will send mail to user"""
     logger = get_logger()
+    logger.info("send_mail method called to send email")
     config_content = read_configuration()
+    logger.info("Read the configuration file of SMTP connectivity")
     try:
         message = emails.html(
             html="<strong>Your salary slip is generated please check</strong>",
@@ -78,7 +80,9 @@ def send_mail_to_all_users():
             scheme="http",
             port=config_content.getProperty("elasticsearch.port"),
         )
-
+        
+        logger.info("Connected to ES")
+        
         result = es_client.search(
             index="employee-management",
             body={
@@ -87,9 +91,14 @@ def send_mail_to_all_users():
                 }
             }
         )
-
+        logger.info("Fetched results from ES")
+        
         for data in result["hits"]["hits"]:
-            send_mail(data["_source"]["email_id"])
+            logger.info("Processing one record for email sending")
+            logger.info("Data is %s", str(data))
+            send_mail(data["_source"]["email"])
+            
+        logger.info("Sent mail")
 
     except Exception as e:
         logger.error("Error while executing elasticsearch query: %s", e)
