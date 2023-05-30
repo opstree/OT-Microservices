@@ -96,7 +96,7 @@ def send_mail_to_all_users():
         for data in result["hits"]["hits"]:
             logger.info("Processing one record for email sending")
             logger.info("Data is %s", str(data))
-            send_mail(data["_source"]["email_id"])
+            send_mail(data["_source"]["email"])
             
         logger.info("Sent mail")
 
