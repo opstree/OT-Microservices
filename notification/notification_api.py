@@ -43,7 +43,9 @@ def read_configuration():
 def send_mail(email_id):
     """function which will send mail to user"""
     logger = get_logger()
+    logger.info("send_mail method called to send email")
     config_content = read_configuration()
+    logger.info("Read the configuration file of SMTP connectivity")
     try:
         message = emails.html(
             html="<strong>Your salary slip is generated please check</strong>",
