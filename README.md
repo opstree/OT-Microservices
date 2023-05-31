@@ -6,7 +6,7 @@ Salary is also a javadddfghfdsdfghjgfdbased application which creates and manage
 
 - [Elasticsearch]](../elasticsearch) => Salary application stores information in easticsearch
 
-## Endpoints
+## Endpointsdfghbjnmk,kjnbvcfxdcvbnm,.
 
 The available endpoints for this application are:---
 
