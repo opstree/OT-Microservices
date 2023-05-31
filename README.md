@@ -1,6 +1,6 @@
 # Salary
 
-Salary is also a java based application which creates and manages employedde's salary information.
+Salary is also a javadddfghfdsdfghjgfdbased application which creates and manages employedde's salary information.
 
 ## Database
 
