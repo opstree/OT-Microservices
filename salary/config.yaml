@@ -5,5 +5,5 @@ elasticsearch:
   username: elastic
   password: elastic
 
-employee:
+salary:
   api_port: "8080"
