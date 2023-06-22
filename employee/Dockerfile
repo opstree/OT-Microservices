@@ -10,7 +10,7 @@ MAINTAINER OpsTree Solutions
 WORKDIR /app
 RUN apk add --no-cache libc6-compat curl
 COPY --from=builder /go/src/employee/employee /app/
-COPY ./config.yaml /app/config/config.yaml
-ENV CONFIG_FILE "/app/config/config.yaml"
+COPY ./config.yaml /root/config/config.yaml
+ENV CONFIG_FILE "/root/config/config.yaml"
 EXPOSE 8083
 ENTRYPOINT ["./employee"]
